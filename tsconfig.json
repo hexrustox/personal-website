@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "astro/tsconfigs/base",
+    "@vue/tsconfig/tsconfig.json"
+  ],
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "plugins": [
+      { "name": "@astrojs/ts-plugin" },
+      { "name": "@vue/typescript-plugin" }
+    ]
+  }
+}

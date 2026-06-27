@@ -1,0 +1,19 @@
+[[language-server.typescript-language-server.config.plugins]]
+name = "@vue/typescript-plugin"
+location = "node_modules/@vue/typescript-plugin"
+languages = ["vue"]
+
+[[language]]
+name = "typescript"
+formatter = { command = "prettier", args = [ "--parser", "typescript" ] }
+auto-format = true
+
+[[language]]
+name = "astro"
+auto-format = true
+
+[[language]]
+name = "vue"
+formatter = { command = "prettier", args = ["--parser", "vue"] }
+language-servers = ["typescript-language-server"]
+auto-format = true

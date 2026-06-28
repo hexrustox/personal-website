@@ -1,5 +1,7 @@
 ---
 import AboutMe from "../components/AboutMe.vue";
+import Skills from "../components/Skills.vue";
+import Projects from "../components/Projects.vue";
 import "../styles/global.css";
 ---
 
@@ -9,7 +11,7 @@ import "../styles/global.css";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>About Me</title>
+    <title></title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,6 +22,8 @@ import "../styles/global.css";
   <body>
     <main class="page">
       <AboutMe />
+      <Skills />
+      <Projects client:load />
     </main>
   </body>
 </html>
@@ -32,5 +36,6 @@ import "../styles/global.css";
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    gap: 4rem;
   }
 </style>

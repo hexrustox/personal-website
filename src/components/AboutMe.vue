@@ -1,31 +1,58 @@
+<script setup lang="ts">
+import SectionHeading from "./SectionHeading.vue";
+import { metaItems } from "../lib/about";
+</script>
+
 <template>
-  <article class="about">
-    <span class="section-rule" aria-hidden="true"></span>
-    <h1 class="section-title">About Me</h1>
-    <p class="about__body">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae
-      aliquam est, id aliquet ipsum. Morbi blandit dui sit amet eleifend
-      bibendum. Nam sem eros, congue ut sapien in, dictum faucibus sem. Ut eu
-      tincidunt tellus. Nam tristique mauris eget risus dictum venenatis.
-      Vestibulum feugiat aliquet auctor. Phasellus bibendum nisl eget fringilla
-      ullamcorper. Vestibulum ante ipsum primis in faucibus orci luctus et
-      ultrices posuere cubilia curae; Phasellus varius at est a aliquam.
-      Phasellus eu lorem turpis.
+  <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
+    <h3>Designing and building considered interfaces for the web.</h3>
+
+    <p>
+      Currently working as a frontend engineer, mostly with TypeScript, Vue, and
+      a little Rust on the side. I'm drawn to work that sits at the intersection
+      of design and engineering — places where the two disciplines sharpen each
+      other rather than get in the way.
     </p>
-  </article>
+
+    <p>
+      Outside of code I keep notebooks full of half-finished ideas, read more
+      than I should, and take long walks when a bug won't budge.
+    </p>
+
+    <dl class="about__meta">
+      <div v-for="item in metaItems" :key="item.label" class="about__meta-item">
+        <dt class="type-eyebrow">{{ item.label }}</dt>
+        <dd class="about__meta-value">{{ item.value }}</dd>
+      </div>
+    </dl>
+  </SectionHeading>
 </template>
 
 <style scoped>
-.about {
-  width: 100%;
+.about__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem 1.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--muted) 30%, transparent);
 }
 
-.about__body {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--text);
-  max-width: 65ch;
+@media (min-width: 600px) {
+  .about__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .about__meta {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.about__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 </style>

@@ -4,6 +4,12 @@ export interface ContactMethod {
   url: string;
 }
 
+export interface ContactMeta {
+  location: string;
+  availability: string;
+  responseTime: string;
+}
+
 export const contactMethods: ContactMethod[] = [
   {
     name: "Email",
@@ -21,3 +27,9 @@ export const contactMethods: ContactMethod[] = [
     url: "https://www.linkedin.com/in/your-handle",
   },
 ];
+
+export const contactMeta: ContactMeta = {
+  location: "Based in Berlin",
+  availability: "Open to work",
+  responseTime: "Replies within 48h",
+};

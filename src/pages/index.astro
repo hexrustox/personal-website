@@ -5,6 +5,7 @@ import Projects from "../components/Projects.vue";
 import Timeline from "../components/Timeline.vue";
 import Contact from "../components/Contact.vue";
 import "../styles/global.css";
+import "../styles/font.css";
 ---
 
 <!doctype html>
@@ -25,8 +26,8 @@ import "../styles/global.css";
     <main class="page">
       <AboutMe />
       <Skills />
-      <Projects client:load />
-      <Timeline client:load />
+      <Projects client:idle />
+      <Timeline client:idle />
       <Contact />
     </main>
   </body>
@@ -34,7 +35,7 @@ import "../styles/global.css";
 
 <style scoped>
   .page {
-    max-width: 1024px;
+    max-width: 960px;
     margin: 0 auto;
     padding: min(12vh, 8rem) 1.5rem;
     display: flex;

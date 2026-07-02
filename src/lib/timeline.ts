@@ -5,25 +5,6 @@ export interface Event {
   description: string;
 }
 
-export interface PlacedEvent {
-  ev: Event;
-  topRem: number;
-  heightRem: number;
-  toYear: number;
-}
-
-export interface TimelineGroup {
-  min: Date;
-  max: Date;
-  spanYears: number;
-  heightRem: number;
-  events: PlacedEvent[];
-}
-
-export const MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365.25;
-export const YEARS_TO_REM = 4;
-export const REM_DECIMALS = 2;
-
 export const events: Event[] = [
   {
     title: "Software Engineer @ Example Co",
@@ -85,51 +66,4 @@ export function groupEvents(input: Event[]): Event[][] {
   }
 
   return output;
-}
-
-function rem(value: number): number {
-  const factor = 10 ** REM_DECIMALS;
-  return Math.round(value * factor) / factor;
-}
-
-function placeEventsInGroup(
-  group: Event[],
-  min: Date,
-  max: Date,
-  spanYears: number,
-): PlacedEvent[] {
-  const spanMs = max.getTime() - min.getTime();
-  return group.map((ev) => {
-    const eventEnd = endOf(ev);
-    const topRatio = (ev.from.getTime() - min.getTime()) / spanMs;
-    const heightRatio = (eventEnd.getTime() - ev.from.getTime()) / spanMs;
-    return {
-      ev,
-      topRem: rem(topRatio * spanYears * YEARS_TO_REM),
-      heightRem: rem(heightRatio * spanYears * YEARS_TO_REM),
-      toYear: eventEnd.getFullYear(),
-    };
-  });
-}
-
-export function buildLayout(input: Event[]): TimelineGroup[] {
-  const sorted = [...input].sort((a, b) => a.from.getTime() - b.from.getTime());
-  return groupEvents(sorted).map((group) => {
-    const min = group.reduce(
-      (acc, e) => (e.from < acc ? e.from : acc),
-      group[0]!.from,
-    );
-    const max = group.reduce((acc, e) => {
-      const end = endOf(e);
-      return end > acc ? end : acc;
-    }, endOf(group[0]!));
-    const spanYears = (max.getTime() - min.getTime()) / MS_PER_YEAR;
-    return {
-      min,
-      max,
-      spanYears,
-      heightRem: rem(spanYears * YEARS_TO_REM),
-      events: placeEventsInGroup(group, min, max, spanYears),
-    };
-  });
 }

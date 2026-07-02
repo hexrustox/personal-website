@@ -15,5 +15,5 @@ auto-format = true
 [[language]]
 name = "vue"
 formatter = { command = "prettier", args = ["--parser", "vue"] }
-language-servers = ["typescript-language-server"]
+language-servers = ["typescript-language-server", "vscode-css-language-server"]
 auto-format = true

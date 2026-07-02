@@ -38,8 +38,9 @@
                 "--pid=host"
               ];
               wrappers = [
-                "npm"
+                "node"
                 "pnpm"
+                "vscode-css-language-server"
                 {
                   name = "astro-ls";
                   value = "node_modules/.bin/astro-ls";
@@ -64,6 +65,7 @@
                 packages = with pkgs; [
                   nodejs
                   pnpm
+                  vscode-css-languageserver
                 ];
               };
           };

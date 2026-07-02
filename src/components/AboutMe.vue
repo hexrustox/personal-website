@@ -21,7 +21,7 @@ import { metaItems } from "../lib/about";
 
     <dl class="about__meta">
       <div v-for="item in metaItems" :key="item.label" class="about__meta-item">
-        <dt class="about__meta-label">{{ item.label }}</dt>
+        <dt class="type-eyebrow">{{ item.label }}</dt>
         <dd class="about__meta-value">{{ item.value }}</dd>
       </div>
     </dl>
@@ -55,24 +55,5 @@ import { metaItems } from "../lib/about";
   flex-direction: column;
   gap: 0.25rem;
   margin: 0;
-}
-
-.about__meta-label {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.about__meta-value {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  line-height: 1.3;
-  color: var(--text);
-  text-decoration: underline 1px var(--accent);
-  text-underline-offset: 4px;
 }
 </style>

@@ -10,7 +10,9 @@ const { scrollYProgress } = useScroll({
   target: containerRef,
 });
 
-const sortedEvents = events.slice().sort((a, b) => a.from.getTime() - b.from.getTime());
+const sortedEvents = events
+  .slice()
+  .sort((a, b) => a.from.getTime() - b.from.getTime());
 const groups = groupEvents(sortedEvents);
 
 const timelineStartMs = groups[0][0]?.from.getTime();
@@ -82,7 +84,7 @@ const VH_PER_MONTH = 4;
         <div class="timeline__year">
           <div
             :style="{ top: `${scrollPercent}%` }"
-            class="timeline__year-label"
+            class="type-label timeline__year-label"
           >
             <div>
               {{ new Date(cursorTime).getFullYear() }}
@@ -106,13 +108,13 @@ const VH_PER_MONTH = 4;
         <div class="timeline__event-years">
           <div
             :style="{ top: `${eventStartPercent}%` }"
-            class="timeline__event-year"
+            class="type-label timeline__event-year"
           >
             {{ selectedEvent.from.getFullYear() }}
           </div>
           <div
             :style="{ top: `${eventEndPercent}%` }"
-            class="timeline__event-year"
+            class="type-label timeline__event-year"
           >
             {{ selectedEvent.to?.getFullYear() ?? "Now" }}
           </div>

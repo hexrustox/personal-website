@@ -11,7 +11,7 @@ import { skillCategories } from "../lib/skills";
         :key="category.title"
         class="skills__group"
       >
-        <p class="skills__group-title">{{ category.title }}</p>
+        <p class="type-eyebrow skills__group-title">{{ category.title }}</p>
         <ul class="skills__list">
           <li v-for="skill in category.items" :key="skill" class="skills__chip">
             {{ skill }}
@@ -38,13 +38,6 @@ import { skillCategories } from "../lib/skills";
 
 .skills__group-title {
   margin: 0 0 1rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 .skills__list {
@@ -54,14 +47,5 @@ import { skillCategories } from "../lib/skills";
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-.skills__chip {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--text);
 }
 </style>

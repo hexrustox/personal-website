@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import { useId } from "vue";
+
 let props = defineProps<{
   eyebrow: string;
   title: string;
 }>();
+
+const headingId = useId();
 </script>
 
 <template>
-  <section class="section-heading">
-    <header class="section-heading__head">
-      <p class="type-eyebrow">{{ eyebrow }}</p>
+  <section class="section-heading" :aria-labelledby="headingId">
+    <header>
+      <span class="type-eyebrow">{{ eyebrow }}</span>
     </header>
-
-    <h2>{{ title }}</h2>
+    <h2 :id="headingId">{{ title }}</h2>
 
     <slot />
   </section>
@@ -23,11 +26,5 @@ let props = defineProps<{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-}
-
-.section-heading__head {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 </style>

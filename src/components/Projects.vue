@@ -1,36 +1,84 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, useTemplateRef, nextTick } from "vue";
 import SectionHeading from "./SectionHeading.vue";
 import Link from "./Link.vue";
 import { projects, type Project } from "../lib/projects";
 
 const activeIndex = ref(0);
 const active = computed<Project>(() => projects[activeIndex.value]!);
+const tabRefs = useTemplateRef<HTMLButtonElement[]>("tabs");
 
-function goTo(i: number) {
-  activeIndex.value = i;
+async function goTo(i: number) {
+  const next = (i + projects.length) % projects.length;
+  activeIndex.value = next;
+  await nextTick();
+  tabRefs.value?.[next]?.focus();
+}
+
+function onTabKey(e: KeyboardEvent, i: number) {
+  switch (e.key) {
+    case "ArrowDown":
+    case "ArrowRight":
+      e.preventDefault();
+      goTo(i + 1);
+      break;
+    case "ArrowUp":
+    case "ArrowLeft":
+      e.preventDefault();
+      goTo(i - 1);
+      break;
+    case "Home":
+      e.preventDefault();
+      goTo(0);
+      break;
+    case "End":
+      e.preventDefault();
+      goTo(projects.length - 1);
+      break;
+  }
 }
 </script>
 
 <template>
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
     <div class="projects__layout">
-      <ol class="projects__list">
-        <li v-for="(p, i) in projects" :key="p.name">
-          <button
-            class="projects__item"
-            :class="{ 'projects__item--active': i === activeIndex }"
-            :aria-pressed="i === activeIndex"
-            @click="goTo(i)"
-          >
-            <span class="type-label projects__index">{{
-              String(i + 1).padStart(2, "0")
-            }}</span>
-            <h3 class="project__name">{{ p.name }}</h3>
-          </button>
-        </li>
-      </ol>
-      <article class="projects__detail" :key="active.name" aria-live="polite">
+      <div
+        class="projects__list"
+        role="tablist"
+        aria-label="Projects"
+        aria-orientation="vertical"
+      >
+        <button
+          v-for="(p, i) in projects"
+          :key="p.name"
+          ref="tabs"
+          :id="`project-tab-${i}`"
+          :class="{
+            projects__item: true,
+            'projects__item--active': i === activeIndex,
+          }"
+          role="tab"
+          type="button"
+          :aria-selected="i === activeIndex"
+          :aria-controls="`project-panel-${i}`"
+          :tabindex="i === activeIndex ? 0 : -1"
+          @click="goTo(i)"
+          @keydown="(e) => onTabKey(e, i)"
+        >
+          <span class="type-label projects__index">{{
+            String(i + 1).padStart(2, "0")
+          }}</span>
+          <span class="project__name">{{ p.name }}</span>
+        </button>
+      </div>
+      <section
+        :key="active.name"
+        :id="`project-panel-${activeIndex}`"
+        class="projects__detail"
+        role="tabpanel"
+        :aria-labelledby="`project-tab-${activeIndex}`"
+        aria-live="polite"
+      >
         <h3>{{ active.name }}</h3>
         <p class="projects__detail-description">{{ active.description }}</p>
         <ul class="type-meta projects__detail-skills">
@@ -49,7 +97,7 @@ function goTo(i: number) {
             }}</Link>
           </li>
         </ul>
-      </article>
+      </section>
     </div>
   </SectionHeading>
 </template>
@@ -70,9 +118,6 @@ function goTo(i: number) {
 }
 
 .projects__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
 }
@@ -111,7 +156,8 @@ function goTo(i: number) {
   transition: 200ms;
 }
 
-.projects__item:hover .project__name::after {
+.projects__item:hover .project__name::after,
+.projects__item:focus-visible .project__name::after {
   transform: scaleX(1);
 }
 

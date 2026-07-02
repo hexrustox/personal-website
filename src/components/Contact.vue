@@ -6,37 +6,34 @@ import { contactMethods, contactMeta } from "../lib/contact";
 
 <template>
   <SectionHeader eyebrow="05 — CONTACT" title="Get in touch.">
-    <ul class="contact__list" aria-label="Other ways to reach me">
-      <li
+    <dl class="contact__list" aria-label="Other ways to reach me">
+      <div
         v-for="method in contactMethods"
         :key="method.name"
         class="contact__item"
       >
-        <div class="contact__link">
-          <span class="contact__name">{{ method.name }}</span>
-          <span class="contact__handle-group">
-            <Link
-              class="contact__handle"
-              :href="method.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ method.handle }}</Link
-            >
-          </span>
-        </div>
-      </li>
-    </ul>
+        <dt class="contact__name">{{ method.name }}</dt>
+        <dd class="contact__handle-group">
+          <Link
+            class="contact__handle"
+            :href="method.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ method.handle }}</Link
+          >
+        </dd>
+      </div>
+    </dl>
 
-    <p class="type-meta">
+    <span class="type-meta">
       {{ contactMeta.location }} · {{ contactMeta.availability }} ·
       {{ contactMeta.responseTime }}
-    </p>
+    </span>
   </SectionHeader>
 </template>
 
 <style scoped>
 .contact__list {
-  list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
@@ -44,6 +41,11 @@ import { contactMethods, contactMeta } from "../lib/contact";
 }
 
 .contact__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
   border-top: 1px solid var(--border, var(--muted));
 }
 
@@ -51,17 +53,12 @@ import { contactMethods, contactMeta } from "../lib/contact";
   border-bottom: 1px solid var(--border, var(--muted));
 }
 
-.contact__link {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
-  text-decoration: none;
-  border-radius: 2px;
+.contact__name {
+  margin: 0;
 }
 
 .contact__handle-group {
+  margin: 0;
   display: inline-flex;
   align-items: baseline;
   gap: 0.5ch;

@@ -69,10 +69,37 @@ const eventEndPercent = computed(() => {
 
 const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
 const VH_PER_MONTH = 4;
+
+function jumpTo(event: Event) {
+  const targetTop = window.scrollY + containerRef.value!.getBoundingClientRect().top;
+  const targetProgress =
+    (event.from.getTime() - timelineStartMs) / totalSpanMs;
+  const targetScroll = targetTop + containerRef.value!.offsetHeight * targetProgress;
+  window.scrollTo({ top: targetScroll, behavior: "smooth" });
+}
+
+function eventYearLabel(event: Event) {
+  const fromYear = event.from.getFullYear();
+  const toYear = event.to?.getFullYear();
+  return toYear ? `${fromYear}–${toYear}` : `${fromYear}–present`;
+}
 </script>
 
 <template>
   <SectionHeader eyebrow="04 — TIMELINE" title="Where I've been.">
+    <ol class="visually-hidden" aria-label="Timeline events">
+      <li v-for="(event, i) in sortedEvents" :key="i">
+        <button type="button" @click="jumpTo(event)">
+          {{ event.title }} ({{ eventYearLabel(event) }})
+        </button>
+      </li>
+    </ol>
+
+    <p class="visually-hidden" aria-live="polite" aria-atomic="true">
+      {{ selectedEvent.title }}, {{ eventYearLabel(selectedEvent) }}.
+      {{ selectedEvent.description }}
+    </p>
+
     <div
       ref="container"
       :style="[
@@ -80,7 +107,7 @@ const VH_PER_MONTH = 4;
       ]"
       class="timeline"
     >
-      <div class="timeline__inner">
+      <div class="timeline__inner" aria-hidden="true">
         <div class="timeline__year">
           <div
             :style="{ top: `${scrollPercent}%` }"

@@ -10,8 +10,11 @@ import { skillCategories } from "../lib/skills";
         v-for="category in skillCategories"
         :key="category.title"
         class="skills__group"
+        :aria-label="category.title"
       >
-        <p class="type-eyebrow skills__group-title">{{ category.title }}</p>
+        <span class="type-eyebrow skills__group-title">{{
+          category.title
+        }}</span>
         <ul class="skills__list">
           <li v-for="skill in category.items" :key="skill" class="skills__chip">
             {{ skill }}

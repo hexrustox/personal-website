@@ -24,6 +24,7 @@ watch(inView, async (visible) => {
   if (!visible || hasAnimated.value) return;
   hasAnimated.value = true;
   if (reduced.value) {
+    await animate("header", { opacity: 1 }, { duration: 0 });
     await animate(
       ".section-heading__char-inner",
       { opacity: 1, y: "0%" },
@@ -31,6 +32,8 @@ watch(inView, async (visible) => {
     );
     return;
   }
+
+  await animate("header", { opacity: 1 }, { duration: 0.3, delay: 0.2 });
   await animate(
     ".section-heading__char-inner",
     { opacity: [0, 1], y: ["100%", "0%"] },
@@ -46,16 +49,11 @@ watch(inView, async (visible) => {
 </script>
 
 <template>
-  <section class="section-heading" :aria-labelledby="headingId">
+  <section class="section-heading" :aria-labelledby="headingId" ref="scope">
     <header>
       <span class="type-eyebrow">{{ eyebrow }}</span>
     </header>
-    <h2
-      ref="scope"
-      :id="headingId"
-      :aria-label="title"
-      class="section-heading__title"
-    >
+    <h2 :id="headingId" :aria-label="title" class="section-heading__title">
       <span
         v-for="(c, i) in chars"
         :key="i"
@@ -79,6 +77,10 @@ watch(inView, async (visible) => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+header {
+  opacity: 0;
 }
 
 .section-heading__title {

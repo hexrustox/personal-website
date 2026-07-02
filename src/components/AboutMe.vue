@@ -1,30 +1,48 @@
 <script setup lang="ts">
 import SectionHeading from "./SectionHeading.vue";
+import Reveal from "./Reveal.vue";
 import { metaItems } from "../lib/about";
+
+const IN = 0.25;
+const PRE = 0.6;
 </script>
 
 <template>
   <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
-    <h3>Designing and building considered interfaces for the web.</h3>
+    <Reveal :delay="IN + PRE">
+      <h3>Designing and building considered interfaces for the web.</h3>
+    </Reveal>
 
-    <p>
-      Currently working as a frontend engineer, mostly with TypeScript, Vue, and
-      a little Rust on the side. I'm drawn to work that sits at the intersection
-      of design and engineering — places where the two disciplines sharpen each
-      other rather than get in the way.
-    </p>
+    <Reveal :delay="IN * 2 + PRE">
+      <p>
+        Currently working as a frontend engineer, mostly with TypeScript, Vue,
+        and a little Rust on the side. I'm drawn to work that sits at the
+        intersection of design and engineering — places where the two
+        disciplines sharpen each other rather than get in the way.
+      </p>
+    </Reveal>
 
-    <p>
-      Outside of code I keep notebooks full of half-finished ideas, read more
-      than I should, and take long walks when a bug won't budge.
-    </p>
+    <Reveal :delay="IN * 3 + PRE">
+      <p>
+        Outside of code I keep notebooks full of half-finished ideas, read more
+        than I should, and take long walks when a bug won't budge.
+      </p>
+    </Reveal>
 
-    <dl class="about__meta">
-      <div v-for="item in metaItems" :key="item.label" class="about__meta-item">
-        <dt class="type-eyebrow">{{ item.label }}</dt>
-        <dd class="about__meta-value">{{ item.value }}</dd>
-      </div>
-    </dl>
+    <Reveal :delay="IN * 4 + PRE">
+      <dl class="about__meta">
+        <div
+          v-for="(item, i) in metaItems"
+          :key="item.label"
+          class="about__meta-item"
+        >
+          <Reveal :delay="(IN / 2) * i + IN * 4 + PRE">
+            <dt class="type-eyebrow">{{ item.label }}</dt>
+            <dd class="about__meta-value">{{ item.value }}</dd>
+          </Reveal>
+        </div>
+      </dl>
+    </Reveal>
   </SectionHeading>
 </template>
 

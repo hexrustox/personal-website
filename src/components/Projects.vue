@@ -1,65 +1,51 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import SectionHeading from "./SectionHeading.vue";
 import { projects, type Project } from "../lib/projects";
 
 const activeIndex = ref(0);
-const total = projects.length;
 const active = computed<Project>(() => projects[activeIndex.value]!);
 
-function prev() {
-  activeIndex.value = (activeIndex.value - 1 + total) % total;
-}
-function next() {
-  activeIndex.value = (activeIndex.value + 1) % total;
-}
 function goTo(i: number) {
   activeIndex.value = i;
-}
-
-function onKey(e: KeyboardEvent) {
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    prev();
-  } else if (e.key === "ArrowRight") {
-    e.preventDefault();
-    next();
-  }
 }
 </script>
 
 <template>
-  <section
-    class="projects"
-    tabindex="0"
-    aria-roledescription="carousel"
-    aria-label="Projects"
-    @keydown="onKey"
-  >
-    <span class="section-rule" aria-hidden="true"></span>
-    <div class="projects__head">
-      <h1 class="section-title projects__title">Projects</h1>
-      <span class="projects__count" aria-live="polite">
-        {{ activeIndex + 1 }} / {{ total }}
-      </span>
-    </div>
-
-    <div class="projects__viewport">
-      <article class="project" :key="active.name">
-        <h2 class="project__name">{{ active.name }}</h2>
-        <p class="project__description">{{ active.description }}</p>
-        <ul class="project__skills">
+  <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
+    <div class="projects__layout">
+      <ol class="projects__list">
+        <li v-for="(p, i) in projects" :key="p.name">
+          <button
+            type="button"
+            class="projects__item"
+            :class="{ 'projects__item--active': i === activeIndex }"
+            :aria-pressed="i === activeIndex"
+            @click="goTo(i)"
+          >
+            <span class="projects__index">{{
+              String(i + 1).padStart(2, "0")
+            }}</span>
+            <h3>{{ p.name }}</h3>
+          </button>
+        </li>
+      </ol>
+      <article class="projects__detail" :key="active.name" aria-live="polite">
+        <h3>{{ active.name }}</h3>
+        <p class="projects__detail-description">{{ active.description }}</p>
+        <ul class="projects__detail-skills">
           <li
             v-for="skill in active.skills"
             :key="skill"
-            class="project__skill"
+            class="projects__detail-skill"
           >
             {{ skill }}
           </li>
         </ul>
-        <ul class="project__links">
+        <ul class="projects__detail-links">
           <li v-for="link in active.links" :key="link.url">
             <a
-              class="project__link"
+              class="projects__detail-link"
               :href="link.url"
               target="_blank"
               rel="noopener noreferrer"
@@ -70,116 +56,120 @@ function onKey(e: KeyboardEvent) {
         </ul>
       </article>
     </div>
-
-    <div class="projects__controls">
-      <button
-        type="button"
-        class="projects__nav"
-        aria-label="Previous project"
-        @click="prev"
-      >
-        &larr;
-      </button>
-      <div class="projects__dots" role="tablist">
-        <button
-          v-for="(p, i) in projects"
-          :key="p.name"
-          type="button"
-          class="projects__dot"
-          :class="{ 'projects__dot--active': i === activeIndex }"
-          :aria-label="`Go to project ${i + 1}`"
-          :aria-selected="i === activeIndex"
-          role="tab"
-          @click="goTo(i)"
-        ></button>
-      </div>
-      <button
-        type="button"
-        class="projects__nav"
-        aria-label="Next project"
-        @click="next"
-      >
-        &rarr;
-      </button>
-    </div>
-  </section>
+  </SectionHeading>
 </template>
 
 <style scoped>
-.projects {
-  width: 100%;
-  outline: none;
-}
-.projects:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 4px;
+.projects__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
 }
 
-.projects__head {
+@media (min-width: 720px) {
+  .projects__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+.projects__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 720px) {
+  .projects__list {
+    position: sticky;
+    top: 2rem;
+  }
+}
+
+.projects__item {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-.projects__title {
-  margin: 0;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  margin-left: -1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--muted);
 }
 
-.projects__count {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
+.projects__item:hover,
+.projects__item:hover .projects__index {
+  color: var(--text);
+}
+
+.projects__item--active {
+  color: var(--text);
+}
+
+.projects__index {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  line-height: 1;
+  letter-spacing: 0.05em;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 
-.projects__viewport {
-  min-height: 12rem;
-  margin-bottom: 1.5rem;
+.projects__item--active .projects__index {
+  color: var(--accent);
 }
 
-.project__name {
-  margin: 0 0 0.5rem;
+.projects__name {
   font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
   font-weight: 700;
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
-  color: var(--text);
 }
 
-.project__description {
-  margin: 0 0 1rem;
+.projects__detail {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.projects__detail-description {
+  margin: 0;
+  max-width: 60ch;
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.7;
   color: var(--text);
-  max-width: 65ch;
 }
 
-.project__skills {
+.projects__detail-skills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  list-style: none;
-  margin: 0 0 1rem;
-  padding: 0;
-}
-
-.project__skill {
-  padding: 0.375rem 0.75rem;
-  border: 1px solid var(--accent);
-  border-radius: 9999px;
-  background: transparent;
-  color: var(--accent);
   font-family: var(--font-body);
   font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
+  color: var(--muted);
 }
 
-.project__links {
+.projects__detail-skill:not(:last-child)::after {
+  content: " · ";
+  margin-left: 0.5rem;
+  color: var(--muted);
+}
+
+.projects__detail-links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
@@ -188,77 +178,15 @@ function onKey(e: KeyboardEvent) {
   padding: 0;
 }
 
-.project__link {
+.projects__detail-link {
   font-family: var(--font-body);
   font-size: 0.9375rem;
   color: var(--text);
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
+  text-decoration: underline 1px var(--accent);
   text-underline-offset: 4px;
-  transition: color 150ms ease;
 }
-.project__link:hover {
+
+.projects__detail-link:hover {
   color: var(--accent);
-}
-
-.projects__controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.projects__nav {
-  width: 2.25rem;
-  height: 2.25rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--muted);
-  border-radius: 9999px;
-  background: transparent;
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    color 150ms ease,
-    border-color 150ms ease;
-}
-.projects__nav:hover,
-.projects__nav:focus-visible {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.projects__nav:focus-visible {
-  outline: none;
-}
-
-.projects__dots {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.projects__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  padding: 0;
-  border: 0;
-  border-radius: 9999px;
-  background: var(--muted);
-  opacity: 0.4;
-  cursor: pointer;
-  transition:
-    background 150ms ease,
-    opacity 150ms ease;
-}
-.projects__dot--active {
-  background: var(--accent);
-  opacity: 1;
-}
-.projects__dot:hover {
-  opacity: 0.8;
 }
 </style>

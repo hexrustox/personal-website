@@ -186,7 +186,7 @@ function onTabKey(e: KeyboardEvent, i: number) {
 }
 
 .projects__detail-skill:not(:last-child)::after {
-  content: " · ";
+  content: " • ";
   margin-left: 0.5rem;
 }
 

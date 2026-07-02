@@ -15,9 +15,9 @@ const sortedEvents = events
   .sort((a, b) => a.from.getTime() - b.from.getTime());
 const groups = groupEvents(sortedEvents);
 
-const timelineStartMs = groups[0][0]?.from.getTime();
+const timelineStartMs = groups[0][0]?.from.getTime() ?? 0;
 const totalSpanMs = new Date().getTime() - timelineStartMs;
-const cursorTime = ref(groups[0][0].from.getTime());
+const cursorTime = ref(timelineStartMs);
 const scrollPercent = ref(0);
 useMotionValueEvent(scrollYProgress, "change", (progress) => {
   cursorTime.value = timelineStartMs + Math.round(totalSpanMs * progress);
@@ -71,10 +71,11 @@ const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
 const VH_PER_MONTH = 4;
 
 function jumpTo(event: Event) {
-  const targetTop = window.scrollY + containerRef.value!.getBoundingClientRect().top;
-  const targetProgress =
-    (event.from.getTime() - timelineStartMs) / totalSpanMs;
-  const targetScroll = targetTop + containerRef.value!.offsetHeight * targetProgress;
+  const targetTop =
+    window.scrollY + containerRef.value!.getBoundingClientRect().top;
+  const targetProgress = (event.from.getTime() - timelineStartMs) / totalSpanMs;
+  const targetScroll =
+    targetTop + containerRef.value!.offsetHeight * targetProgress;
   window.scrollTo({ top: targetScroll, behavior: "smooth" });
 }
 
@@ -212,10 +213,10 @@ function eventYearLabel(event: Event) {
   height: 100%;
   background-image: repeating-linear-gradient(
     to bottom,
-    var(--muted) 0 1px,
+    var(--border) 0 1px,
     transparent 1px 9px
   );
-  border-right: 1px solid var(--muted);
+  border-right: 1px solid var(--border);
 }
 
 .timeline__event-years {
@@ -227,7 +228,7 @@ function eventYearLabel(event: Event) {
   right: 0px;
   width: 10px;
   height: 1px;
-  background: var(--muted);
+  background: var(--border);
 }
 
 .timeline__rail-cap.bottom {

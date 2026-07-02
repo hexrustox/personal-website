@@ -35,7 +35,7 @@ import { metaItems } from "../lib/about";
   gap: 1rem 1.5rem;
   margin: 1.5rem 0 0;
   padding: 1.5rem 0 0;
-  border-top: 1px solid color-mix(in srgb, var(--muted) 30%, transparent);
+  border-top: 1px solid var(--border);
 }
 
 @media (min-width: 600px) {

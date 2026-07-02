@@ -45,11 +45,11 @@ import { contactMethods, contactMeta } from "../lib/contact";
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 0;
-  border-top: 1px solid var(--border, var(--muted));
+  border-top: 1px solid var(--border);
 }
 
 .contact__item:last-child {
-  border-bottom: 1px solid var(--border, var(--muted));
+  border-bottom: 1px solid var(--border);
 }
 
 .contact__handle-group {

@@ -34,7 +34,6 @@ import { contactMethods, contactMeta } from "../lib/contact";
 
 <style scoped>
 .contact__list {
-  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -53,12 +52,7 @@ import { contactMethods, contactMeta } from "../lib/contact";
   border-bottom: 1px solid var(--border, var(--muted));
 }
 
-.contact__name {
-  margin: 0;
-}
-
 .contact__handle-group {
-  margin: 0;
   display: inline-flex;
   align-items: baseline;
   gap: 0.5ch;

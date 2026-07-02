@@ -54,6 +54,5 @@ import { metaItems } from "../lib/about";
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  margin: 0;
 }
 </style>

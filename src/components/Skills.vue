@@ -48,7 +48,6 @@ import { skillCategories } from "../lib/skills";
   flex-direction: column;
   gap: 0.5rem;
   list-style: none;
-  margin: 0;
   padding: 0;
 }
 </style>

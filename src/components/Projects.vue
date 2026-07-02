@@ -177,14 +177,8 @@ function onTabKey(e: KeyboardEvent, i: number) {
   gap: 1.25rem;
 }
 
-.projects__detail-description {
-  margin: 0;
-  max-width: 60ch;
-}
-
 .projects__detail-skills {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -201,7 +195,6 @@ function onTabKey(e: KeyboardEvent, i: number) {
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
   list-style: none;
-  margin: 0;
   padding: 0;
 }
 </style>

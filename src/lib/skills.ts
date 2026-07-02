@@ -10,3 +10,23 @@ export enum Skills {
   Docker = "Docker",
   Figma = "Figma",
 }
+
+export type SkillCategory = {
+  title: string;
+  items: readonly Skills[];
+};
+
+export const skillCategories: SkillCategory[] = [
+  {
+    title: "Languages",
+    items: [Skills.TypeScript, Skills.HTML, Skills.CSS, Skills.Rust],
+  },
+  {
+    title: "Frameworks",
+    items: [Skills.Vue, Skills.Astro, Skills.Node],
+  },
+  {
+    title: "Tooling",
+    items: [Skills.PostgreSQL, Skills.Docker, Skills.Figma],
+  },
+];

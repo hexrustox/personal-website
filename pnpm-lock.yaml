@@ -14,12 +14,6 @@ importers:
       '@astrojs/vue':
         specifier: ^6.0.1
         version: 6.0.1(astro@6.4.5(rollup@4.61.1)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(yaml@2.9.0)
-      '@vue/language-server':
-        specifier: ^3.3.4
-        version: 3.3.4(typescript@6.0.3)
-      '@vue/typescript-plugin':
-        specifier: ^3.3.4
-        version: 3.3.4(typescript@6.0.3)
       astro:
         specifier: ^6.4.5
         version: 6.4.5(rollup@4.61.1)(yaml@2.9.0)
@@ -36,9 +30,15 @@ importers:
       '@astrojs/ts-plugin':
         specifier: ^1.10.9
         version: 1.10.9
+      '@vue/language-server':
+        specifier: ^3.3.4
+        version: 3.3.4(typescript@6.0.3)
       '@vue/tsconfig':
         specifier: ^0.9.1
         version: 0.9.1(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))
+      '@vue/typescript-plugin':
+        specifier: ^3.3.4
+        version: 3.3.4(typescript@6.0.3)
       prettier:
         specifier: ^3.8.4
         version: 3.8.4

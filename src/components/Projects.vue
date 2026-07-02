@@ -122,13 +122,6 @@ function onTabKey(e: KeyboardEvent, i: number) {
   flex-direction: column;
 }
 
-@media (min-width: 720px) {
-  .projects__list {
-    position: sticky;
-    top: 2rem;
-  }
-}
-
 .projects__item {
   display: flex;
   align-items: baseline;

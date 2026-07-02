@@ -8,12 +8,15 @@ let props = defineProps<{
 }>();
 
 const headingId = useId();
-const sectionRef = useTemplateRef<HTMLHeadingElement>("section");
+const viewRef = useTemplateRef<HTMLHeadingElement>("view");
 
 const chars = computed(() => Array.from(props.title));
 const hasAnimated = ref(false);
 
-const inView = useInView(sectionRef, { once: true, amount: 0.8 });
+const inView = useInView(viewRef, {
+  once: true,
+  amount: 1,
+});
 const reduced = useReducedMotion();
 const [scope, animate] = useAnimate();
 
@@ -43,7 +46,7 @@ watch(inView, async (visible) => {
 </script>
 
 <template>
-  <section ref="section" class="section-heading" :aria-labelledby="headingId">
+  <section class="section-heading" :aria-labelledby="headingId">
     <header>
       <span class="type-eyebrow">{{ eyebrow }}</span>
     </header>
@@ -63,6 +66,7 @@ watch(inView, async (visible) => {
           c === " " ? "\u00A0" : c
         }}</span>
       </span>
+      <div ref="view" class="view"></div>
     </h2>
 
     <slot />
@@ -78,9 +82,8 @@ watch(inView, async (visible) => {
 }
 
 .section-heading__title {
-  display: block;
+  position: relative;
 }
-
 .section-heading__char {
   display: inline-block;
   overflow: hidden;
@@ -93,5 +96,11 @@ watch(inView, async (visible) => {
   will-change: transform, opacity;
   transform: translateY(100%);
   opacity: 0;
+}
+
+.view {
+  position: absolute;
+  width: 100%;
+  height: 300%;
 }
 </style>

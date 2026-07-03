@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { useScroll, useMotionValueEvent } from "motion-v";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+} from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 import SectionHeader from "../components/SectionHeading.vue";
+import YearLabel from "../components/YearLabel.vue";
 import { events, groupEvents, endOf, type Event } from "../lib/timeline";
 import { round } from "../lib/round";
 
@@ -10,6 +17,11 @@ const { scrollYProgress } = useScroll({
   target: containerRef,
 });
 
+const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
+const VH_PER_MONTH = 4;
+const containerHeight = 80;
+const containerVh = computed(() => `${containerHeight}vh`);
+
 const sortedEvents = events
   .slice()
   .sort((a, b) => a.from.getTime() - b.from.getTime());
@@ -17,12 +29,19 @@ const groups = groupEvents(sortedEvents);
 
 const timelineStartMs = groups[0][0]?.from.getTime() ?? 0;
 const totalSpanMs = new Date().getTime() - timelineStartMs;
+
+const y = useTransform(
+  scrollYProgress,
+  [0, 1],
+  [`0vh`, `${containerHeight}vh`],
+);
+
 const cursorTime = ref(timelineStartMs);
-const scrollPercent = ref(0);
 useMotionValueEvent(scrollYProgress, "change", (progress) => {
   cursorTime.value = timelineStartMs + Math.round(totalSpanMs * progress);
-  scrollPercent.value = round(progress * 100, 2);
 });
+
+const cursorYear = computed(() => new Date(cursorTime.value).getFullYear());
 
 type EventIndex = {
   group: number;
@@ -52,23 +71,33 @@ const selectedEvent = computed<Event>(() => {
   const { group, event } = eventIndex.value;
   return groups[group][event];
 });
-const eventStartPercent = computed(() => {
-  return round(
+
+const eventPosition = computed(() => {
+  const start =
     ((selectedEvent.value.from.getTime() - timelineStartMs) / totalSpanMs) *
-      100,
-    2,
-  );
-});
-const eventEndPercent = computed(() => {
-  return round(
+    containerHeight;
+  const end =
     ((endOf(selectedEvent.value).getTime() - timelineStartMs) / totalSpanMs) *
-      100,
-    2,
-  );
+    containerHeight;
+  return {
+    start: `${start}vh`,
+    end: `${end}vh`,
+    height: `${end - start}vh`,
+  };
 });
 
-const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
-const VH_PER_MONTH = 4;
+const eventYears = computed(() => [
+  {
+    y: eventPosition.value.start,
+    key: selectedEvent.value.from.getFullYear(),
+    display: selectedEvent.value.from.getFullYear(),
+  },
+  {
+    y: eventPosition.value.end,
+    key: selectedEvent.value.to?.getFullYear() ?? "now",
+    display: selectedEvent.value.to?.getFullYear() ?? "Now",
+  },
+]);
 
 function jumpTo(event: Event) {
   const targetTop =
@@ -103,58 +132,70 @@ function eventYearLabel(event: Event) {
 
     <div
       ref="container"
-      :style="[
-        { height: `${round((totalSpanMs / MS_IN_MONTH) * VH_PER_MONTH, 2)}vh` },
-      ]"
+      :style="{
+        height: `${round((totalSpanMs / MS_IN_MONTH) * VH_PER_MONTH, 2)}vh`,
+      }"
       class="timeline"
     >
       <div class="timeline__inner" aria-hidden="true">
         <div class="timeline__year">
-          <div
-            :style="{ top: `${scrollPercent}%` }"
-            class="type-label timeline__year-label"
-          >
-            <div>
-              {{ new Date(cursorTime).getFullYear() }}
+          <motion.div :style="{ y }">
+            <div class="type-label timeline__year-label">
+              <YearLabel :key-label="cursorYear" :display="cursorYear" />
+              <div class="timeline__year-mark"></div>
             </div>
-            <div class="timeline__year-mark"></div>
-          </div>
+          </motion.div>
         </div>
         <div class="timeline__rail">
           <div class="timeline__rail-track"></div>
           <div class="timeline__rail-cap"></div>
-          <div class="timeline__rail-cap bottom"></div>
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
+          <div class="timeline__rail-cap"></div>
+          <motion.div
+            :animate="{ y: eventPosition.start, height: eventPosition.height }"
+            :transition="{
+              type: 'tween',
+            }"
             class="timeline__rail-mark"
-          ></div>
-          <div
-            :style="{ top: `${eventEndPercent}%` }"
-            class="timeline__rail-mark"
-          ></div>
+          ></motion.div>
         </div>
         <div class="timeline__event-years">
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
-            class="type-label timeline__event-year"
+          <motion.div
+            v-for="(entry, i) in eventYears"
+            :key="i"
+            :animate="{ y: entry.y }"
+            :transition="{ type: 'tween' }"
           >
-            {{ selectedEvent.from.getFullYear() }}
-          </div>
-          <div
-            :style="{ top: `${eventEndPercent}%` }"
-            class="type-label timeline__event-year"
-          >
-            {{ selectedEvent.to?.getFullYear() ?? "Now" }}
-          </div>
+            <div
+              class="type-label timeline__event-year"
+              :class="{ first: i === 1 }"
+            >
+              <YearLabel :key-label="entry.key" :display="entry.display" />
+            </div>
+          </motion.div>
         </div>
         <div class="timeline__event-detail">
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
+          <motion.div
+            :animate="{ y: eventPosition.start }"
+            :transition="{ type: 'tween' }"
             class="timeline__event-body"
           >
-            <h3>{{ selectedEvent.title }}</h3>
-            <p>{{ selectedEvent.description }}</p>
-          </div>
+            <div class="timeline__event-spacer">
+              <div class="timeline__event-tick"></div>
+            </div>
+            <div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  :key="selectedEvent.title"
+                  :initial="{ opacity: 0 }"
+                  :animate="{ opacity: 1 }"
+                  :exit="{ opacity: 0 }"
+                >
+                  <h3>{{ selectedEvent.title }}</h3>
+                  <p>{{ selectedEvent.description }}</p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -162,9 +203,13 @@ function eventYearLabel(event: Event) {
 </template>
 
 <style scoped>
+.type-label {
+  font-family: monospace;
+}
+
 .timeline,
 .timeline__inner {
-  --height: 80vh;
+  --height: v-bind(containerVh);
 }
 
 .timeline {
@@ -179,15 +224,10 @@ function eventYearLabel(event: Event) {
   display: flex;
   width: 100%;
   height: var(--height);
-}
-
-.timeline__year {
-  width: 4rem;
-  height: 100%;
+  gap: 0.5rem;
 }
 
 .timeline__year-label {
-  position: absolute;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -219,10 +259,6 @@ function eventYearLabel(event: Event) {
   border-right: 1px solid var(--border);
 }
 
-.timeline__event-years {
-  margin-left: 1ch;
-}
-
 .timeline__rail-cap {
   position: absolute;
   right: 0px;
@@ -231,16 +267,15 @@ function eventYearLabel(event: Event) {
   background: var(--border);
 }
 
-.timeline__rail-cap.bottom {
+.timeline__rail-cap:nth-child(2) {
   top: 100%;
 }
 
 .timeline__rail-mark {
   position: absolute;
   width: 100%;
-  height: 2px;
-  background: var(--accent);
-  transform: translateY(-50%);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  border-block: 1px solid var(--accent);
 }
 
 .timeline__event-year {
@@ -250,11 +285,41 @@ function eventYearLabel(event: Event) {
 }
 
 .timeline__event-detail {
-  margin-left: 6rem;
+  width: 100%;
 }
 
 .timeline__event-body {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.timeline__event-spacer {
+  width: 6rem;
+}
+
+.timeline__event-tick {
+  position: relative;
+  display: flex;
+  margin-top: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.timeline__event-tick::before {
+  content: "";
   position: absolute;
-  max-width: 72ch;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent) 80%, transparent);
+}
+
+.timeline__event-tick::after {
+  --size: 0.5rem;
+  content: "";
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  background: var(--accent);
+  border-radius: 50%;
 }
 </style>

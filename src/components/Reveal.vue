@@ -25,7 +25,7 @@ const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
 const initial = computed(() => ({ opacity: 0, y: props.offset }));
 const inView = computed(() =>
   reduced.value
-    ? { opacity: 1, y: 0 }
+    ? { opacity: 1, y: 0, transition: { duration: 0 } }
     : {
         opacity: 1,
         y: 0,

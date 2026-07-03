@@ -1,27 +1,37 @@
 <script setup lang="ts">
 import SectionHeading from "./SectionHeading.vue";
+import RevealGroup from "./RevealGroup.vue";
+import Reveal from "./Reveal.vue";
 import { skillCategories } from "../lib/skills";
 </script>
 
 <template>
   <SectionHeading eyebrow="02 — SKILLS" title="What I work with.">
-    <div class="skills__groups">
-      <section
-        v-for="category in skillCategories"
-        :key="category.title"
-        class="skills__group"
-        :aria-label="category.title"
-      >
-        <span class="type-eyebrow skills__group-title">{{
-          category.title
-        }}</span>
-        <ul class="skills__list">
-          <li v-for="skill in category.items" :key="skill" class="skills__chip">
-            {{ skill }}
-          </li>
-        </ul>
-      </section>
-    </div>
+    <RevealGroup :start="1" :step="0.25">
+      <div class="skills__groups">
+        <section
+          v-for="category in skillCategories"
+          :key="category.title"
+          class="skills__group"
+          :aria-label="category.title"
+        >
+          <Reveal cascade>
+            <span class="type-eyebrow skills__group-title">{{
+              category.title
+            }}</span>
+            <ul class="skills__list">
+              <li
+                v-for="skill in category.items"
+                :key="skill"
+                class="skills__chip"
+              >
+                {{ skill }}
+              </li>
+            </ul>
+          </Reveal>
+        </section>
+      </div>
+    </RevealGroup>
   </SectionHeading>
 </template>
 

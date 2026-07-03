@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import { provide, ref } from "vue";
+import {
+  REVEAL_CASCADE_KEY,
+  useRevealCascade,
+  type CascadeContext,
+} from "../lib/cascade";
+
+const props = withDefaults(
+  defineProps<{
+    start?: number;
+    step?: number;
+  }>(),
+  {
+    start: 0,
+    step: 0.1,
+  },
+);
+
+const parent = useRevealCascade();
+const i = ref(0);
+const startRef = ref(props.start);
+const stepRef = ref(props.step);
+
+const ctx: CascadeContext = {
+  next: () => {
+    if (i.value === 0) {
+      startRef.value += parent.next();
+    }
+    const v = startRef.value + i.value * stepRef.value;
+    i.value += 1;
+    return v;
+  },
+};
+
+provide(REVEAL_CASCADE_KEY, ctx);
+</script>
+
+<template>
+  <slot />
+</template>

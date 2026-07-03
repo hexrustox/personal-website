@@ -1,48 +1,50 @@
 <script setup lang="ts">
 import SectionHeading from "./SectionHeading.vue";
 import Reveal from "./Reveal.vue";
+import RevealGroup from "./RevealGroup.vue";
 import { metaItems } from "../lib/about";
-
-const IN = 0.25;
-const PRE = 0.6;
 </script>
 
 <template>
   <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
-    <Reveal :delay="IN + PRE">
-      <h3>Designing and building considered interfaces for the web.</h3>
-    </Reveal>
+    <RevealGroup :start="1" :step="0.25">
+      <Reveal cascade>
+        <h3>Designing and building considered interfaces for the web.</h3>
+      </Reveal>
 
-    <Reveal :delay="IN * 2 + PRE">
-      <p>
-        Currently working as a frontend engineer, mostly with TypeScript, Vue,
-        and a little Rust on the side. I'm drawn to work that sits at the
-        intersection of design and engineering — places where the two
-        disciplines sharpen each other rather than get in the way.
-      </p>
-    </Reveal>
+      <Reveal cascade>
+        <p>
+          Currently working as a frontend engineer, mostly with TypeScript, Vue,
+          and a little Rust on the side. I'm drawn to work that sits at the
+          intersection of design and engineering — places where the two
+          disciplines sharpen each other rather than get in the way.
+        </p>
+      </Reveal>
 
-    <Reveal :delay="IN * 3 + PRE">
-      <p>
-        Outside of code I keep notebooks full of half-finished ideas, read more
-        than I should, and take long walks when a bug won't budge.
-      </p>
-    </Reveal>
+      <Reveal cascade>
+        <p>
+          Outside of code I keep notebooks full of half-finished ideas, read
+          more than I should, and take long walks when a bug won't budge.
+        </p>
+      </Reveal>
 
-    <Reveal :delay="IN * 4 + PRE">
-      <dl class="about__meta">
-        <div
-          v-for="(item, i) in metaItems"
-          :key="item.label"
-          class="about__meta-item"
-        >
-          <Reveal :delay="(IN / 2) * i + IN * 4 + PRE">
-            <dt class="type-eyebrow">{{ item.label }}</dt>
-            <dd class="about__meta-value">{{ item.value }}</dd>
-          </Reveal>
-        </div>
-      </dl>
-    </Reveal>
+      <Reveal cascade>
+        <dl class="about__meta">
+          <RevealGroup :step="0.125">
+            <div
+              v-for="item in metaItems"
+              :key="item.label"
+              class="about__meta-item"
+            >
+              <Reveal cascade>
+                <dt class="type-eyebrow">{{ item.label }}</dt>
+                <dd class="about__meta-value">{{ item.value }}</dd>
+              </Reveal>
+            </div>
+          </RevealGroup>
+        </dl>
+      </Reveal>
+    </RevealGroup>
   </SectionHeading>
 </template>
 

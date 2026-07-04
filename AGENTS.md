@@ -23,7 +23,7 @@
 
 - `pnpm install` — install deps.
 - `pnpm add [package]` — add a dependency (use this, not `npm install <pkg>`).
-- `pnpm dev` — `astro dev --host 0.0.0.0 --port 4321` (binds all interfaces; port is hardcoded).
+- `pnpm dev` — `astro dev`.
 - `pnpm build` — `astro build` (outputs to `dist/`).
 - `pnpm preview` — `astro preview`.
 - `pnpm check` — typecheck + Astro diagnostics. There is no `lint`/`test`/`typecheck` script in `package.json`; `astro check` is the only built-in verification step.

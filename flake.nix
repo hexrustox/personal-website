@@ -34,7 +34,7 @@
                 "-e"
                 "PNPM_HOME"
                 "-p"
-                "4321:4321"
+                "3000:3000"
                 "--pid=host"
               ];
               wrappers = [

@@ -1,67 +1,26 @@
 <script setup lang="ts">
-import { MOTION_EASE, useReducedTransition } from "../lib/motion";
-import { useInView, useAnimate } from "motion-v";
-import { computed, useTemplateRef, ref, watch, useId } from "vue";
+import { useReducedTransition } from "../lib/motion";
+import TextSplit from "./TextSplit.vue";
+import { motion } from "motion-v";
 
 let props = defineProps<{
   eyebrow: string;
   title: string;
 }>();
-
-const headingId = useId();
-
-const chars = computed(() => Array.from(props.title));
-const hasAnimated = ref(false);
-
-const headerRef = useTemplateRef("header");
-const inView = useInView(headerRef, { once: true, amount: 1 });
-const [_scope, animate] = useAnimate();
-
-watch(inView, async (visible) => {
-  if (!visible || hasAnimated.value) return;
-  hasAnimated.value = true;
-  await animate(
-    "header",
-    { opacity: 1 },
-    useReducedTransition({ duration: 0.3, delay: 0.2 }),
-  );
-  await animate(
-    ".section-heading__char-inner",
-    { opacity: [0, 1], y: ["100%", "0%"] },
-    useReducedTransition({
-      duration: 0.6,
-      ease: MOTION_EASE,
-      delay: (i) => {
-        return i * 0.02;
-      },
-    }),
-  );
-});
 </script>
 
 <template>
-  <section class="section-heading" :aria-labelledby="headingId" ref="_scope">
-    <header>
-      <span class="type-eyebrow">{{ eyebrow }}</span>
-    </header>
-    <h2
-      ref="header"
-      :id="headingId"
-      :aria-label="title"
-      class="section-heading__title"
+  <section class="section-heading">
+    <motion.span
+      class="type-eyebrow"
+      :initial="{ opacity: 0 }"
+      :while-in-view="{ opacity: 1 }"
+      :in-view-options="{ once: true, amount: 1 }"
+      :transition="useReducedTransition({ duration: 0.3, delay: 0.2 })"
     >
-      <span
-        v-for="(c, i) in chars"
-        :key="i"
-        class="section-heading__char"
-        aria-hidden="true"
-      >
-        <span class="section-heading__char-inner">{{
-          c === " " ? "\u00A0" : c
-        }}</span>
-      </span>
-    </h2>
-
+      {{ eyebrow }}
+    </motion.span>
+    <TextSplit :text="title" tag="h2" class="section-heading__title" />
     <slot />
   </section>
 </template>
@@ -72,26 +31,5 @@ watch(inView, async (visible) => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-}
-
-header {
-  opacity: 0;
-}
-
-.section-heading__title {
-  position: relative;
-}
-.section-heading__char {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  line-height: inherit;
-}
-
-.section-heading__char-inner {
-  display: inline-block;
-  will-change: transform, opacity;
-  transform: translateY(100%);
-  opacity: 0;
 }
 </style>

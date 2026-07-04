@@ -5,18 +5,18 @@ import {
   INVIEW_ONCE_FULL,
   useReducedTransition,
 } from "../lib/motion";
-import { Motion } from "motion-v";
-import { computed } from "vue";
+import { Motion, type VariantType, type Easing } from "motion-v";
 
 const props = withDefaults(
   defineProps<{
-    offset?: number;
+    initial?: VariantType;
+    animate?: VariantType;
     duration?: number;
     delay?: number;
+    ease?: Easing | Easing[];
     cascade?: boolean;
   }>(),
   {
-    offset: 24,
     duration: 0.6,
     delay: 0,
     cascade: false,
@@ -25,22 +25,19 @@ const props = withDefaults(
 
 const cascadeCtx = useRevealCascade();
 const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
-
-const initial = computed(() => ({ opacity: 0, y: props.offset }));
-const inView = computed(() => ({ opacity: 1, y: 0 }));
 </script>
 
 <template>
   <Motion
     class="reveal"
-    :initial="initial"
-    :while-in-view="inView"
+    :initial="initial ?? { opacity: 0, y: 12 }"
+    :while-in-view="animate ?? { opacity: 1, y: 0 }"
     :in-view-options="INVIEW_ONCE_FULL"
     :transition="
       useReducedTransition({
         duration: props.duration,
         delay: cascadeDelay,
-        ease: MOTION_EASE,
+        ease: props.ease ?? MOTION_EASE,
       })
     "
   >

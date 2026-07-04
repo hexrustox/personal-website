@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useReducedTransition } from "../lib/motion";
-import TextSplit from "./TextSplit.vue";
 import { motion } from "motion-v";
 
 let props = defineProps<{

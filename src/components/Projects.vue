@@ -6,10 +6,6 @@ import {
   type Direction,
 } from "../lib/motion";
 import { projects, type Project } from "../lib/projects";
-import Link from "./Link.vue";
-import Reveal from "./Reveal.vue";
-import RevealGroup from "./RevealGroup.vue";
-import SectionHeading from "./SectionHeading.vue";
 import { motion, AnimatePresence } from "motion-v";
 import { ref, computed, useTemplateRef, nextTick } from "vue";
 

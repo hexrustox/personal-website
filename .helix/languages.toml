@@ -9,6 +9,11 @@ formatter = { command = "prettier", args = [ "--parser", "typescript" ] }
 auto-format = true
 
 [[language]]
+name = "javascript"
+formatter = { command = "prettier", args = [ "--parser", "babel" ] }
+auto-format = true
+
+[[language]]
 name = "astro"
 auto-format = true
 

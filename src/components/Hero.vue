@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { tagline, title } from "../lib/hero";
 import { useReducedTransition } from "../lib/motion";
-import Reveal from "./Reveal.vue";
-import RevealGroup from "./RevealGroup.vue";
-import TextSplit from "./TextSplit.vue";
 import { motion, AnimatePresence, useReducedMotion } from "motion-v";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
@@ -11,7 +8,6 @@ const reduced = useReducedMotion();
 const scrolled = ref(false);
 let raf = 0;
 
-console.log(reduced.value);
 function onScroll() {
   if (raf) return;
   raf = requestAnimationFrame(() => {

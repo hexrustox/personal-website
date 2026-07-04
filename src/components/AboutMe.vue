@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { metaItems } from "../lib/about";
-import { REVEAL_DEFAULT_START, REVEAL_DEFAULT_STEP } from "../lib/motion";
-import Reveal from "./Reveal.vue";
-import RevealGroup from "./RevealGroup.vue";
-import SectionHeading from "./SectionHeading.vue";
+import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { ref } from "vue";
 
 const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);

@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import SectionHeader from "../components/SectionHeading.vue";
-import YearLabel from "../components/YearLabel.vue";
 import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
 import { events, groupEvents, endOf, type Event } from "../lib/timeline";
-import FadeOnKey from "./FadeOnKey.vue";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 
@@ -112,7 +109,7 @@ function eventYearLabel(event: Event) {
 </script>
 
 <template>
-  <SectionHeader eyebrow="04 — TIMELINE" title="Where I've been.">
+  <SectionHeading eyebrow="04 — TIMELINE" title="Where I've been.">
     <ol class="visually-hidden" aria-label="Timeline events">
       <li v-for="(event, i) in sortedEvents" :key="i">
         <button type="button" @click="jumpTo(event)">
@@ -186,7 +183,7 @@ function eventYearLabel(event: Event) {
         </div>
       </div>
     </div>
-  </SectionHeader>
+  </SectionHeading>
 </template>
 
 <style scoped>

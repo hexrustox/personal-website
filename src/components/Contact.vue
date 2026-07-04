@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { contactMethods, contactMeta } from "../lib/contact";
-import Link from "./Link.vue";
-import Reveal from "./Reveal.vue";
-import SectionHeader from "./SectionHeading.vue";
 </script>
 
 <template>
-  <SectionHeader eyebrow="05 — CONTACT" title="Get in touch.">
+  <SectionHeading eyebrow="05 — CONTACT" title="Get in touch.">
     <dl class="contact__list">
       <div v-for="method in contactMethods" :key="method.name">
         <Reveal cascade>
@@ -41,7 +38,7 @@ import SectionHeader from "./SectionHeading.vue";
         {{ contactMeta.responseTime }}
       </span>
     </Reveal>
-  </SectionHeader>
+  </SectionHeading>
 </template>
 
 <style scoped>

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { skillCategories } from "../lib/skills";
-import Reveal from "./Reveal.vue";
-import RevealGroup from "./RevealGroup.vue";
-import SectionHeading from "./SectionHeading.vue";
 import { ref } from "vue";
 
 const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);

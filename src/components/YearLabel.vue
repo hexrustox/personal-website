@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { motion, AnimatePresence } from "motion-v";
+import FadeOnKey from "./FadeOnKey.vue";
 
 defineProps<{
   keyLabel: string | number;
@@ -8,14 +8,5 @@ defineProps<{
 </script>
 
 <template>
-  <AnimatePresence mode="popLayout">
-    <motion.span
-      :key="keyLabel"
-      :initial="{ opacity: 0 }"
-      :animate="{ opacity: 1 }"
-      :exit="{ opacity: 0 }"
-    >
-      {{ display }}
-    </motion.span>
-  </AnimatePresence>
+  <FadeOnKey :key-label="keyLabel" mode="popLayout">{{ display }}</FadeOnKey>
 </template>

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-} from "motion-v";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 import SectionHeader from "../components/SectionHeading.vue";
 import YearLabel from "../components/YearLabel.vue";
+import FadeOnKey from "./FadeOnKey.vue";
 import { events, groupEvents, endOf, type Event } from "../lib/timeline";
 import { round } from "../lib/round";
+import { useReducedTransition } from "../lib/motion";
 
 const containerRef = useTemplateRef("container");
 const { scrollYProgress } = useScroll({
@@ -152,9 +148,7 @@ function eventYearLabel(event: Event) {
           <div class="timeline__rail-cap"></div>
           <motion.div
             :animate="{ y: eventPosition.start, height: eventPosition.height }"
-            :transition="{
-              type: 'tween',
-            }"
+            :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__rail-mark"
           ></motion.div>
         </div>
@@ -163,7 +157,7 @@ function eventYearLabel(event: Event) {
             v-for="(entry, i) in eventYears"
             :key="i"
             :animate="{ y: entry.y }"
-            :transition="{ type: 'tween' }"
+            :transition="useReducedTransition({ type: 'tween' })"
           >
             <div
               class="type-label timeline__event-year"
@@ -176,24 +170,17 @@ function eventYearLabel(event: Event) {
         <div class="timeline__event-detail">
           <motion.div
             :animate="{ y: eventPosition.start }"
-            :transition="{ type: 'tween' }"
+            :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__event-body"
           >
             <div class="timeline__event-spacer">
               <div class="timeline__event-tick"></div>
             </div>
             <div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  :key="selectedEvent.title"
-                  :initial="{ opacity: 0 }"
-                  :animate="{ opacity: 1 }"
-                  :exit="{ opacity: 0 }"
-                >
-                  <h3>{{ selectedEvent.title }}</h3>
-                  <p>{{ selectedEvent.description }}</p>
-                </motion.div>
-              </AnimatePresence>
+              <FadeOnKey :key-label="selectedEvent.title" mode="wait">
+                <h3>{{ selectedEvent.title }}</h3>
+                <p>{{ selectedEvent.description }}</p>
+              </FadeOnKey>
             </div>
           </motion.div>
         </div>
@@ -204,7 +191,7 @@ function eventYearLabel(event: Event) {
 
 <style scoped>
 .type-label {
-  font-family: monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .timeline,

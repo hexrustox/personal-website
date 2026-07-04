@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { ref, computed, useTemplateRef, nextTick } from "vue";
-import { motion, AnimatePresence, useReducedMotion } from "motion-v";
+import { motion, AnimatePresence } from "motion-v";
 import SectionHeading from "./SectionHeading.vue";
 import Link from "./Link.vue";
 import RevealGroup from "./RevealGroup.vue";
 import Reveal from "./Reveal.vue";
 import { projects, type Project } from "../lib/projects";
+import {
+  slideFadeVariants,
+  useReducedTransition,
+  type Direction,
+} from "../lib/motion";
 
 const currentIndex = ref(0);
 const currentProject = computed<Project>(() => projects[currentIndex.value]!);
 const tabRefs = useTemplateRef<HTMLButtonElement[]>("tabs");
-const direction = ref<1 | -1>(1);
-const prefersReducedMotion = useReducedMotion();
+const direction = ref<Direction>(1);
 
 async function goTo(i: number) {
   if (i === currentIndex.value) return;
@@ -54,13 +58,7 @@ const currentIndexVariants = {
   current: { opacity: 1, y: 0 },
 };
 
-const detailVariants = {
-  enter: (dir: 1 | -1) => ({ opacity: 0, y: dir === 1 ? 24 : -24 }),
-  center: { opacity: 1, y: 0 },
-  exit: (dir: 1 | -1) => ({ opacity: 0, y: dir === 1 ? -24 : 24 }),
-};
-
-const noMotionTransition = { duration: 0 };
+const detailVariants = slideFadeVariants();
 </script>
 
 <template>
@@ -93,18 +91,14 @@ const noMotionTransition = { duration: 0 };
                   class="type-label projects__index--inactive"
                   :variants="inactiveIndexVariants"
                   :animate="i === currentIndex ? 'current' : 'inactive'"
-                  :transition="
-                    prefersReducedMotion ? noMotionTransition : undefined
-                  "
+                  :transition="useReducedTransition()"
                   >{{ String(i + 1).padStart(2, "0") }}</motion.span
                 >
                 <motion.span
                   class="type-label projects__index--current"
                   :variants="currentIndexVariants"
                   :animate="i === currentIndex ? 'current' : 'inactive'"
-                  :transition="
-                    prefersReducedMotion ? noMotionTransition : undefined
-                  "
+                  :transition="useReducedTransition()"
                   >{{ String(i + 1).padStart(2, "0") }}</motion.span
                 >
               </div>
@@ -117,13 +111,11 @@ const noMotionTransition = { duration: 0 };
             <motion.section
               :key="currentProject.name"
               :custom="direction"
-              :variants="detailVariants as any"
+              :variants="detailVariants"
               initial="enter"
               animate="center"
               exit="exit"
-              :transition="
-                prefersReducedMotion ? noMotionTransition : undefined
-              "
+              :transition="useReducedTransition()"
               :id="`project-panel-${currentIndex}`"
               class="projects__detail"
               role="tabpanel"

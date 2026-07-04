@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, useTemplateRef, ref, watch, useId } from "vue";
-import { useInView, useAnimate, useReducedMotion } from "motion-v";
+import { useInView, useAnimate } from "motion-v";
+import {
+  MOTION_EASE,
+  INVIEW_ONCE_FULL,
+  useReducedTransition,
+} from "../lib/motion";
 
 let props = defineProps<{
   eyebrow: string;
@@ -13,37 +18,27 @@ const viewRef = useTemplateRef<HTMLHeadingElement>("view");
 const chars = computed(() => Array.from(props.title));
 const hasAnimated = ref(false);
 
-const inView = useInView(viewRef, {
-  once: true,
-  amount: 1,
-});
-const reduced = useReducedMotion();
+const inView = useInView(viewRef, INVIEW_ONCE_FULL);
 const [scope, animate] = useAnimate();
 
 watch(inView, async (visible) => {
   if (!visible || hasAnimated.value) return;
   hasAnimated.value = true;
-  if (reduced.value) {
-    await animate("header", { opacity: 1 }, { duration: 0 });
-    await animate(
-      ".section-heading__char-inner",
-      { opacity: 1, y: "0%" },
-      { duration: 0 },
-    );
-    return;
-  }
-
-  await animate("header", { opacity: 1 }, { duration: 0.3, delay: 0.2 });
+  await animate(
+    "header",
+    { opacity: 1 },
+    useReducedTransition({ duration: 0.3, delay: 0.2 }),
+  );
   await animate(
     ".section-heading__char-inner",
     { opacity: [0, 1], y: ["100%", "0%"] },
-    {
+    useReducedTransition({
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
+      ease: MOTION_EASE,
       delay: (i) => {
         return i * 0.02;
       },
-    },
+    }),
   );
 });
 </script>

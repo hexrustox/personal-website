@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0 --port 4321",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "vue-tsc && astro check",
+    "fmt": "prettier -w src/"
   },
   "repository": {
     "type": "git",
@@ -40,6 +42,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
     "typescript-language-server": "^5.3.0",
-    "unplugin-vue-components": "^32.1.0"
+    "unplugin-vue-components": "^32.1.0",
+    "vue-tsc": "^3.3.6"
   }
 }

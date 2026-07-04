@@ -26,8 +26,8 @@
 - `pnpm dev` — `astro dev --host 0.0.0.0 --port 4321` (binds all interfaces; port is hardcoded).
 - `pnpm build` — `astro build` (outputs to `dist/`).
 - `pnpm preview` — `astro preview`.
-- `pnpm exec astro check` — typecheck + Astro diagnostics. There is no `lint`/`test`/`typecheck` script in `package.json`; `astro check` is the only built-in verification step.
-- `pnpm exec prettier --write .` — format. Configured in `.prettierrc.json` with `prettier-plugin-astro` and an `astro` parser override.
+- `pnpm check` — typecheck + Astro diagnostics. There is no `lint`/`test`/`typecheck` script in `package.json`; `astro check` is the only built-in verification step.
+- `pnpm fmt` — format. Configured in `.prettierrc.json` with `prettier-plugin-astro` and an `astro` parser override.
 
 ## TypeScript
 

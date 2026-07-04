@@ -9,13 +9,13 @@ let props = defineProps<{
 }>();
 
 const headingId = useId();
-const viewRef = useTemplateRef<HTMLHeadingElement>("view");
 
 const chars = computed(() => Array.from(props.title));
 const hasAnimated = ref(false);
 
-const inView = useInView(viewRef, { once: true, amount: 1 });
-const [scope, animate] = useAnimate();
+const headerRef = useTemplateRef("header");
+const inView = useInView(headerRef, { once: true, amount: 1 });
+const [_scope, animate] = useAnimate();
 
 watch(inView, async (visible) => {
   if (!visible || hasAnimated.value) return;
@@ -40,11 +40,16 @@ watch(inView, async (visible) => {
 </script>
 
 <template>
-  <section class="section-heading" :aria-labelledby="headingId" ref="scope">
+  <section class="section-heading" :aria-labelledby="headingId" ref="_scope">
     <header>
       <span class="type-eyebrow">{{ eyebrow }}</span>
     </header>
-    <h2 :id="headingId" :aria-label="title" class="section-heading__title">
+    <h2
+      ref="header"
+      :id="headingId"
+      :aria-label="title"
+      class="section-heading__title"
+    >
       <span
         v-for="(c, i) in chars"
         :key="i"
@@ -55,7 +60,6 @@ watch(inView, async (visible) => {
           c === " " ? "\u00A0" : c
         }}</span>
       </span>
-      <div ref="view" class="view"></div>
     </h2>
 
     <slot />
@@ -89,11 +93,5 @@ header {
   will-change: transform, opacity;
   transform: translateY(100%);
   opacity: 0;
-}
-
-.view {
-  position: absolute;
-  width: 100%;
-  height: 300%;
 }
 </style>

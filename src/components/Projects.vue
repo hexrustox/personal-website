@@ -2,7 +2,6 @@
 import {
   slideFadeVariants,
   useReducedTransition,
-  REVEAL_DEFAULT_START,
   REVEAL_DEFAULT_STEP,
   type Direction,
 } from "../lib/motion";
@@ -67,10 +66,7 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
 
 <template>
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
-    <RevealGroup
-      :start="REVEAL_DEFAULT_START"
-      :step="isDesktop ? REVEAL_DEFAULT_STEP : 0"
-    >
+    <RevealGroup :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
       <div class="projects__layout">
         <Reveal cascade>
           <div

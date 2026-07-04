@@ -11,47 +11,42 @@ const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);
 
 <template>
   <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
-    <RevealGroup :start="REVEAL_DEFAULT_START" :step="REVEAL_DEFAULT_STEP">
-      <Reveal cascade>
-        <h3>Designing and building considered interfaces for the web.</h3>
-      </Reveal>
+    <Reveal>
+      <h3>Designing and building considered interfaces for the web.</h3>
+    </Reveal>
 
-      <Reveal cascade>
-        <p>
-          Currently working as a frontend engineer, mostly with TypeScript, Vue,
-          and a little Rust on the side. I'm drawn to work that sits at the
-          intersection of design and engineering — places where the two
-          disciplines sharpen each other rather than get in the way.
-        </p>
-      </Reveal>
+    <Reveal>
+      <p>
+        Currently working as a frontend engineer, mostly with TypeScript, Vue,
+        and a little Rust on the side. I'm drawn to work that sits at the
+        intersection of design and engineering — places where the two
+        disciplines sharpen each other rather than get in the way.
+      </p>
+    </Reveal>
 
-      <Reveal cascade>
-        <p>
-          Outside of code I keep notebooks full of half-finished ideas, read
-          more than I should, and take long walks when a bug won't budge.
-        </p>
-      </Reveal>
+    <Reveal>
+      <p>
+        Outside of code I keep notebooks full of half-finished ideas, read more
+        than I should, and take long walks when a bug won't budge.
+      </p>
+    </Reveal>
 
-      <Reveal cascade>
-        <dl class="about__meta">
-          <RevealGroup
-            :start="-REVEAL_DEFAULT_STEP"
-            :step="REVEAL_DEFAULT_STEP / 2"
+    <Reveal>
+      <dl class="about__meta">
+        <RevealGroup :step="REVEAL_DEFAULT_STEP / 2">
+          <div
+            v-for="item in metaItems"
+            :key="item.label"
+            class="about__meta-item"
           >
-            <div
-              v-for="item in metaItems"
-              :key="item.label"
-              class="about__meta-item"
-            >
-              <Reveal cascade :disable="!isDesktop">
-                <dt class="type-eyebrow">{{ item.label }}</dt>
-                <dd class="about__meta-value">{{ item.value }}</dd>
-              </Reveal>
-            </div>
-          </RevealGroup>
-        </dl>
-      </Reveal>
-    </RevealGroup>
+            <Reveal cascade :disable="!isDesktop">
+              <dt class="type-eyebrow">{{ item.label }}</dt>
+              <dd class="about__meta-value">{{ item.value }}</dd>
+            </Reveal>
+          </div>
+        </RevealGroup>
+      </dl>
+    </Reveal>
   </SectionHeading>
 </template>
 

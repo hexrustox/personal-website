@@ -207,7 +207,7 @@ function eventYearLabel(event: Event) {
 
 .timeline__inner {
   position: sticky;
-  top: 10vh;
+  top: calc((100vh - v-bind(containerVh)) / 2);
   display: flex;
   width: 100%;
   height: var(--height);

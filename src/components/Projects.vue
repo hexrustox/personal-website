@@ -107,7 +107,7 @@ const detailVariants = slideFadeVariants();
           </div>
         </Reveal>
         <Reveal cascade>
-          <AnimatePresence mode="wait" :custom="direction" :initial="false">
+          <AnimatePresence mode="wait">
             <motion.section
               :key="currentProject.name"
               :custom="direction"

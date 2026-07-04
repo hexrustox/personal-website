@@ -3,6 +3,8 @@ import { useReducedTransition } from "../lib/motion";
 import { motion, AnimatePresence } from "motion-v";
 import type { Transition } from "motion-v";
 
+defineOptions({ inheritAttrs: false });
+
 const props = withDefaults(
   defineProps<{
     keyLabel: string | number;

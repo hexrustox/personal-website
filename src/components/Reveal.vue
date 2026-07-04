@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { useRevealCascade } from "../lib/cascade";
-import {
-  MOTION_EASE,
-  INVIEW_ONCE_FULL,
-  useReducedTransition,
-} from "../lib/motion";
+import { MOTION_EASE, useReducedTransition } from "../lib/motion";
 import { Motion, type VariantType, type Easing } from "motion-v";
 
 const props = withDefaults(
@@ -15,11 +11,13 @@ const props = withDefaults(
     delay?: number;
     ease?: Easing | Easing[];
     cascade?: boolean;
+    disable?: boolean;
   }>(),
   {
     duration: 0.6,
     delay: 0,
     cascade: false,
+    disable: false,
   },
 );
 
@@ -29,10 +27,11 @@ const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
 
 <template>
   <Motion
+    v-if="!disable"
     class="reveal"
     :initial="initial ?? { opacity: 0, y: 12 }"
     :while-in-view="animate ?? { opacity: 1, y: 0 }"
-    :in-view-options="INVIEW_ONCE_FULL"
+    :in-view-options="{ once: true, amount: 1 }"
     :transition="
       useReducedTransition({
         duration: props.duration,
@@ -43,6 +42,9 @@ const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
   >
     <slot />
   </Motion>
+  <div v-else>
+    <slot />
+  </div>
 </template>
 
 <style scoped>

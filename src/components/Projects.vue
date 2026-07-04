@@ -2,6 +2,8 @@
 import {
   slideFadeVariants,
   useReducedTransition,
+  REVEAL_DEFAULT_START,
+  REVEAL_DEFAULT_STEP,
   type Direction,
 } from "../lib/motion";
 import { projects, type Project } from "../lib/projects";
@@ -59,11 +61,16 @@ const currentIndexVariants = {
 };
 
 const detailVariants = slideFadeVariants();
+
+const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
 </script>
 
 <template>
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
-    <RevealGroup :start="1" :step="0.25">
+    <RevealGroup
+      :start="REVEAL_DEFAULT_START"
+      :step="isDesktop ? REVEAL_DEFAULT_STEP : 0"
+    >
       <div class="projects__layout">
         <Reveal cascade>
           <div
@@ -189,7 +196,6 @@ const detailVariants = slideFadeVariants();
   top: 2px;
   display: flex;
   align-items: baseline;
-  overflow: hidden;
 }
 
 .projects__index--inactive,

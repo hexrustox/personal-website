@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { metaItems } from "../lib/about";
+import { REVEAL_DEFAULT_START, REVEAL_DEFAULT_STEP } from "../lib/motion";
 import Reveal from "./Reveal.vue";
 import RevealGroup from "./RevealGroup.vue";
 import SectionHeading from "./SectionHeading.vue";
+import { ref } from "vue";
+
+const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);
 </script>
 
 <template>
   <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
-    <RevealGroup :start="1" :step="0.25">
+    <RevealGroup :start="REVEAL_DEFAULT_START" :step="REVEAL_DEFAULT_STEP">
       <Reveal cascade>
         <h3>Designing and building considered interfaces for the web.</h3>
       </Reveal>
@@ -30,13 +34,16 @@ import SectionHeading from "./SectionHeading.vue";
 
       <Reveal cascade>
         <dl class="about__meta">
-          <RevealGroup :step="0.125">
+          <RevealGroup
+            :start="-REVEAL_DEFAULT_STEP"
+            :step="REVEAL_DEFAULT_STEP / 2"
+          >
             <div
               v-for="item in metaItems"
               :key="item.label"
               class="about__meta-item"
             >
-              <Reveal cascade>
+              <Reveal cascade :disable="!isDesktop">
                 <dt class="type-eyebrow">{{ item.label }}</dt>
                 <dd class="about__meta-value">{{ item.value }}</dd>
               </Reveal>

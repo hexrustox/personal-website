@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  MOTION_EASE,
-  INVIEW_ONCE_FULL,
-  useReducedTransition,
-} from "../lib/motion";
+import { MOTION_EASE, useReducedTransition } from "../lib/motion";
 import { useInView, useAnimate } from "motion-v";
 import { computed, useTemplateRef, ref, watch, useId } from "vue";
 
@@ -18,7 +14,7 @@ const viewRef = useTemplateRef<HTMLHeadingElement>("view");
 const chars = computed(() => Array.from(props.title));
 const hasAnimated = ref(false);
 
-const inView = useInView(viewRef, INVIEW_ONCE_FULL);
+const inView = useInView(viewRef, { once: true, amount: 1 });
 const [scope, animate] = useAnimate();
 
 watch(inView, async (visible) => {

@@ -4,6 +4,7 @@ import {
   useRevealCascade,
   type CascadeContext,
 } from "../lib/cascade";
+import { REVEAL_DEFAULT_START, REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { provide, ref } from "vue";
 
 const props = withDefaults(
@@ -12,8 +13,8 @@ const props = withDefaults(
     step?: number;
   }>(),
   {
-    start: 0,
-    step: 0.1,
+    start: REVEAL_DEFAULT_START,
+    step: REVEAL_DEFAULT_STEP,
   },
 );
 

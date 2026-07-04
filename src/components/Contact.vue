@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { contactMethods, contactMeta } from "../lib/contact";
+import { REVEAL_DEFAULT_START, REVEAL_DEFAULT_STEP } from "../lib/motion";
 import Link from "./Link.vue";
 import Reveal from "./Reveal.vue";
 import RevealGroup from "./RevealGroup.vue";
@@ -8,7 +9,7 @@ import SectionHeader from "./SectionHeading.vue";
 
 <template>
   <SectionHeader eyebrow="05 — CONTACT" title="Get in touch.">
-    <RevealGroup :start="1" :step="0.125">
+    <RevealGroup :start="REVEAL_DEFAULT_START" :step="REVEAL_DEFAULT_STEP / 2">
       <dl class="contact__list">
         <div v-for="method in contactMethods" :key="method.name">
           <Reveal cascade>

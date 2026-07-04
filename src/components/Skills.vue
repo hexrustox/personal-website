@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import { REVEAL_DEFAULT_START, REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { skillCategories } from "../lib/skills";
 import Reveal from "./Reveal.vue";
 import RevealGroup from "./RevealGroup.vue";
 import SectionHeading from "./SectionHeading.vue";
+import { ref } from "vue";
+
+const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
 </script>
 
 <template>
   <SectionHeading eyebrow="02 — SKILLS" title="What I work with.">
-    <RevealGroup :start="1" :step="0.25">
+    <RevealGroup
+      :start="isDesktop ? REVEAL_DEFAULT_START : 0"
+      :step="isDesktop ? REVEAL_DEFAULT_STEP : 0"
+    >
       <div class="skills__groups">
         <section
           v-for="category in skillCategories"

@@ -2,7 +2,7 @@
 import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
 import { events, groupEvents, endOf, type Event } from "../lib/timeline";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "motion-v";
+import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 
 const containerRef = useTemplateRef("container");
@@ -132,25 +132,27 @@ function eventYearLabel(event: Event) {
     >
       <div class="timeline__inner" aria-hidden="true">
         <div class="timeline__year">
-          <motion.div :style="{ y }">
+          <Motion as="div" :style="{ y }">
             <div class="type-label timeline__year-label">
               <YearLabel :key-label="cursorYear" :display="cursorYear" />
               <div class="timeline__year-mark"></div>
             </div>
-          </motion.div>
+          </Motion>
         </div>
         <div class="timeline__rail">
           <div class="timeline__rail-track"></div>
           <div class="timeline__rail-cap"></div>
           <div class="timeline__rail-cap"></div>
-          <motion.div
+          <Motion
+            as="div"
             :animate="{ y: eventPosition.start, height: eventPosition.height }"
             :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__rail-mark"
-          ></motion.div>
+          ></Motion>
         </div>
         <div class="timeline__event-years">
-          <motion.div
+          <Motion
+            as="div"
             v-for="(entry, i) in eventYears"
             :key="i"
             :animate="{ y: entry.y }"
@@ -162,10 +164,11 @@ function eventYearLabel(event: Event) {
             >
               <YearLabel :key-label="entry.key" :display="entry.display" />
             </div>
-          </motion.div>
+          </Motion>
         </div>
         <div class="timeline__event-detail">
-          <motion.div
+          <Motion
+            as="div"
             :animate="{ y: eventPosition.start }"
             :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__event-body"
@@ -179,7 +182,7 @@ function eventYearLabel(event: Event) {
                 <p>{{ selectedEvent.description }}</p>
               </FadeOnKey>
             </div>
-          </motion.div>
+          </Motion>
         </div>
       </div>
     </div>

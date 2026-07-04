@@ -12,10 +12,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AboutMe: typeof import('./src/components/AboutMe.vue')['default']
+    AnimatePresence: typeof import('motion-v')['AnimatePresence']
     Contact: typeof import('./src/components/Contact.vue')['default']
     FadeOnKey: typeof import('./src/components/FadeOnKey.vue')['default']
     Hero: typeof import('./src/components/Hero.vue')['default']
     Link: typeof import('./src/components/Link.vue')['default']
+    Motion: typeof import('motion-v')['Motion']
     Projects: typeof import('./src/components/Projects.vue')['default']
     Reveal: typeof import('./src/components/Reveal.vue')['default']
     RevealGroup: typeof import('./src/components/RevealGroup.vue')['default']

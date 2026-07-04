@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useReducedTransition } from "../lib/motion";
-import { motion, AnimatePresence } from "motion-v";
 import type { Transition } from "motion-v";
 
 defineOptions({ inheritAttrs: false });
@@ -20,7 +19,8 @@ const props = withDefaults(
 
 <template>
   <AnimatePresence :mode="mode">
-    <motion.div
+    <Motion
+      as="div"
       :key="keyLabel"
       :initial="{ opacity: 0 }"
       :animate="{ opacity: 1 }"
@@ -28,6 +28,6 @@ const props = withDefaults(
       :transition="useReducedTransition(props.transition)"
     >
       <slot />
-    </motion.div>
+    </Motion>
   </AnimatePresence>
 </template>

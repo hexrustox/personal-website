@@ -6,7 +6,6 @@ import {
   type Direction,
 } from "../lib/motion";
 import { projects, type Project } from "../lib/projects";
-import { motion, AnimatePresence } from "motion-v";
 import { ref, computed, useTemplateRef, nextTick } from "vue";
 
 const currentIndex = ref(0);
@@ -86,19 +85,21 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
               @keydown="(e) => onTabKey(e, i)"
             >
               <div class="projects__index">
-                <motion.span
+                <Motion
+                  as="span"
                   class="type-label projects__index--inactive"
                   :variants="inactiveIndexVariants"
                   :animate="i === currentIndex ? 'current' : 'inactive'"
                   :transition="useReducedTransition()"
-                  >{{ String(i + 1).padStart(2, "0") }}</motion.span
+                  >{{ String(i + 1).padStart(2, "0") }}</Motion
                 >
-                <motion.span
+                <Motion
+                  as="span"
                   class="type-label projects__index--current"
                   :variants="currentIndexVariants"
                   :animate="i === currentIndex ? 'current' : 'inactive'"
                   :transition="useReducedTransition()"
-                  >{{ String(i + 1).padStart(2, "0") }}</motion.span
+                  >{{ String(i + 1).padStart(2, "0") }}</Motion
                 >
               </div>
               <h3 class="projects__item-name">{{ p.name }}</h3>
@@ -107,7 +108,8 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
         </Reveal>
         <Reveal cascade>
           <AnimatePresence mode="wait">
-            <motion.section
+            <Motion
+              as="section"
               :key="currentProject.name"
               :custom="direction"
               :variants="detailVariants"
@@ -144,7 +146,7 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
                   >
                 </li>
               </ul>
-            </motion.section>
+            </Motion>
           </AnimatePresence>
         </Reveal>
       </div>

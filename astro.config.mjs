@@ -1,5 +1,6 @@
 import vue from "@astrojs/vue";
 import { defineConfig } from "astro/config";
+import MotionResolver from "motion-v/resolver";
 import Components from "unplugin-vue-components/vite";
 
 // https://astro.build/config
@@ -9,6 +10,7 @@ export default defineConfig({
     plugins: [
       Components({
         dts: true,
+        resolvers: [MotionResolver()],
       }),
     ],
   },

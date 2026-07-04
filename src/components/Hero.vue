@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { tagline, title } from "../lib/hero";
 import { useReducedTransition } from "../lib/motion";
-import { motion, AnimatePresence, useReducedMotion } from "motion-v";
+import { useReducedMotion } from "motion-v";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
 const reduced = useReducedMotion();
@@ -40,13 +40,15 @@ const ctaAnimate = computed(() =>
         <div class="hero__cta">
           <Reveal cascade>
             <AnimatePresence>
-              <motion.div
+              <Motion
+                as="div"
                 v-if="!scrolled"
                 :initial="{ opacity: 0 }"
                 :animate="{ opacity: 1 }"
                 :exit="{ opacity: 0 }"
               >
-                <motion.div
+                <Motion
+                  as="div"
                   :animate="ctaAnimate"
                   :transition="
                     useReducedTransition({
@@ -57,8 +59,8 @@ const ctaAnimate = computed(() =>
                   "
                 >
                   Scroll Down
-                </motion.div>
-              </motion.div>
+                </Motion>
+              </Motion>
             </AnimatePresence>
           </Reveal>
         </div>

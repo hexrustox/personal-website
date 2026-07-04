@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useReducedTransition } from "../lib/motion";
-import { motion } from "motion-v";
 
 let props = defineProps<{
   eyebrow: string;
@@ -10,7 +9,8 @@ let props = defineProps<{
 
 <template>
   <section class="section-heading">
-    <motion.span
+    <Motion
+      as="span"
       class="type-eyebrow"
       :initial="{ opacity: 0 }"
       :while-in-view="{ opacity: 1 }"
@@ -18,7 +18,7 @@ let props = defineProps<{
       :transition="useReducedTransition({ duration: 0.3, delay: 0.2 })"
     >
       {{ eyebrow }}
-    </motion.span>
+    </Motion>
     <TextSplit :text="title" tag="h2" class="section-heading__title" />
     <slot />
   </section>

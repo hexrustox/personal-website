@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { motion, useScroll, useTransform, useMotionValueEvent } from "motion-v";
-import { computed, ref, useTemplateRef } from "vue";
 import SectionHeader from "../components/SectionHeading.vue";
 import YearLabel from "../components/YearLabel.vue";
-import FadeOnKey from "./FadeOnKey.vue";
-import { events, groupEvents, endOf, type Event } from "../lib/timeline";
-import { round } from "../lib/round";
 import { useReducedTransition } from "../lib/motion";
+import { round } from "../lib/round";
+import { events, groupEvents, endOf, type Event } from "../lib/timeline";
+import FadeOnKey from "./FadeOnKey.vue";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "motion-v";
+import { computed, ref, useTemplateRef } from "vue";
 
 const containerRef = useTemplateRef("container");
 const { scrollYProgress } = useScroll({

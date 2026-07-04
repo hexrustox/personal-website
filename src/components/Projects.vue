@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, nextTick } from "vue";
-import { motion, AnimatePresence } from "motion-v";
-import SectionHeading from "./SectionHeading.vue";
-import Link from "./Link.vue";
-import RevealGroup from "./RevealGroup.vue";
-import Reveal from "./Reveal.vue";
-import { projects, type Project } from "../lib/projects";
 import {
   slideFadeVariants,
   useReducedTransition,
   type Direction,
 } from "../lib/motion";
+import { projects, type Project } from "../lib/projects";
+import Link from "./Link.vue";
+import Reveal from "./Reveal.vue";
+import RevealGroup from "./RevealGroup.vue";
+import SectionHeading from "./SectionHeading.vue";
+import { motion, AnimatePresence } from "motion-v";
+import { ref, computed, useTemplateRef, nextTick } from "vue";
 
 const currentIndex = ref(0);
 const currentProject = computed<Project>(() => projects[currentIndex.value]!);

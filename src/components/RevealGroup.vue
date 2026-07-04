@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { provide, ref } from "vue";
 import {
   REVEAL_CASCADE_KEY,
   useRevealCascade,
   type CascadeContext,
 } from "../lib/cascade";
+import { provide, ref } from "vue";
 
 const props = withDefaults(
   defineProps<{

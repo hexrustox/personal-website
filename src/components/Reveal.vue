@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Motion } from "motion-v";
-import { computed } from "vue";
 import { useRevealCascade } from "../lib/cascade";
 import {
   MOTION_EASE,
   INVIEW_ONCE_FULL,
   useReducedTransition,
 } from "../lib/motion";
+import { Motion } from "motion-v";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SectionHeader from "../components/SectionHeading.vue";
-import Link from "./Link.vue";
 import { contactMethods, contactMeta } from "../lib/contact";
+import Link from "./Link.vue";
 </script>
 
 <template>

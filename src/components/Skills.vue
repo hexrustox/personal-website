@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import SectionHeading from "./SectionHeading.vue";
-import RevealGroup from "./RevealGroup.vue";
-import Reveal from "./Reveal.vue";
 import { skillCategories } from "../lib/skills";
+import Reveal from "./Reveal.vue";
+import RevealGroup from "./RevealGroup.vue";
+import SectionHeading from "./SectionHeading.vue";
 </script>
 
 <template>

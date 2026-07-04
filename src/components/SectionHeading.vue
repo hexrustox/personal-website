@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, useTemplateRef, ref, watch, useId } from "vue";
-import { useInView, useAnimate } from "motion-v";
 import {
   MOTION_EASE,
   INVIEW_ONCE_FULL,
   useReducedTransition,
 } from "../lib/motion";
+import { useInView, useAnimate } from "motion-v";
+import { computed, useTemplateRef, ref, watch, useId } from "vue";
 
 let props = defineProps<{
   eyebrow: string;

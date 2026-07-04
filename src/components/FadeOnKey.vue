@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useReducedTransition } from "../lib/motion";
 import { motion, AnimatePresence } from "motion-v";
 import type { Transition } from "motion-v";
-import { useReducedTransition } from "../lib/motion";
 
 const props = withDefaults(
   defineProps<{

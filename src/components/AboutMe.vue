@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import SectionHeading from "./SectionHeading.vue";
+import { metaItems } from "../lib/about";
 import Reveal from "./Reveal.vue";
 import RevealGroup from "./RevealGroup.vue";
-import { metaItems } from "../lib/about";
+import SectionHeading from "./SectionHeading.vue";
 </script>
 
 <template>

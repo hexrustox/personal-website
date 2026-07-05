@@ -3,7 +3,7 @@ import {
   REVEAL_CASCADE_KEY,
   useRevealCascade,
   type CascadeContext,
-} from "../lib/cascade";
+} from "@lib/cascade";
 import { provide, ref } from "vue";
 
 const props = withDefaults(

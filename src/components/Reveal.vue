@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRevealCascade } from "../lib/cascade";
-import { MOTION_EASE, useReducedTransition } from "../lib/motion";
+import { useRevealCascade } from "@lib/cascade";
+import { MOTION_EASE, useReducedTransition } from "@lib/motion";
 import type { VariantType, Easing } from "motion-v";
 
 const props = withDefaults(

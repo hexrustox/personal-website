@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MOTION_EASE, useReducedTransition } from "../lib/motion";
+import { MOTION_EASE, useReducedTransition } from "@lib/motion";
 import { useInView, useAnimate } from "motion-v";
 import { computed, ref, useTemplateRef, watch } from "vue";
 

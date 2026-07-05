@@ -1,6 +1,7 @@
 ---
 import AboutMe from "@components/AboutMe.vue";
 import Hero from "@components/Hero.vue";
+import Nav from "@components/Nav.vue";
 import Skills from "@components/Skills.vue";
 import Projects from "@components/Projects.vue";
 import Timeline from "@components/Timeline.vue";
@@ -24,13 +25,24 @@ import "@styles/font.css";
     />
   </head>
   <body>
+    <Nav client:load />
     <Hero client:load />
-    <main class="page">
-      <AboutMe client:visible client:only />
-      <Skills client:visible client:only />
-      <Projects client:visible client:only />
-      <Timeline client:visible />
-      <Contact client:visible />
+    <main id="main" class="page">
+      <section id="about" class="page__section">
+        <AboutMe client:only="vue" />
+      </section>
+      <section id="skills" class="page__section">
+        <Skills client:only="vue" />
+      </section>
+      <section id="projects" class="page__section">
+        <Projects client:only="vue" />
+      </section>
+      <section id="timeline" class="page__section">
+        <Timeline client:idle />
+      </section>
+      <section id="contact" class="page__section">
+        <Contact client:idle />
+      </section>
     </main>
   </body>
 </html>
@@ -39,10 +51,16 @@ import "@styles/font.css";
   .page {
     max-width: 960px;
     margin: 0 auto;
-    padding: min(12vh, 8rem) 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 12rem;
+  }
+
+  .page__section {
+    min-height: 100vh;
+    padding: min(12vh, 8rem) 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>

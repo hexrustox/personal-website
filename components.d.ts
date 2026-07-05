@@ -18,6 +18,7 @@ declare module 'vue' {
     Hero: typeof import('./src/components/Hero.vue')['default']
     Link: typeof import('./src/components/Link.vue')['default']
     Motion: typeof import('motion-v')['Motion']
+    Nav: typeof import('./src/components/Nav.vue')['default']
     Projects: typeof import('./src/components/Projects.vue')['default']
     Reveal: typeof import('./src/components/Reveal.vue')['default']
     RevealGroup: typeof import('./src/components/RevealGroup.vue')['default']

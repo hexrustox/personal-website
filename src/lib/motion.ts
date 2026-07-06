@@ -5,7 +5,6 @@ export const MOTION_EASE = [0.22, 1, 0.36, 1] as const;
 
 export const NO_MOTION_TRANSITION: Transition = { duration: 0 };
 
-export const REVEAL_DEFAULT_START = 0.5;
 export const REVEAL_DEFAULT_STEP = 0.25;
 
 export type Direction = 1 | -1;

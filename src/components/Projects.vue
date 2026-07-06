@@ -2,7 +2,6 @@
 import {
   slideFadeVariants,
   useReducedTransition,
-  REVEAL_DEFAULT_STEP,
   type Direction,
 } from "@lib/motion";
 import { projects, type Project } from "@lib/projects";
@@ -55,102 +54,98 @@ const currentIndexVariants = {
 };
 
 const detailVariants = slideFadeVariants();
-
-const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
 </script>
 
 <template>
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
-    <RevealGroup :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
-      <div class="projects__layout">
-        <Reveal cascade>
-          <div
-            class="projects__list"
-            role="tablist"
-            aria-label="Projects"
-            aria-orientation="vertical"
+    <div class="projects__layout">
+      <Reveal>
+        <div
+          class="projects__list"
+          role="tablist"
+          aria-label="Projects"
+          aria-orientation="vertical"
+        >
+          <button
+            v-for="(p, i) in projects"
+            :key="p.name"
+            ref="tabs"
+            :id="`project-tab-${i}`"
+            class="projects__item"
+            role="tab"
+            type="button"
+            :aria-selected="i === currentIndex"
+            :aria-controls="`project-panel-${i}`"
+            :tabindex="i === currentIndex ? 0 : -1"
+            @click="goTo(i)"
+            @keydown="(e) => onTabKey(e, i)"
           >
-            <button
-              v-for="(p, i) in projects"
-              :key="p.name"
-              ref="tabs"
-              :id="`project-tab-${i}`"
-              class="projects__item"
-              role="tab"
-              type="button"
-              :aria-selected="i === currentIndex"
-              :aria-controls="`project-panel-${i}`"
-              :tabindex="i === currentIndex ? 0 : -1"
-              @click="goTo(i)"
-              @keydown="(e) => onTabKey(e, i)"
-            >
-              <div class="projects__index">
-                <Motion
-                  as="span"
-                  class="type-label projects__index--inactive"
-                  :variants="inactiveIndexVariants"
-                  :animate="i === currentIndex ? 'current' : 'inactive'"
-                  :transition="useReducedTransition()"
-                  >{{ String(i + 1).padStart(2, "0") }}</Motion
+            <div class="projects__index">
+              <Motion
+                as="span"
+                class="type-label projects__index--inactive"
+                :variants="inactiveIndexVariants"
+                :animate="i === currentIndex ? 'current' : 'inactive'"
+                :transition="useReducedTransition()"
+                >{{ String(i + 1).padStart(2, "0") }}</Motion
+              >
+              <Motion
+                as="span"
+                class="type-label projects__index--current"
+                :variants="currentIndexVariants"
+                :animate="i === currentIndex ? 'current' : 'inactive'"
+                :transition="useReducedTransition()"
+                >{{ String(i + 1).padStart(2, "0") }}</Motion
+              >
+            </div>
+            <h3 class="projects__item-name">{{ p.name }}</h3>
+          </button>
+        </div>
+      </Reveal>
+      <Reveal>
+        <AnimatePresence mode="wait">
+          <Motion
+            as="section"
+            :key="currentProject.name"
+            :custom="direction"
+            :variants="detailVariants"
+            initial="enter"
+            animate="center"
+            exit="exit"
+            :transition="useReducedTransition()"
+            :id="`project-panel-${currentIndex}`"
+            class="projects__detail"
+            role="tabpanel"
+            :aria-labelledby="`project-tab-${currentIndex}`"
+            aria-live="polite"
+          >
+            <h3>{{ currentProject.name }}</h3>
+            <p class="projects__detail-description">
+              {{ currentProject.description }}
+            </p>
+            <ul class="type-meta projects__detail-skills">
+              <li
+                v-for="skill in currentProject.skills"
+                :key="skill"
+                class="projects__detail-skill"
+              >
+                {{ skill }}
+              </li>
+            </ul>
+            <ul class="projects__detail-links">
+              <li v-for="link in currentProject.links" :key="link.url">
+                <Link
+                  :href="link.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >{{ link.name }}</Link
                 >
-                <Motion
-                  as="span"
-                  class="type-label projects__index--current"
-                  :variants="currentIndexVariants"
-                  :animate="i === currentIndex ? 'current' : 'inactive'"
-                  :transition="useReducedTransition()"
-                  >{{ String(i + 1).padStart(2, "0") }}</Motion
-                >
-              </div>
-              <h3 class="projects__item-name">{{ p.name }}</h3>
-            </button>
-          </div>
-        </Reveal>
-        <Reveal cascade>
-          <AnimatePresence mode="wait">
-            <Motion
-              as="section"
-              :key="currentProject.name"
-              :custom="direction"
-              :variants="detailVariants"
-              initial="enter"
-              animate="center"
-              exit="exit"
-              :transition="useReducedTransition()"
-              :id="`project-panel-${currentIndex}`"
-              class="projects__detail"
-              role="tabpanel"
-              :aria-labelledby="`project-tab-${currentIndex}`"
-              aria-live="polite"
-            >
-              <h3>{{ currentProject.name }}</h3>
-              <p class="projects__detail-description">
-                {{ currentProject.description }}
-              </p>
-              <ul class="type-meta projects__detail-skills">
-                <li
-                  v-for="skill in currentProject.skills"
-                  :key="skill"
-                  class="projects__detail-skill"
-                >
-                  {{ skill }}
-                </li>
-              </ul>
-              <ul class="projects__detail-links">
-                <li v-for="link in currentProject.links" :key="link.url">
-                  <Link
-                    :href="link.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >{{ link.name }}</Link
-                  >
-                </li>
-              </ul>
-            </Motion>
-          </AnimatePresence>
-        </Reveal>
-      </div>
-    </RevealGroup>
+              </li>
+            </ul>
+          </Motion>
+        </AnimatePresence>
+      </Reveal>
+    </div>
   </SectionHeading>
 </template>
 
@@ -172,6 +167,12 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
 .projects__list {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 720px) {
+  .projects__list {
+    padding-inline: 0.25rem;
+  }
 }
 
 .projects__item {

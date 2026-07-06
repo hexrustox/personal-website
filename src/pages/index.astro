@@ -29,13 +29,13 @@ import "@styles/font.css";
     <Hero client:load />
     <main id="main" class="page">
       <section id="about" class="page__section">
-        <AboutMe client:only="vue" />
+        <AboutMe client:idle />
       </section>
       <section id="skills" class="page__section">
-        <Skills client:only="vue" />
+        <Skills client:idle />
       </section>
       <section id="projects" class="page__section">
-        <Projects client:only="vue" />
+        <Projects client:idle />
       </section>
       <section id="timeline" class="page__section">
         <Timeline client:idle />
@@ -57,10 +57,17 @@ import "@styles/font.css";
   }
 
   .page__section {
-    min-height: 100vh;
-    padding: min(12vh, 8rem) 1.5rem;
+    min-height: 100dvh;
+    padding: min(12vh, 8rem) clamp(1rem, 4vw, 1.5rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .page__section {
+      min-height: auto !important;
+      padding: 4rem 1.5rem;
+    }
   }
 </style>

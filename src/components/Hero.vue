@@ -99,4 +99,16 @@ const ctaAnimate = computed(() =>
   justify-content: center;
   bottom: 2rem;
 }
+
+@media (max-width: 360px) {
+  .hero {
+    padding-inline: 0.5rem;
+  }
+  .hero__stage {
+    gap: clamp(1rem, 2vh, 1.5rem);
+  }
+  .hero__cta {
+    bottom: 1rem;
+  }
+}
 </style>

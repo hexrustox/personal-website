@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { metaItems } from "@lib/about";
 import { REVEAL_DEFAULT_STEP } from "@lib/motion";
-import { ref } from "vue";
+import { useMediaQuery } from "@lib/useMediaQuery";
 
-const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);
+const isDesktop = useMediaQuery("(min-width: 1200px)");
 </script>
 
 <template>
@@ -30,7 +30,7 @@ const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);
 
     <Reveal>
       <dl class="about__meta">
-        <RevealGroup :step="REVEAL_DEFAULT_STEP / 2">
+        <RevealGroup :step="REVEAL_DEFAULT_STEP">
           <div
             v-for="item in metaItems"
             :key="item.label"
@@ -64,6 +64,12 @@ const isDesktop = ref(window.matchMedia("(min-width: 960px)").matches);
 }
 
 @media (min-width: 960px) {
+  .about__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
   .about__meta {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }

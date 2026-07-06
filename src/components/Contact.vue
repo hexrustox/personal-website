@@ -6,7 +6,7 @@ import { contactMethods, contactMeta } from "@lib/contact";
   <SectionHeading eyebrow="05 — CONTACT" title="Get in touch.">
     <dl class="contact__list">
       <div v-for="method in contactMethods" :key="method.name">
-        <Reveal cascade>
+        <Reveal>
           <div class="contact__item">
             <dt class="contact__name">{{ method.name }}</dt>
             <dd class="contact__handle-group">
@@ -21,7 +21,6 @@ import { contactMethods, contactMeta } from "@lib/contact";
           </div>
         </Reveal>
         <Reveal
-          cascade
           :initial="{ scaleX: 0 }"
           :animate="{ scaleX: 1 }"
           :duration="0.3"

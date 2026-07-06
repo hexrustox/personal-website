@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { REVEAL_DEFAULT_STEP } from "@lib/motion";
 import { skillCategories } from "@lib/skills";
-import { ref } from "vue";
+import { useMediaQuery } from "@lib/useMediaQuery";
 
-const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
+const isDesktop = useMediaQuery("(min-width: 720px)");
 </script>
 
 <template>
   <SectionHeading eyebrow="02 — SKILLS" title="What I work with.">
-    <RevealGroup :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
+    <RevealGroup :step="REVEAL_DEFAULT_STEP">
       <div class="skills__groups">
         <section
           v-for="category in skillCategories"
@@ -16,7 +16,7 @@ const isDesktop = ref(window.matchMedia("(min-width: 720px)").matches);
           class="skills__group"
           :aria-label="category.title"
         >
-          <Reveal cascade>
+          <Reveal :cascade="!isDesktop">
             <span class="type-eyebrow skills__group-title">{{
               category.title
             }}</span>

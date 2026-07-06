@@ -173,15 +173,10 @@ function eventYearLabel(event: Event) {
             :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__event-body"
           >
-            <div class="timeline__event-spacer">
-              <div class="timeline__event-tick"></div>
-            </div>
-            <div>
-              <FadeOnKey :key-label="selectedEvent.title" mode="wait">
-                <h3>{{ selectedEvent.title }}</h3>
-                <p>{{ selectedEvent.description }}</p>
-              </FadeOnKey>
-            </div>
+            <FadeOnKey :key-label="selectedEvent.title" mode="wait">
+              <h3>{{ selectedEvent.title }}</h3>
+              <p>{{ selectedEvent.description }}</p>
+            </FadeOnKey>
           </Motion>
         </div>
       </div>
@@ -276,37 +271,7 @@ function eventYearLabel(event: Event) {
 }
 
 .timeline__event-body {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.timeline__event-spacer {
-  width: 6rem;
-}
-
-.timeline__event-tick {
-  position: relative;
-  display: flex;
   margin-top: 1rem;
-  width: 100%;
-  align-items: center;
-}
-
-.timeline__event-tick::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, var(--accent) 80%, transparent);
-}
-
-.timeline__event-tick::after {
-  --size: 0.5rem;
-  content: "";
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  background: var(--accent);
-  border-radius: 50%;
+  margin-left: 2rem;
 }
 </style>

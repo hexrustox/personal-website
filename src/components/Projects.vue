@@ -3,8 +3,8 @@ import {
   slideFadeVariants,
   useReducedTransition,
   type Direction,
-} from "@lib/motion";
-import { projects, type Project } from "@lib/projects";
+} from "../lib/motion";
+import { projects, type Project } from "../lib/projects";
 import { ref, computed, useTemplateRef, nextTick } from "vue";
 
 const currentIndex = ref(0);

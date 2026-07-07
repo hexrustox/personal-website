@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { REVEAL_DEFAULT_STEP } from "@lib/motion";
-import { skillCategories } from "@lib/skills";
-import { useMediaQuery } from "@lib/useMediaQuery";
+import { REVEAL_DEFAULT_STEP } from "../lib/motion";
+import { skillCategories } from "../lib/skills";
+import { useMediaQuery } from "../lib/useMediaQuery";
 
 const isDesktop = useMediaQuery("(min-width: 720px)");
 </script>

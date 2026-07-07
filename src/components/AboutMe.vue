@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { metaItems } from "@lib/about";
-import { REVEAL_DEFAULT_STEP } from "@lib/motion";
-import { useMediaQuery } from "@lib/useMediaQuery";
+import { metaItems } from "../lib/about";
+import { REVEAL_DEFAULT_STEP } from "../lib/motion";
+import { useMediaQuery } from "../lib/useMediaQuery";
 
 const isDesktop = useMediaQuery("(min-width: 1200px)");
 </script>

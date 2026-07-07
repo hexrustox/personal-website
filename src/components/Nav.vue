@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useReducedTransition } from "../lib/motion";
+import { navItems, useActiveSection } from "../lib/nav";
+import { useMediaQuery } from "../lib/useMediaQuery";
 import { Icon } from "@iconify/vue";
-import { useReducedTransition } from "@lib/motion";
-import { navItems, useActiveSection } from "@lib/nav";
-import { useMediaQuery } from "@lib/useMediaQuery";
 import { useAnimate } from "motion-v";
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
 

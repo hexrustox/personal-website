@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useReducedTransition } from "@lib/motion";
-import { round } from "@lib/round";
-import { events, groupEvents, endOf, type Event } from "@lib/timeline";
+import { useReducedTransition } from "../lib/motion";
+import { round } from "../lib/round";
+import { events, groupEvents, endOf, type Event } from "../lib/timeline";
 import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 

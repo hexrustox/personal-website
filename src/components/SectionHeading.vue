@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useReducedTransition } from "@lib/motion";
+import { useReducedTransition } from "../lib/motion";
 
 let props = defineProps<{
   eyebrow: string;

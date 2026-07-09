@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { metaItems } from "../data/about";
+import { about, metaItems } from "../data/about";
 import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { useMediaQuery } from "../lib/useMediaQuery";
 
@@ -11,23 +11,11 @@ const { matches: isDesktop, ready: isReady } = useMediaQuery(
 <template>
   <SectionHeading eyebrow="01 — ABOUT" title="A bit about myself.">
     <Reveal>
-      <h3>Designing and building considered interfaces for the web.</h3>
+      <h3>{{ about.heading }}</h3>
     </Reveal>
 
-    <Reveal>
-      <p>
-        Currently working as a frontend engineer, mostly with TypeScript, Vue,
-        and a little Rust on the side. I'm drawn to work that sits at the
-        intersection of design and engineering — places where the two
-        disciplines sharpen each other rather than get in the way.
-      </p>
-    </Reveal>
-
-    <Reveal>
-      <p>
-        Outside of code I keep notebooks full of half-finished ideas, read more
-        than I should, and take long walks when a bug won't budge.
-      </p>
+    <Reveal v-for="(paragraph, i) in about.paragraphs" :key="i">
+      <p>{{ paragraph }}</p>
     </Reveal>
 
     <Reveal>

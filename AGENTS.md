@@ -9,7 +9,7 @@
 - `src/components/` — `.vue` SFCs.
 - `src/pages/` — `.astro` pages (`_app.ts` is the Vue app entrypoint, referenced from `astro.config.mjs`; empty by design).
 - `src/lib/` — `.ts` shared utilities (motion helpers, hooks, etc.).
-- `src/data/` — `.ts` page-section content (hero, about, skills, contact, projects, timeline).
+- `src/data/` — `.ts` page content: site-level `meta` (title/description) and per-section data (hero, about, skills, contact, projects, timeline).
 - `src/styles/` — global CSS.
 
 ## Package manager

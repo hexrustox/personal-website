@@ -8,6 +8,7 @@ import Timeline from "@components/Timeline.vue";
 import Contact from "@components/Contact.vue";
 import "@styles/global.css";
 import "@styles/font.css";
+import { meta } from "../data/meta";
 ---
 
 <!doctype html>
@@ -16,7 +17,8 @@ import "@styles/font.css";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title></title>
+    <meta name="description" content={meta.description} />
+    <title>{meta.title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { metaItems } from "../lib/about";
+import { metaItems } from "../data/about";
 import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { useMediaQuery } from "../lib/useMediaQuery";
 

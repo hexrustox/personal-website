@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { contactMethods, contactMeta } from "../lib/contact";
+import { contactMethods, contactMeta } from "../data/contact";
 </script>
 
 <template>

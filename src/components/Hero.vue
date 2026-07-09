@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { tagline, title } from "../lib/hero";
+import { tagline, title } from "../data/hero";
 import { useReducedTransition } from "../lib/motion";
 import { useReducedMotion } from "motion-v";
 import { computed, onMounted, onUnmounted, ref } from "vue";

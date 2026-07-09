@@ -8,7 +8,8 @@
 
 - `src/components/` — `.vue` SFCs.
 - `src/pages/` — `.astro` pages (`_app.ts` is the Vue app entrypoint, referenced from `astro.config.mjs`; empty by design).
-- `src/lib/` — `.ts` files.
+- `src/lib/` — `.ts` shared utilities (motion helpers, hooks, etc.).
+- `src/data/` — `.ts` page-section content (hero, about, skills, contact, projects, timeline).
 - `src/styles/` — global CSS.
 
 ## Package manager
@@ -31,7 +32,7 @@
 
 ## Path aliases
 
-- `@lib/*`, `@components/*`, `@styles/*` are resolved at the type level only, via `tsconfig.json` (`compilerOptions.paths`).
+- `@components/*`, `@styles/*` are resolved at the type level only, via `tsconfig.json` (`compilerOptions.paths`).
 - `unplugin-vue-components` (in `astro.config.mjs`) auto-registers every `.vue` file in `src/components/` plus `Motion` / `AnimatePresence` from `motion-v` into `components.d.ts` — generated, do not edit.
 
 ## TypeScript

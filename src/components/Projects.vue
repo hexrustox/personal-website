@@ -4,7 +4,7 @@ import {
   useReducedTransition,
   type Direction,
 } from "../lib/motion";
-import { projects, type Project } from "../lib/projects";
+import { projects, type Project } from "../data/projects";
 import { ref, computed, useTemplateRef, nextTick } from "vue";
 
 const currentIndex = ref(0);

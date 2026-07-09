@@ -9,33 +9,87 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    name: "Codenix",
+    name: "Prisoner's Dilemma",
     description:
-      "Static site generator for technical blogs with MDX support and incremental builds.",
-    skills: [Skills.TypeScript, Skills.Astro],
+      "Built a tournament platform where AI-driven strategies face off in the classic game-theory dilemma, learning and adapting with each round — exploring how machine learning can uncover optimal strategies in competitive settings.",
+    skills: [Skills.Python, Skills.AI],
     links: [
-      { name: "GitHub", url: "https://github.com/example/codenix" },
-      { name: "Docs", url: "https://codenix.dev" },
+      {
+        name: "GitLab",
+        url: "https://gitlab.com/codnixus/prisoners-dilemma",
+      },
     ],
   },
   {
-    name: "Tachyon UI",
+    name: "Dotrift",
     description:
-      "Headless component library for Vue 3, focused on accessibility and tree-shaking.",
-    skills: [Skills.Vue, Skills.TypeScript],
+      "Built a command-line tool that keeps your configuration files organised and in sync across machines, with automatic conflict resolution — cutting setup time on new machines from hours to minutes.",
+    skills: [Skills.Rust],
+    links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/dotrift" }],
+  },
+  {
+    name: "Nix Capsule",
+    description:
+      "Built a tool for running isolated development environments inside containers — no setup, no conflicts, just a shell that works the same everywhere, so teams can onboard in seconds.",
+    skills: [Skills.Rust, Skills.Nix, Skills.LinuxShell, Skills.Docker],
     links: [
-      { name: "GitHub", url: "https://github.com/example/tachyon" },
-      { name: "Storybook", url: "https://tachyon.example.com" },
+      {
+        name: "GitLab",
+        url: "https://gitlab.com/codnixus/nix-capsule",
+      },
     ],
   },
   {
-    name: "pgwire-proxy",
+    name: "LoomWM",
     description:
-      "Lightweight Postgres protocol proxy written in Rust for connection pooling and read replicas.",
-    skills: [Skills.Rust, Skills.PostgreSQL, Skills.Docker],
+      "Built a window manager that watches how you arrange windows and learns to organise them for you automatically — cutting out repetitive manual layout adjustments.",
+    skills: [Skills.Rust, Skills.AI],
+    links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/loomwm" }],
+  },
+  {
+    name: "Findr",
+    description:
+      "Built a fast terminal search-and-replace tool — like VS Code's find-and-replace, without leaving the command line, for refactoring across large codebases.",
+    skills: [Skills.Rust],
+    links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/findr" }],
+  },
+  {
+    name: "Waygamma",
+    description:
+      "Built a tool that automatically warms your screen at night and cools it during the day — like Night Light, but for Linux.",
+    skills: [Skills.Rust],
+    links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/waygamma" }],
+  },
+  {
+    name: "Dotfiles",
+    description:
+      "My entire development environment, codified as code — OS config, editor settings, and tooling, reproducible on any machine in under 30 minutes.",
+    skills: [Skills.Nix, Skills.LinuxShell],
+    links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/dotfiles" }],
+  },
+  {
+    name: "Self-Hosted Infrastructure",
+    description:
+      "Self-hosted a mail server and password manager on bare-metal Linux — handling DNS, security hardening, and uptime monitoring to keep critical services running reliably.",
+    skills: [Skills.LinuxShell, Skills.Docker, Skills.Networking],
+    links: [],
+  },
+  {
+    name: "This Website",
+    description:
+      "Lightweight portfolio built from scratch with Astro 6, Vue 3, and TypeScript — designed for fast loads, smooth motion, and a clean reading experience.",
+    skills: [
+      Skills.Astro,
+      Skills.Vue,
+      Skills.TypeScript,
+      Skills.HTML,
+      Skills.CSS,
+    ],
     links: [
-      { name: "GitHub", url: "https://github.com/example/pgwire-proxy" },
-      { name: "Crates.io", url: "https://crates.io/crates/pgwire-proxy" },
+      {
+        name: "GitLab",
+        url: "https://gitlab.com/codnixus/personal-website",
+      },
     ],
   },
 ];

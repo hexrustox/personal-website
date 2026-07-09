@@ -1,14 +1,23 @@
 export enum Skills {
-  HTML = "HTML",
-  CSS = "CSS",
-  TypeScript = "TypeScript",
-  Rust = "Rust",
-  Vue = "Vue",
+  AI = "AI",
+  Angular = "Angular",
   Astro = "Astro",
-  Node = "Node",
-  PostgreSQL = "PostgreSQL",
-  Docker = "Docker",
-  Figma = "Figma",
+  CICD = "CI/CD",
+  CSS = "CSS",
+  Docker = "Docker/Podman",
+  Git = "Git",
+  HTML = "HTML",
+  Java = "Java",
+  JavaScript = "JavaScript",
+  LinuxShell = "Linux/Shell",
+  Networking = "Networking",
+  Nix = "Nix",
+  NodeJS = "Node.js",
+  Nuxt = "Nuxt",
+  Python = "Python",
+  Rust = "Rust",
+  TypeScript = "TypeScript",
+  Vue = "Vue",
 }
 
 export type SkillCategory = {
@@ -18,15 +27,37 @@ export type SkillCategory = {
 
 export const skillCategories: SkillCategory[] = [
   {
+    title: "Web",
+    items: [
+      Skills.HTML,
+      Skills.CSS,
+      Skills.Vue,
+      Skills.Angular,
+      Skills.Astro,
+      Skills.Nuxt,
+    ],
+  },
+  {
     title: "Languages",
-    items: [Skills.TypeScript, Skills.HTML, Skills.CSS, Skills.Rust],
+    items: [
+      Skills.JavaScript,
+      Skills.TypeScript,
+      Skills.Python,
+      Skills.Java,
+      Skills.Rust,
+      Skills.Nix,
+    ],
   },
   {
-    title: "Frameworks",
-    items: [Skills.Vue, Skills.Astro, Skills.Node],
-  },
-  {
-    title: "Tooling",
-    items: [Skills.PostgreSQL, Skills.Docker, Skills.Figma],
+    title: "Infrastructure & Tooling",
+    items: [
+      Skills.NodeJS,
+      Skills.Docker,
+      Skills.CICD,
+      Skills.Git,
+      Skills.LinuxShell,
+      Skills.Networking,
+      Skills.AI,
+    ],
   },
 ];

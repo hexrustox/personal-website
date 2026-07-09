@@ -4,7 +4,7 @@ export type Meta = {
 };
 
 export const meta: Meta = {
-  title: "Title — Frontend Engineer",
+  title: "C.H. Yu — Software Engineer",
   description:
-    "Description goes here. A short summary of the site for search engines and link previews.",
+    "Generalist software engineer based in Birmingham, UK. Building across the stack from web to systems — Rust, Python, Nix, TypeScript, and Linux.",
 };

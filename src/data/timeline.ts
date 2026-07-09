@@ -7,29 +7,18 @@ export interface Event {
 
 export const events: Event[] = [
   {
-    title: "Software Engineer @ Example Co",
-    from: new Date("2023-03-01"),
-    description: "Building backend services in Rust and TypeScript.",
+    title: "BSc Computer Science with AI",
+    from: new Date("2023-09-01"),
+    to: new Date("2026-07-01"),
+    description:
+      "Graduated with Upper Second-Class Honours (2:1) from the University of Birmingham.",
   },
   {
-    title: "Junior Developer @ Studio North",
-    from: new Date("2021-06-01"),
-    to: new Date("2023-02-28"),
+    title: "Software Developer Intern at WeDonate",
+    from: new Date("2025-03-01"),
+    to: new Date("2025-04-30"),
     description:
-      "Shipped customer-facing Vue 3 dashboards and internal tooling.",
-  },
-  {
-    title: "B.Sc. Computer Science @ University of Somewhere",
-    from: new Date("2017-09-01"),
-    to: new Date("2021-06-30"),
-    description:
-      "Studied systems programming, algorithms, and human–computer interaction.",
-  },
-  {
-    title: "Open-source maintainer of pgwire-proxy",
-    from: new Date("2022-01-01"),
-    description:
-      "Postgres protocol proxy written in Rust. Listed under Projects.",
+      "Developed a web scraper that extracted and structured over 3,000 data points from competitor websites, enabling the team to benchmark pricing and positioning.",
   },
 ];
 

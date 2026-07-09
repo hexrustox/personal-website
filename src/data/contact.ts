@@ -13,23 +13,18 @@ export interface ContactMeta {
 export const contactMethods: ContactMethod[] = [
   {
     name: "Email",
-    handle: "you@example.com",
-    url: "mailto:you@example.com",
+    handle: "career.kw2ddw@ckhgy.com",
+    url: "mailto:career.kw2ddw@ckhgy.com",
   },
   {
-    name: "GitHub",
-    handle: "@your-handle",
-    url: "https://github.com/your-handle",
-  },
-  {
-    name: "LinkedIn",
-    handle: "in/your-handle",
-    url: "https://www.linkedin.com/in/your-handle",
+    name: "GitLab",
+    handle: "@codnixus",
+    url: "https://gitlab.com/codnixus",
   },
 ];
 
 export const contactMeta: ContactMeta = {
-  location: "Based in Berlin",
+  location: "Based in Birmingham, UK",
   availability: "Open to work",
   responseTime: "Replies within 48h",
 };

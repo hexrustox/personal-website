@@ -70,6 +70,7 @@
                   nodejs
                   pnpm
                   vscode-css-languageserver
+                  git
                 ];
               };
           };

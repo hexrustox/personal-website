@@ -15,7 +15,7 @@ const listEl = useTemplateRef<HTMLOListElement>("listEl");
 const itemRefs = useTemplateRef<HTMLLIElement[]>("itemRefs");
 const [indicatorEl, animate] = useAnimate<HTMLSpanElement>();
 
-function updateIndicator() {
+function updateIndicator(transition = true) {
   const list = listEl.value;
   const items = itemRefs.value;
   if (!list || !items || !activeId.value) return;
@@ -35,7 +35,11 @@ function updateIndicator() {
   const x = linkRect.left - listRect.left;
   const width = linkRect.width;
 
-  animate(indicatorEl.value, { x: `${x}px`, width: `${width}px` });
+  animate(
+    indicatorEl.value,
+    { x: `${x}px`, width: `${width}px` },
+    transition ? undefined : { duration: 0 },
+  );
 }
 
 function close() {
@@ -59,13 +63,13 @@ watch(isMobile, (v) => {
 onMounted(() => {
   updateIndicator();
   window.addEventListener("resize", () => {
-    updateIndicator();
+    updateIndicator(false);
   });
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", () => {
-    updateIndicator();
+    updateIndicator(false);
   });
   window.removeEventListener("keydown", onKey);
 });

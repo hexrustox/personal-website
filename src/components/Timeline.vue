@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { events, groupEvents, endOf, type Event } from "../data/timeline";
 import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
-import { events, groupEvents, endOf, type Event } from "../data/timeline";
 import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 
@@ -11,7 +11,7 @@ const { scrollYProgress } = useScroll({
 });
 
 const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
-const VH_PER_MONTH = 4;
+const VH_PER_MONTH = 10;
 const containerHeight = 80;
 const containerVh = computed(() => `${containerHeight}vh`);
 
@@ -45,16 +45,17 @@ const eventIndex = computed(() => {
   let closest: EventIndex = { group: 0, event: 0 };
   for (const [g, group] of groups.entries()) {
     for (const [i, event] of group.entries()) {
-      if (
-        event.from.getTime() <= cursorTime.value &&
-        endOf(event).getTime() >= cursorTime.value
-      ) {
-        const diff = Math.abs(event.from.getTime() - cursorTime.value);
-        if (diff < closestDistance) {
-          closestDistance = diff;
-          closest = { group: g, event: i };
-        }
+      // if (
+      //   event.from.getTime() <= cursorTime.value &&
+      //   endOf(event).getTime() >= cursorTime.value
+      // ) {
+      // const diff = Math.abs(event.from.getTime() - cursorTime.value);
+      const diff = cursorTime.value - event.from.getTime();
+      if (diff < closestDistance && diff > 0) {
+        closestDistance = diff;
+        closest = { group: g, event: i };
       }
+      // }
     }
   }
   return closest;
@@ -91,6 +92,20 @@ const eventYears = computed(() => [
     display: selectedEvent.value.to?.getFullYear() ?? "Now",
   },
 ]);
+
+const dateRangeFormatter = new Intl.DateTimeFormat(undefined, {
+  month: "short",
+  year: "numeric",
+});
+const eventDateRange = computed(() => {
+  const start = dateRangeFormatter.format(selectedEvent.value.from);
+  const end = selectedEvent.value.to
+    ? dateRangeFormatter.format(selectedEvent.value.to)
+    : "Now";
+  return `${start} – ${end}`;
+});
+
+const selectedLinks = computed(() => selectedEvent.value.links ?? []);
 </script>
 
 <template>
@@ -147,7 +162,19 @@ const eventYears = computed(() => [
           >
             <FadeOnKey :key-label="selectedEvent.title" mode="wait">
               <h3>{{ selectedEvent.title }}</h3>
+              <p class="type-meta">{{ eventDateRange }}</p>
               <p>{{ selectedEvent.description }}</p>
+              <ul v-if="selectedLinks.length" class="timeline__event-links">
+                <li v-for="link in selectedLinks" :key="link.url">
+                  <Link
+                    :href="link.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="timeline__event-link"
+                    >{{ link.label }}</Link
+                  >
+                </li>
+              </ul>
             </FadeOnKey>
           </Motion>
         </div>
@@ -244,6 +271,15 @@ const eventYears = computed(() => [
 
 .timeline__event-body {
   margin-top: 1rem;
-  margin-left: 2rem;
+  margin-left: 3rem;
+}
+
+.timeline__event-links {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
 }
 </style>

@@ -3,6 +3,7 @@ export interface Event {
   from: Date;
   to?: Date;
   description: string;
+  links?: { label: string; url: string }[];
 }
 
 export const events: Event[] = [
@@ -12,6 +13,12 @@ export const events: Event[] = [
     to: new Date("2026-07-01"),
     description:
       "Graduated with Upper Second-Class Honours (2:1) from the University of Birmingham.",
+    links: [
+      {
+        label: "University of Birmingham",
+        url: "https://www.birmingham.ac.uk/",
+      },
+    ],
   },
   {
     title: "Software Developer Intern at WeDonate",
@@ -19,6 +26,7 @@ export const events: Event[] = [
     to: new Date("2025-04-30"),
     description:
       "Developed a web scraper that extracted and structured over 3,000 data points from competitor websites, enabling the team to benchmark pricing and positioning.",
+    links: [{ label: "WeDonate", url: "https://wedonate.io" }],
   },
 ];
 

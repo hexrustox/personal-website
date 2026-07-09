@@ -35,6 +35,7 @@
                 "PNPM_HOME"
                 "-p=3000:3000"
                 "--pid=host"
+                "-v=ms-playwright:/ms-playwright"
               ];
               wrappers = [
                 "node"
@@ -53,8 +54,8 @@
                   value = "pnpm exec prettier";
                 }
                 {
-                  name = "playwright";
-                  value = "pnpm exec playwright";
+                  name = "playwright-cli";
+                  value = "pnpm exec playwright-cli";
                 }
               ];
               preShellHook = ''

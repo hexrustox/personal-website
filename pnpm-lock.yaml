@@ -33,9 +33,9 @@ importers:
       '@iconify/vue':
         specifier: ^5.0.1
         version: 5.0.1(vue@3.5.38(typescript@6.0.3))
-      '@playwright/test':
-        specifier: ^1.61.1
-        version: 1.61.1
+      '@playwright/cli':
+        specifier: ^0.1.15
+        version: 0.1.15
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(@vue/compiler-sfc@3.5.38)(prettier@3.8.4)
@@ -51,6 +51,9 @@ importers:
       '@vue/typescript-plugin':
         specifier: ^3.3.4
         version: 3.3.4(typescript@6.0.3)
+      playwright:
+        specifier: ^1.61.1
+        version: 1.61.1
       prettier:
         specifier: ^3.8.4
         version: 3.8.4
@@ -638,8 +641,8 @@ packages:
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
 
-  '@playwright/test@1.61.1':
-    resolution: {integrity: sha512-8nKv6+0RJSL9FE4jYOEGXnPeM/Hg12qZpmqzZjRh3qM0Y7c3z1mrOTfFLids72RDQYVh9WpLEfR5WdpNX4fkig==}
+  '@playwright/cli@0.1.15':
+    resolution: {integrity: sha512-2eLqaKBoNCR0TWv3+XhGjdf5+gZGNrsJ5u/EdxCOyFHOuU+yVxq1NJ6iRBvAvGqlOsyU9CwGKHdUs2XWriTLwA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1890,8 +1893,18 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  playwright-core@1.62.0-alpha-2026-06-29:
+    resolution: {integrity: sha512-/13EvW8l9Bmvt9nKHey+OcvZ8nob2FM8BCKBsUNwbXgmT4Hc0XX2b6mOErU0RBYNedOCa9q15USI7SY9K17v4w==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright@1.61.1:
     resolution: {integrity: sha512-DWnY5o3YbLWK4GovuAVwpqL+1VwGNdUGrRr++8j8PtQQzvAVZUIMjKQ90fY689sEJZJBbZVw1rXaOKSTitkzPQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.62.0-alpha-2026-06-29:
+    resolution: {integrity: sha512-ugaMuh6rAOqmbaxrM7+XQSs7M6yPXykq5gVugJPClHcJ4Cqxmky5rDHhrCt4wmaILUeMdI7kPBCx3zMx2Qu+bg==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3188,9 +3201,10 @@ snapshots:
 
   '@oslojs/encoding@1.1.0': {}
 
-  '@playwright/test@1.61.1':
+  '@playwright/cli@0.1.15':
     dependencies:
-      playwright: 1.61.1
+      playwright: 1.62.0-alpha-2026-06-29
+      playwright-core: 1.62.0-alpha-2026-06-29
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -4757,9 +4771,17 @@ snapshots:
 
   playwright-core@1.61.1: {}
 
+  playwright-core@1.62.0-alpha-2026-06-29: {}
+
   playwright@1.61.1:
     dependencies:
       playwright-core: 1.61.1
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  playwright@1.62.0-alpha-2026-06-29:
+    dependencies:
+      playwright-core: 1.62.0-alpha-2026-06-29
     optionalDependencies:
       fsevents: 2.3.2
 

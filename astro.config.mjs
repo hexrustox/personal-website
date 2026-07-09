@@ -17,12 +17,5 @@ export default defineConfig({
         resolvers: [MotionResolver()],
       }),
     ],
-    resolve: {
-      alias: {
-        "@lib": "/src/lib",
-        "@components": "/src/components",
-        "@styles": "/src/styles",
-      },
-    },
   },
 });

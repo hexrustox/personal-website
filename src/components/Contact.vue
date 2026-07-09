@@ -52,7 +52,7 @@ import { contactMethods, contactMeta } from "../lib/contact";
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 0 0.5rem;
 }
 
 .contact__handle-group {

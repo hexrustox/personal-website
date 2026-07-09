@@ -9,7 +9,7 @@
 
 | Width | Status | Issues |
 |-------|--------|--------|
-| 320px | **Pass** | Touch targets < 44px on `Link` items; timeline event body wraps tightly |
+| 320px | **Pass** | Timeline event body wraps tightly |
 | 360px | **Pass** | Same as 320 |
 | 375px | **Pass** | Clean |
 | 600px | **Pass** | About meta transitions 1-col → 2-col at this width |
@@ -23,7 +23,7 @@
 | 1920px | **Warn** | Page caps at 960px → 480px of empty margin per side |
 | 2560px | **Warn** | Page caps at 960px → 800px of empty margin per side; reads as "stranded" |
 
-**Overall**: 0 critical + 0 high + 2 medium + 2 low issues across 13 widths. The site is in good shape at every standard breakpoint; the only real issues are touch-target sizing on inline links (Medium) and the hard-capped 960px page width that strands content on wide viewports (Medium). Every grid / nav transition is clean. An initial run reported a horizontal-overflow High at 320/360px, but a re-measurement on a fully-hydrated page showed zero overflow at every tested width — that finding was a pre-hydration measurement artifact (see [Methodology note](#methodology-note)).
+**Overall**: 0 critical + 0 high + 1 medium + 2 low issues across 13 widths. The site is in good shape at every standard breakpoint; the only remaining issue is the hard-capped 960px page width that strands content on wide viewports (Medium). Every grid / nav transition is clean. An initial run reported a horizontal-overflow High at 320/360px, but a re-measurement on a fully-hydrated page showed zero overflow at every tested width — that finding was a pre-hydration measurement artifact (see [Methodology note](#methodology-note)).
 
 ## Critical & High Issues
 
@@ -52,40 +52,6 @@ An initial run reported a horizontal-overflow High at 320px and 360px, attribute
 ```
 
 This keeps the design tight on 1024/1280 (where 960px is correct) and grows it to 1280px on ultra-wide. Beyond 1280px there is genuinely no more content to fill — the type isn't getting bigger, and adding max-width without a use case doesn't help. Recommend 1280px as the new ceiling.
-
-### Touch targets < 44px on mobile — Medium
-
-**Width(s)**: 320px, 375px, 600px, 640px, 720px, 768px
-**Check**: Touch targets (check #6)
-
-Below 768px, several interactive elements fall under the 44×44px minimum recommended by Apple/Google. Measured at 320px:
-
-| Element | Width | Height | Notes |
-|---|---|---|---|
-| Project link "GitHub ↗" | 73 | **20** | `.link` height = text line height |
-| Project link "Docs ↗" | 60 | **20** | same |
-| Contact link `you@example.com ↗` | 165 | **27** | inline baseline, no min-height |
-| Contact link `@your-handle ↗` | 128 | **27** | same |
-| Contact link `in/your-handle ↗` | 132 | **27** | same |
-
-The hamburger toggle button is 56×56 — fine. Project tab buttons (`.projects__item`) are 312×49 — fine. The two issues are:
-
-1. `.link` (Link.vue) has no `min-height`. On touch, finger taps on the underline are easy to miss because the hit area is only the text's natural height (~20px).
-2. Contact items use `<Link>` inside a flex row but the handle text inherits body font sizing and has no padding.
-
-**Fix suggestion**:
-
-```css
-/* Link.vue */
-.link {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;       /* already baseline — change to center */
-  padding-block: 0.75rem;    /* gives the touch target height */
-}
-```
-
-Or apply a `min-height` to `.contact__handle` and let flex centering handle the rest.
 
 ---
 
@@ -134,22 +100,22 @@ At 641px the 5 nav items + 4 gaps × `clamp(0.5rem, 2vw, 2rem)` is `~5×1rem + 4
 | About meta: 2-col → 4-col | 1200px | **Yes** | `444px × 2` (1199) → `210px × 4` (1201). Clean. |
 | Hero padding override (`max-width: 360px`) | 360px | **Yes** | Tightens hero padding at the smallest phone widths. |
 
-All five CSS-driven transitions are clean. The site is **well-engineered at the breakpoint layer**; the only remaining issues are the page-level max-width (`.page` hard-capped at 960px) and the inline `.link` touch-target height.
+All five CSS-driven transitions are clean. The site is **well-engineered at the breakpoint layer**; the only remaining issue is the page-level max-width (`.page` hard-capped at 960px).
 
 ## Per-Breakpoint Notes
 
 ### 320px — Pass
 
 - **[Low]** Timeline event body wraps to 1–2 words per line; readable but cramped.
-- **[Low]** `Link` components in Project details and Contact items have < 44px height (see [Touch targets](#touch-targets--44px-on-mobile--medium)).
 - Hero title, tagline, and CTA all fit cleanly within the viewport.
 - Nav hamburger button is 56×56 (touch target OK).
+- `Link` components in Project details and Contact items now measure 44–51px tall (post-fix); the touch-target concern from the initial run has been resolved (see [Verification](#verification)).
 
 ![Hero at 320px — title fits, hamburger visible, no overflow on hero itself](.playwright-cli/resp-320-loaded.png)
 
 ### 360px — Pass
 
-- Same touch-target and timeline-wrapping observations as 320px.
+- Same timeline-wrapping observation as 320px.
 - Hero padding override (`padding-inline: 0.5rem`) fires here.
 
 ### 600px — Pass (transition boundary)
@@ -189,22 +155,11 @@ All five CSS-driven transitions are clean. The site is **well-engineered at the 
    .page { max-width: clamp(960px, 90vw, 1280px); }
    ```
 
-2. **Touch-target the `Link` component** (`src/components/Link.vue:17`):
-   ```css
-   .link {
-     /* existing rules */
-     min-height: 44px;
-     display: inline-flex;
-     align-items: center;
-     padding-block: 0.75rem;
-   }
-   ```
-
 ### Structural Changes
 
-3. **Consider an explicit ultra-wide breakpoint** (e.g. `@media (min-width: 1600px) { .page { max-width: 1280px; } }`) rather than the suggested `clamp()` if you want the value to step rather than scale.
+2. **Consider an explicit ultra-wide breakpoint** (e.g. `@media (min-width: 1600px) { .page { max-width: 1280px; } }`) rather than the suggested `clamp()` if you want the value to step rather than scale.
 
-4. **Reduce timeline label verbosity** (low-priority polish) for the "B.Sc. Computer Science @ University of Somewhere" string — at 320px it crowds the rail. Either shorten the seed data, or reserve the full title for ≥480px and show a short label below.
+3. **Reduce timeline label verbosity** (low-priority polish) for the "B.Sc. Computer Science @ University of Somewhere" string — at 320px it crowds the rail. Either shorten the seed data, or reserve the full title for ≥480px and show a short label below.
 
 ## Status Definitions
 
@@ -228,6 +183,20 @@ All five CSS-driven transitions are clean. The site is **well-engineered at the 
 - Hero padding override: `max-width: 360px`.
 - Touch-target threshold used: 44×44px (Apple HIG / Material).
 - Breakpoint used: 7 transition boundaries probed at ±1px (599/601, 639/641, 719/721, 1199/1201) plus the special 360 hero override.
+
+## Verification
+
+After `src/components/Link.vue` was updated to add `min-height: 44px` and `padding-block: 0.75rem` on the `<a>` selector, the `Link` instances were re-measured at 320px (full hydration, 3s settle):
+
+| Link | Width | Height | Threshold |
+|---|---|---|---|
+| Project link "GitHub ↗" | 73 | **44** | ✓ |
+| Project link "Docs ↗" | 60 | **44** | ✓ |
+| Contact link `you@example.com ↗` | 165 | **51** | ✓ |
+| Contact link `@your-handle ↗` | 128 | **51** | ✓ |
+| Contact link `in/your-handle ↗` | 132 | **51** | ✓ |
+
+All five `Link` instances now meet the 44px touch-target guideline. The page-level overflow check at 320px remained clean: `scrollWidth === clientWidth === 320`.
 
 ## Methodology note
 

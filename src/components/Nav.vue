@@ -90,20 +90,13 @@ watch(activeId, () => {
               {{ item.label }}
             </a>
           </li>
-          <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
+          <span ref="indicatorEl" class="nav__indicator" />
         </ol>
       </Reveal>
     </template>
 
     <template v-else>
-      <button
-        class="nav__toggle"
-        type="button"
-        :aria-expanded="open"
-        aria-controls="nav-mobile"
-        aria-label="Toggle menu"
-        @click="open = !open"
-      >
+      <button class="nav__toggle" type="button" @click="open = !open">
         <Motion
           v-if="!open"
           key="menu"
@@ -131,9 +124,6 @@ watch(activeId, () => {
           v-if="open"
           id="nav-mobile"
           class="nav__overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site navigation"
           :initial="{ opacity: 0 }"
           :animate="{ opacity: 1 }"
           :exit="{ opacity: 0 }"

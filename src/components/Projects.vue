@@ -60,23 +60,14 @@ const detailVariants = slideFadeVariants();
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
     <div class="projects__layout">
       <Reveal>
-        <div
-          class="projects__list"
-          role="tablist"
-          aria-label="Projects"
-          aria-orientation="vertical"
-        >
+        <div class="projects__list">
           <button
             v-for="(p, i) in projects"
             :key="p.name"
             ref="tabs"
             :id="`project-tab-${i}`"
             class="projects__item"
-            role="tab"
             type="button"
-            :aria-selected="i === currentIndex"
-            :aria-controls="`project-panel-${i}`"
-            :tabindex="i === currentIndex ? 0 : -1"
             @click="goTo(i)"
             @keydown="(e) => onTabKey(e, i)"
           >
@@ -115,9 +106,6 @@ const detailVariants = slideFadeVariants();
             :transition="useReducedTransition()"
             :id="`project-panel-${currentIndex}`"
             class="projects__detail"
-            role="tabpanel"
-            :aria-labelledby="`project-tab-${currentIndex}`"
-            aria-live="polite"
           >
             <h3>{{ currentProject.name }}</h3>
             <p class="projects__detail-description">

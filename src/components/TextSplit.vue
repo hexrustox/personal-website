@@ -32,13 +32,8 @@ watch(inView, async (visible) => {
 
 <template>
   <div ref="view">
-    <component :is="tag" ref="scope" class="text-split" :aria-label="text">
-      <span
-        v-for="(line, li) in lines"
-        :key="li"
-        class="text-split__line"
-        aria-hidden="true"
-      >
+    <component :is="tag" ref="scope" class="text-split">
+      <span v-for="(line, li) in lines" :key="li" class="text-split__line">
         <span
           v-for="(c, ci) in Array.from(line)"
           :key="li + ':' + ci"

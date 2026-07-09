@@ -28,7 +28,7 @@ const ctaAnimate = computed(() =>
 </script>
 
 <template>
-  <section aria-label="Introduction">
+  <section>
     <RevealGroup :start="1" :step="0.5">
       <div class="hero">
         <div class="hero__stage">

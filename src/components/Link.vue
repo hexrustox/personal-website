@@ -4,7 +4,7 @@
   <a>
     <div class="link">
       <slot />
-      <span class="link__arrow" aria-hidden="true">↗</span>
+      <span class="link__arrow">↗</span>
     </div>
   </a>
 </template>

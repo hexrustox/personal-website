@@ -19,11 +19,11 @@
 | 1024px | **Pass** | Clean |
 | 1200px | **Pass** | About meta reflows 2-col → 4-col at this width |
 | 1280px | **Pass** | Clean (last "full-content-fit" width) |
-| 1440px | **Warn** | Page caps at 960px → 240px of empty margin per side |
-| 1920px | **Warn** | Page caps at 960px → 480px of empty margin per side |
-| 2560px | **Warn** | Page caps at 960px → 800px of empty margin per side; reads as "stranded" |
+| 1440px | **Pass** | Clean (post-fix) |
+| 1920px | **Pass** | Clean (post-fix) |
+| 2560px | **Pass** | Clean (post-fix) |
 
-**Overall**: 0 critical + 0 high + 1 medium + 2 low issues across 13 widths. The site is in good shape at every standard breakpoint; the only remaining issue is the hard-capped 960px page width that strands content on wide viewports (Medium). Every grid / nav transition is clean. An initial run reported a horizontal-overflow High at 320/360px, but a re-measurement on a fully-hydrated page showed zero overflow at every tested width — that finding was a pre-hydration measurement artifact (see [Methodology note](#methodology-note)).
+**Overall**: 0 critical + 0 high + 0 medium + 2 low issues across 13 widths. The site is in good shape at every standard breakpoint; only two low-severity polish items remain. Every grid / nav transition is clean. An initial run reported a horizontal-overflow High at 320/360px, but a re-measurement on a fully-hydrated page showed zero overflow at every tested width — that finding was a pre-hydration measurement artifact (see [Methodology note](#methodology-note)).
 
 ## Critical & High Issues
 
@@ -35,23 +35,9 @@ An initial run reported a horizontal-overflow High at 320px and 360px, attribute
 
 ## Medium Issues
 
-### Content stranded in narrow column on wide viewports — Medium
+No medium-severity issues remain.
 
-**Width(s)**: 1440px, 1920px, 2560px
-**Check**: Whitespace balance (check #7)
-
-`.page` in `index.astro:51` is `max-width: 960px; margin: 0 auto`. On a 1920 viewport this puts 480px of empty space on either side of a 960px content column — almost half the screen is dead pixels. The text and section headings look like they're floating in a desert.
-
-**Fix suggestion**: bump the cap so the layout can breathe. A `clamp()` value scales smoothly:
-
-```css
-/* index.astro .page */
-.page {
-  max-width: clamp(960px, 90vw, 1280px);
-}
-```
-
-This keeps the design tight on 1024/1280 (where 960px is correct) and grows it to 1280px on ultra-wide. Beyond 1280px there is genuinely no more content to fill — the type isn't getting bigger, and adding max-width without a use case doesn't help. Recommend 1280px as the new ceiling.
+The "content stranded in narrow column on wide viewports" issue flagged in the initial run was fixed by changing `.page` from `max-width: 960px` to `max-width: clamp(960px, 90vw, 1280px)` in `src/pages/index.astro:52`. At 1024×900 the content remains 960px wide (clamp lower bound); at 1280×900 it grows to 1152px (90vw); at 1440px and above it caps at 1280px. The fix was visually verified at 1280, 1440, 1920, and 2560 (see [Verification](#verification)).
 
 ---
 
@@ -100,7 +86,7 @@ At 641px the 5 nav items + 4 gaps × `clamp(0.5rem, 2vw, 2rem)` is `~5×1rem + 4
 | About meta: 2-col → 4-col | 1200px | **Yes** | `444px × 2` (1199) → `210px × 4` (1201). Clean. |
 | Hero padding override (`max-width: 360px`) | 360px | **Yes** | Tightens hero padding at the smallest phone widths. |
 
-All five CSS-driven transitions are clean. The site is **well-engineered at the breakpoint layer**; the only remaining issue is the page-level max-width (`.page` hard-capped at 960px).
+All five CSS-driven transitions are clean. The site is **well-engineered at the breakpoint layer**; no further layout issues remain after the touch-target and page-max-width fixes.
 
 ## Per-Breakpoint Notes
 
@@ -134,32 +120,23 @@ All five CSS-driven transitions are clean. The site is **well-engineered at the 
 
 - About meta goes 2-col → 4-col. Clean.
 
-### 1440px, 1920px, 2560px — Warn
+### 1440px, 1920px, 2560px — Pass
 
-- **[Medium]** Content stranded in a 960px column, ~25%/50%/83% of the screen is empty. Feels disconnected.
+No layout issues. Post-fix, the page width grows from 960px to 1280px via `clamp()`, so content fills the available space without becoming stranded.
 
-![1920px — content caps at 960px, 480px margins each side](.playwright-cli/resp-about-1920.png)
-
-### 2560px — Warn
-
-- Same as 1920 with even more margin (800px per side). At this size, the design is actively working against the user.
-
-![2560px — single line of text in a 2560px-wide ocean](.playwright-cli/resp-2560.png)
+![1920px — content now grows to 1280px, 320px margins each side](.playwright-cli/verify-about-1920-fixed.png)
 
 ## Recommendations
 
 ### Quick Fixes (CSS only)
 
-1. **Uncap the page on wide viewports** (`src/pages/index.astro:51`):
-   ```css
-   .page { max-width: clamp(960px, 90vw, 1280px); }
-   ```
+All quick fixes have been applied. See [Verification](#verification) for post-fix measurements.
 
 ### Structural Changes
 
-2. **Consider an explicit ultra-wide breakpoint** (e.g. `@media (min-width: 1600px) { .page { max-width: 1280px; } }`) rather than the suggested `clamp()` if you want the value to step rather than scale.
+1. **Consider an explicit ultra-wide breakpoint** (e.g. `@media (min-width: 1600px) { .page { max-width: 1280px; } }`) rather than the suggested `clamp()` if you want the value to step rather than scale.
 
-3. **Reduce timeline label verbosity** (low-priority polish) for the "B.Sc. Computer Science @ University of Somewhere" string — at 320px it crowds the rail. Either shorten the seed data, or reserve the full title for ≥480px and show a short label below.
+2. **Reduce timeline label verbosity** (low-priority polish) for the "B.Sc. Computer Science @ University of Somewhere" string — at 320px it crowds the rail. Either shorten the seed data, or reserve the full title for ≥480px and show a short label below.
 
 ## Status Definitions
 
@@ -173,7 +150,7 @@ All five CSS-driven transitions are clean. The site is **well-engineered at the 
 
 - Hero h1 font-size: `clamp(2.75rem, 12vw, 8rem)` — at 320 = 44px, at 1920 = 128px (capped at 8rem).
 - Hero h2 (section title): `clamp(1.75rem, 6.5vw, 4.5rem)` — at 320 = 28px, at 1920 = 72px.
-- Page max-width: 960px (fixed, not responsive).
+- Page max-width: `clamp(960px, 90vw, 1280px)` — 960px at 1024, scales to 1280px at 1440+.
 - Page section min-height: 100dvh.
 - Page section padding: `min(12vh, 8rem) clamp(1rem, 4vw, 1.5rem)`.
 - Nav breakpoint: `max-width: 640px` (hamburger ≤ 640, full ≥ 641).
@@ -186,6 +163,8 @@ All five CSS-driven transitions are clean. The site is **well-engineered at the 
 
 ## Verification
 
+### Touch targets (resolved)
+
 After `src/components/Link.vue` was updated to add `min-height: 44px` and `padding-block: 0.75rem` on the `<a>` selector, the `Link` instances were re-measured at 320px (full hydration, 3s settle):
 
 | Link | Width | Height | Threshold |
@@ -197,6 +176,20 @@ After `src/components/Link.vue` was updated to add `min-height: 44px` and `paddi
 | Contact link `in/your-handle ↗` | 132 | **51** | ✓ |
 
 All five `Link` instances now meet the 44px touch-target guideline. The page-level overflow check at 320px remained clean: `scrollWidth === clientWidth === 320`.
+
+### Page max-width (resolved)
+
+`src/pages/index.astro:52` was changed from `max-width: 960px` to `max-width: clamp(960px, 90vw, 1280px)`. Measured page widths after the fix:
+
+| Viewport | 90vw | Page width | Behavior |
+|---|---|---|---|
+| 1024px | 922px | **960px** | Clamp lower bound — unchanged from before |
+| 1280px | 1152px | **1152px** | Scales with viewport (90vw wins over 960px min) |
+| 1440px | 1296px | **1280px** | Clamp upper bound — caps at 1280px |
+| 1920px | 1728px | **1280px** | Clamp upper bound — 320px margin per side |
+| 2560px | 2304px | **1280px** | Clamp upper bound — 640px margin per side |
+
+Visual verification at 1280, 1440, 1920, and 2560 confirmed the 3-col Skills grid and 1:2 Projects grid remain balanced at the wider content width — no stretching, no awkward gaps. The fix is layout-stable.
 
 ## Methodology note
 

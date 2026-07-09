@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, nextTick } from "vue";
-import SectionHeading from "./SectionHeading.vue";
-import Link from "./Link.vue";
+import {
+  slideFadeVariants,
+  useReducedTransition,
+  type Direction,
+} from "../lib/motion";
 import { projects, type Project } from "../lib/projects";
+import { ref, computed, useTemplateRef, nextTick } from "vue";
 
-const activeIndex = ref(0);
-const active = computed<Project>(() => projects[activeIndex.value]!);
+const currentIndex = ref(0);
+const currentProject = computed<Project>(() => projects[currentIndex.value]!);
 const tabRefs = useTemplateRef<HTMLButtonElement[]>("tabs");
+const direction = ref<Direction>(1);
 
 async function goTo(i: number) {
+  if (i === currentIndex.value) return;
   const next = (i + projects.length) % projects.length;
-  activeIndex.value = next;
+  direction.value = next > currentIndex.value ? 1 : -1;
+  currentIndex.value = next;
   await nextTick();
   tabRefs.value?.[next]?.focus();
 }
@@ -37,67 +43,108 @@ function onTabKey(e: KeyboardEvent, i: number) {
       break;
   }
 }
+
+const inactiveIndexVariants = {
+  inactive: { opacity: 1, y: 0 },
+  current: { opacity: 0, y: "100%" },
+};
+const currentIndexVariants = {
+  inactive: { opacity: 0, y: "-100%" },
+  current: { opacity: 1, y: 0 },
+};
+
+const detailVariants = slideFadeVariants();
 </script>
 
 <template>
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
     <div class="projects__layout">
-      <div
-        class="projects__list"
-        role="tablist"
-        aria-label="Projects"
-        aria-orientation="vertical"
-      >
-        <button
-          v-for="(p, i) in projects"
-          :key="p.name"
-          ref="tabs"
-          :id="`project-tab-${i}`"
-          :class="{
-            projects__item: true,
-            'projects__item--active': i === activeIndex,
-          }"
-          role="tab"
-          type="button"
-          :aria-selected="i === activeIndex"
-          :aria-controls="`project-panel-${i}`"
-          :tabindex="i === activeIndex ? 0 : -1"
-          @click="goTo(i)"
-          @keydown="(e) => onTabKey(e, i)"
+      <Reveal>
+        <div
+          class="projects__list"
+          role="tablist"
+          aria-label="Projects"
+          aria-orientation="vertical"
         >
-          <span class="type-label projects__index">{{
-            String(i + 1).padStart(2, "0")
-          }}</span>
-          <span class="project__name">{{ p.name }}</span>
-        </button>
-      </div>
-      <section
-        :key="active.name"
-        :id="`project-panel-${activeIndex}`"
-        class="projects__detail"
-        role="tabpanel"
-        :aria-labelledby="`project-tab-${activeIndex}`"
-        aria-live="polite"
-      >
-        <h3>{{ active.name }}</h3>
-        <p class="projects__detail-description">{{ active.description }}</p>
-        <ul class="type-meta projects__detail-skills">
-          <li
-            v-for="skill in active.skills"
-            :key="skill"
-            class="projects__detail-skill"
+          <button
+            v-for="(p, i) in projects"
+            :key="p.name"
+            ref="tabs"
+            :id="`project-tab-${i}`"
+            class="projects__item"
+            role="tab"
+            type="button"
+            :aria-selected="i === currentIndex"
+            :aria-controls="`project-panel-${i}`"
+            :tabindex="i === currentIndex ? 0 : -1"
+            @click="goTo(i)"
+            @keydown="(e) => onTabKey(e, i)"
           >
-            {{ skill }}
-          </li>
-        </ul>
-        <ul class="projects__detail-links">
-          <li v-for="link in active.links" :key="link.url">
-            <Link :href="link.url" target="_blank" rel="noopener noreferrer">{{
-              link.name
-            }}</Link>
-          </li>
-        </ul>
-      </section>
+            <div class="projects__index">
+              <Motion
+                as="span"
+                class="type-label projects__index--inactive"
+                :variants="inactiveIndexVariants"
+                :animate="i === currentIndex ? 'current' : 'inactive'"
+                :transition="useReducedTransition()"
+                >{{ String(i + 1).padStart(2, "0") }}</Motion
+              >
+              <Motion
+                as="span"
+                class="type-label projects__index--current"
+                :variants="currentIndexVariants"
+                :animate="i === currentIndex ? 'current' : 'inactive'"
+                :transition="useReducedTransition()"
+                >{{ String(i + 1).padStart(2, "0") }}</Motion
+              >
+            </div>
+            <h3 class="projects__item-name">{{ p.name }}</h3>
+          </button>
+        </div>
+      </Reveal>
+      <Reveal>
+        <AnimatePresence mode="wait">
+          <Motion
+            as="section"
+            :key="currentProject.name"
+            :custom="direction"
+            :variants="detailVariants"
+            initial="enter"
+            animate="center"
+            exit="exit"
+            :transition="useReducedTransition()"
+            :id="`project-panel-${currentIndex}`"
+            class="projects__detail"
+            role="tabpanel"
+            :aria-labelledby="`project-tab-${currentIndex}`"
+            aria-live="polite"
+          >
+            <h3>{{ currentProject.name }}</h3>
+            <p class="projects__detail-description">
+              {{ currentProject.description }}
+            </p>
+            <ul class="type-meta projects__detail-skills">
+              <li
+                v-for="skill in currentProject.skills"
+                :key="skill"
+                class="projects__detail-skill"
+              >
+                {{ skill }}
+              </li>
+            </ul>
+            <ul class="projects__detail-links">
+              <li v-for="link in currentProject.links" :key="link.url">
+                <Link
+                  :href="link.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >{{ link.name }}</Link
+                >
+              </li>
+            </ul>
+          </Motion>
+        </AnimatePresence>
+      </Reveal>
     </div>
   </SectionHeading>
 </template>
@@ -122,14 +169,14 @@ function onTabKey(e: KeyboardEvent, i: number) {
   flex-direction: column;
 }
 
-@media (min-width: 720px) {
+@media (max-width: 720px) {
   .projects__list {
-    position: sticky;
-    top: 2rem;
+    padding-inline: 0.25rem;
   }
 }
 
 .projects__item {
+  position: relative;
   display: flex;
   align-items: baseline;
   gap: 1rem;
@@ -139,11 +186,34 @@ function onTabKey(e: KeyboardEvent, i: number) {
   cursor: pointer;
 }
 
-.project__name {
+.projects__index {
+  position: relative;
+  top: 2px;
+  display: flex;
+  align-items: baseline;
+}
+
+.projects__index--inactive,
+.projects__index--current {
+  font-variant-numeric: tabular-nums;
+}
+
+.projects__index--inactive {
+  position: relative;
+  color: var(--muted);
+}
+
+.projects__index--current {
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.projects__item-name {
   position: relative;
 }
 
-.project__name::after {
+.projects__item-name::after {
   position: absolute;
   content: "";
   width: 100%;
@@ -156,22 +226,12 @@ function onTabKey(e: KeyboardEvent, i: number) {
   transition: 200ms;
 }
 
-.projects__item:hover .project__name::after,
-.projects__item:focus-visible .project__name::after {
+.projects__item:hover .projects__item-name::after,
+.projects__item:focus-visible .projects__item-name::after {
   transform: scaleX(1);
 }
 
-.projects__index {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.projects__item--active .projects__index {
-  color: var(--accent);
-}
-
 .projects__detail {
-  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -186,7 +246,7 @@ function onTabKey(e: KeyboardEvent, i: number) {
 }
 
 .projects__detail-skill:not(:last-child)::after {
-  content: " · ";
+  content: " • ";
   margin-left: 0.5rem;
 }
 

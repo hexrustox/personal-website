@@ -1,11 +1,13 @@
 ---
-import AboutMe from "../components/AboutMe.vue";
-import Skills from "../components/Skills.vue";
-import Projects from "../components/Projects.vue";
-import Timeline from "../components/Timeline.vue";
-import Contact from "../components/Contact.vue";
-import "../styles/global.css";
-import "../styles/font.css";
+import AboutMe from "@components/AboutMe.vue";
+import Hero from "@components/Hero.vue";
+import Nav from "@components/Nav.vue";
+import Skills from "@components/Skills.vue";
+import Projects from "@components/Projects.vue";
+import Timeline from "@components/Timeline.vue";
+import Contact from "@components/Contact.vue";
+import "@styles/global.css";
+import "@styles/font.css";
 ---
 
 <!doctype html>
@@ -23,12 +25,24 @@ import "../styles/font.css";
     />
   </head>
   <body>
-    <main class="page">
-      <AboutMe />
-      <Skills />
-      <Projects client:idle />
-      <Timeline client:idle />
-      <Contact />
+    <Nav client:load />
+    <Hero client:load />
+    <main id="main" class="page">
+      <section id="about" class="page__section">
+        <AboutMe client:idle />
+      </section>
+      <section id="skills" class="page__section">
+        <Skills client:idle />
+      </section>
+      <section id="projects" class="page__section">
+        <Projects client:idle />
+      </section>
+      <section id="timeline" class="page__section">
+        <Timeline client:idle />
+      </section>
+      <section id="contact" class="page__section">
+        <Contact client:idle />
+      </section>
     </main>
   </body>
 </html>
@@ -37,10 +51,23 @@ import "../styles/font.css";
   .page {
     max-width: 960px;
     margin: 0 auto;
-    padding: min(12vh, 8rem) 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 12rem;
+  }
+
+  .page__section {
+    min-height: 100dvh;
+    padding: min(12vh, 8rem) clamp(1rem, 4vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .page__section {
+      min-height: auto !important;
+      padding: 4rem 1.5rem;
+    }
   }
 </style>

@@ -1,35 +1,43 @@
 <script setup lang="ts">
-import SectionHeader from "../components/SectionHeading.vue";
-import Link from "./Link.vue";
 import { contactMethods, contactMeta } from "../lib/contact";
 </script>
 
 <template>
-  <SectionHeader eyebrow="05 — CONTACT" title="Get in touch.">
-    <dl class="contact__list" aria-label="Other ways to reach me">
-      <div
-        v-for="method in contactMethods"
-        :key="method.name"
-        class="contact__item"
-      >
-        <dt class="contact__name">{{ method.name }}</dt>
-        <dd class="contact__handle-group">
-          <Link
-            class="contact__handle"
-            :href="method.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            >{{ method.handle }}</Link
-          >
-        </dd>
+  <SectionHeading eyebrow="05 — CONTACT" title="Get in touch.">
+    <dl class="contact__list">
+      <div v-for="method in contactMethods" :key="method.name">
+        <Reveal>
+          <div class="contact__item">
+            <dt class="contact__name">{{ method.name }}</dt>
+            <dd class="contact__handle-group">
+              <Link
+                class="contact__handle"
+                :href="method.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ method.handle }}</Link
+              >
+            </dd>
+          </div>
+        </Reveal>
+        <Reveal
+          :initial="{ scaleX: 0 }"
+          :animate="{ scaleX: 1 }"
+          :duration="0.3"
+          ease="linear"
+          class="contact__border"
+        >
+        </Reveal>
       </div>
     </dl>
 
-    <span class="type-meta">
-      {{ contactMeta.location }} · {{ contactMeta.availability }} ·
-      {{ contactMeta.responseTime }}
-    </span>
-  </SectionHeader>
+    <Reveal>
+      <span class="type-meta">
+        {{ contactMeta.location }} · {{ contactMeta.availability }} ·
+        {{ contactMeta.responseTime }}
+      </span>
+    </Reveal>
+  </SectionHeading>
 </template>
 
 <style scoped>
@@ -45,16 +53,18 @@ import { contactMethods, contactMeta } from "../lib/contact";
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 0;
-  border-top: 1px solid var(--border, var(--muted));
-}
-
-.contact__item:last-child {
-  border-bottom: 1px solid var(--border, var(--muted));
 }
 
 .contact__handle-group {
   display: inline-flex;
   align-items: baseline;
   gap: 0.5ch;
+}
+
+.contact__border {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  transform-origin: left;
 }
 </style>

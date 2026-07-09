@@ -1,28 +1,40 @@
 <script setup lang="ts">
-import { useScroll, useMotionValueEvent } from "motion-v";
-import { computed, ref, useTemplateRef } from "vue";
-import SectionHeader from "../components/SectionHeading.vue";
-import { events, groupEvents, endOf, type Event } from "../lib/timeline";
+import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
+import { events, groupEvents, endOf, type Event } from "../lib/timeline";
+import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
+import { computed, ref, useTemplateRef } from "vue";
 
 const containerRef = useTemplateRef("container");
 const { scrollYProgress } = useScroll({
   target: containerRef,
 });
 
+const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
+const VH_PER_MONTH = 4;
+const containerHeight = 80;
+const containerVh = computed(() => `${containerHeight}vh`);
+
 const sortedEvents = events
   .slice()
   .sort((a, b) => a.from.getTime() - b.from.getTime());
 const groups = groupEvents(sortedEvents);
 
-const timelineStartMs = groups[0][0]?.from.getTime();
+const timelineStartMs = groups[0][0]?.from.getTime() ?? 0;
 const totalSpanMs = new Date().getTime() - timelineStartMs;
-const cursorTime = ref(groups[0][0].from.getTime());
-const scrollPercent = ref(0);
+
+const y = useTransform(
+  scrollYProgress,
+  [0, 1],
+  [`0vh`, `${containerHeight}vh`],
+);
+
+const cursorTime = ref(timelineStartMs);
 useMotionValueEvent(scrollYProgress, "change", (progress) => {
   cursorTime.value = timelineStartMs + Math.round(totalSpanMs * progress);
-  scrollPercent.value = round(progress * 100, 2);
 });
+
+const cursorYear = computed(() => new Date(cursorTime.value).getFullYear());
 
 type EventIndex = {
   group: number;
@@ -52,29 +64,40 @@ const selectedEvent = computed<Event>(() => {
   const { group, event } = eventIndex.value;
   return groups[group][event];
 });
-const eventStartPercent = computed(() => {
-  return round(
+
+const eventPosition = computed(() => {
+  const start =
     ((selectedEvent.value.from.getTime() - timelineStartMs) / totalSpanMs) *
-      100,
-    2,
-  );
-});
-const eventEndPercent = computed(() => {
-  return round(
+    containerHeight;
+  const end =
     ((endOf(selectedEvent.value).getTime() - timelineStartMs) / totalSpanMs) *
-      100,
-    2,
-  );
+    containerHeight;
+  return {
+    start: `${start}vh`,
+    end: `${end}vh`,
+    height: `${end - start}vh`,
+  };
 });
 
-const MS_IN_MONTH = 1000 * 60 * 60 * 24 * 30;
-const VH_PER_MONTH = 4;
+const eventYears = computed(() => [
+  {
+    y: eventPosition.value.start,
+    key: selectedEvent.value.from.getFullYear(),
+    display: selectedEvent.value.from.getFullYear(),
+  },
+  {
+    y: eventPosition.value.end,
+    key: selectedEvent.value.to?.getFullYear() ?? "now",
+    display: selectedEvent.value.to?.getFullYear() ?? "Now",
+  },
+]);
 
 function jumpTo(event: Event) {
-  const targetTop = window.scrollY + containerRef.value!.getBoundingClientRect().top;
-  const targetProgress =
-    (event.from.getTime() - timelineStartMs) / totalSpanMs;
-  const targetScroll = targetTop + containerRef.value!.offsetHeight * targetProgress;
+  const targetTop =
+    window.scrollY + containerRef.value!.getBoundingClientRect().top;
+  const targetProgress = (event.from.getTime() - timelineStartMs) / totalSpanMs;
+  const targetScroll =
+    targetTop + containerRef.value!.offsetHeight * targetProgress;
   window.scrollTo({ top: targetScroll, behavior: "smooth" });
 }
 
@@ -86,7 +109,7 @@ function eventYearLabel(event: Event) {
 </script>
 
 <template>
-  <SectionHeader eyebrow="04 — TIMELINE" title="Where I've been.">
+  <SectionHeading eyebrow="04 — TIMELINE" title="Where I've been.">
     <ol class="visually-hidden" aria-label="Timeline events">
       <li v-for="(event, i) in sortedEvents" :key="i">
         <button type="button" @click="jumpTo(event)">
@@ -102,68 +125,73 @@ function eventYearLabel(event: Event) {
 
     <div
       ref="container"
-      :style="[
-        { height: `${round((totalSpanMs / MS_IN_MONTH) * VH_PER_MONTH, 2)}vh` },
-      ]"
+      :style="{
+        height: `${round((totalSpanMs / MS_IN_MONTH) * VH_PER_MONTH, 2)}vh`,
+      }"
       class="timeline"
     >
       <div class="timeline__inner" aria-hidden="true">
         <div class="timeline__year">
-          <div
-            :style="{ top: `${scrollPercent}%` }"
-            class="type-label timeline__year-label"
-          >
-            <div>
-              {{ new Date(cursorTime).getFullYear() }}
+          <Motion as="div" :style="{ y }">
+            <div class="type-label timeline__year-label">
+              <YearLabel :key-label="cursorYear" :display="cursorYear" />
+              <div class="timeline__year-mark"></div>
             </div>
-            <div class="timeline__year-mark"></div>
-          </div>
+          </Motion>
         </div>
         <div class="timeline__rail">
           <div class="timeline__rail-track"></div>
           <div class="timeline__rail-cap"></div>
-          <div class="timeline__rail-cap bottom"></div>
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
+          <div class="timeline__rail-cap"></div>
+          <Motion
+            as="div"
+            :animate="{ y: eventPosition.start, height: eventPosition.height }"
+            :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__rail-mark"
-          ></div>
-          <div
-            :style="{ top: `${eventEndPercent}%` }"
-            class="timeline__rail-mark"
-          ></div>
+          ></Motion>
         </div>
         <div class="timeline__event-years">
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
-            class="type-label timeline__event-year"
+          <Motion
+            as="div"
+            v-for="(entry, i) in eventYears"
+            :key="i"
+            :animate="{ y: entry.y }"
+            :transition="useReducedTransition({ type: 'tween' })"
           >
-            {{ selectedEvent.from.getFullYear() }}
-          </div>
-          <div
-            :style="{ top: `${eventEndPercent}%` }"
-            class="type-label timeline__event-year"
-          >
-            {{ selectedEvent.to?.getFullYear() ?? "Now" }}
-          </div>
+            <div
+              class="type-label timeline__event-year"
+              :class="{ first: i === 1 }"
+            >
+              <YearLabel :key-label="entry.key" :display="entry.display" />
+            </div>
+          </Motion>
         </div>
         <div class="timeline__event-detail">
-          <div
-            :style="{ top: `${eventStartPercent}%` }"
+          <Motion
+            as="div"
+            :animate="{ y: eventPosition.start }"
+            :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__event-body"
           >
-            <h3>{{ selectedEvent.title }}</h3>
-            <p>{{ selectedEvent.description }}</p>
-          </div>
+            <FadeOnKey :key-label="selectedEvent.title" mode="wait">
+              <h3>{{ selectedEvent.title }}</h3>
+              <p>{{ selectedEvent.description }}</p>
+            </FadeOnKey>
+          </Motion>
         </div>
       </div>
     </div>
-  </SectionHeader>
+  </SectionHeading>
 </template>
 
 <style scoped>
+.type-label {
+  font-variant-numeric: tabular-nums;
+}
+
 .timeline,
 .timeline__inner {
-  --height: 80vh;
+  --height: v-bind(containerVh);
 }
 
 .timeline {
@@ -174,19 +202,14 @@ function eventYearLabel(event: Event) {
 
 .timeline__inner {
   position: sticky;
-  top: 10vh;
+  top: calc((100vh - v-bind(containerVh)) / 2);
   display: flex;
   width: 100%;
   height: var(--height);
-}
-
-.timeline__year {
-  width: 4rem;
-  height: 100%;
+  gap: 0.5rem;
 }
 
 .timeline__year-label {
-  position: absolute;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -212,14 +235,10 @@ function eventYearLabel(event: Event) {
   height: 100%;
   background-image: repeating-linear-gradient(
     to bottom,
-    var(--muted) 0 1px,
+    var(--border) 0 1px,
     transparent 1px 9px
   );
-  border-right: 1px solid var(--muted);
-}
-
-.timeline__event-years {
-  margin-left: 1ch;
+  border-right: 1px solid var(--border);
 }
 
 .timeline__rail-cap {
@@ -227,19 +246,18 @@ function eventYearLabel(event: Event) {
   right: 0px;
   width: 10px;
   height: 1px;
-  background: var(--muted);
+  background: var(--border);
 }
 
-.timeline__rail-cap.bottom {
+.timeline__rail-cap:nth-child(2) {
   top: 100%;
 }
 
 .timeline__rail-mark {
   position: absolute;
   width: 100%;
-  height: 2px;
-  background: var(--accent);
-  transform: translateY(-50%);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  border-block: 1px solid var(--accent);
 }
 
 .timeline__event-year {
@@ -249,11 +267,11 @@ function eventYearLabel(event: Event) {
 }
 
 .timeline__event-detail {
-  margin-left: 6rem;
+  width: 100%;
 }
 
 .timeline__event-body {
-  position: absolute;
-  max-width: 72ch;
+  margin-top: 1rem;
+  margin-left: 2rem;
 }
 </style>

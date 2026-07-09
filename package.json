@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 4321",
+    "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "vue-tsc && astro check",
+    "fmt": "prettier -w src/"
   },
   "repository": {
     "type": "git",
@@ -23,21 +25,28 @@
     }
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
     "@astrojs/vue": "^6.0.1",
-    "astro": "^6.4.5",
+    "astro": "^6.4.8",
     "motion-v": "^2.3.0",
     "vue": "^3.5.38"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/language-server": "^2.16.10",
     "@astrojs/ts-plugin": "^1.10.9",
-    "@vue/tsconfig": "^0.9.1",
+    "@iconify/vue": "^5.0.1",
+    "@playwright/cli": "^0.1.15",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/node": "^26.1.0",
     "@vue/language-server": "^3.3.4",
+    "@vue/tsconfig": "^0.9.1",
     "@vue/typescript-plugin": "^3.3.4",
+    "playwright": "^1.61.1",
     "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
-    "typescript-language-server": "^5.3.0"
+    "typescript-language-server": "^5.3.0",
+    "unplugin-vue-components": "^32.1.0",
+    "vue-tsc": "^3.3.6"
   }
 }

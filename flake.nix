@@ -26,16 +26,16 @@
           apps.default = capsule-lib.app;
           devShells = {
             default = capsule-lib.mkShell {
-              image = "alpine:latest";
+              image = "mcr.microsoft.com/playwright:v1.61.0-noble";
               devShell = "container";
               socketPath = "/tmp/personal-website/ncap-socket";
               containerName = "personal-website";
               extraOptions = [
                 "-e"
                 "PNPM_HOME"
-                "-p"
-                "4321:4321"
+                "-p=3000:3000"
                 "--pid=host"
+                "-v=ms-playwright:/ms-playwright"
               ];
               wrappers = [
                 "node"
@@ -52,6 +52,10 @@
                 {
                   name = "prettier";
                   value = "pnpm exec prettier";
+                }
+                {
+                  name = "playwright-cli";
+                  value = "pnpm exec playwright-cli";
                 }
               ];
               preShellHook = ''

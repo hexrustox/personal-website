@@ -1,27 +1,38 @@
 <script setup lang="ts">
-import SectionHeading from "./SectionHeading.vue";
+import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { skillCategories } from "../lib/skills";
+import { useMediaQuery } from "../lib/useMediaQuery";
+
+const isDesktop = useMediaQuery("(min-width: 720px)");
 </script>
 
 <template>
   <SectionHeading eyebrow="02 — SKILLS" title="What I work with.">
-    <div class="skills__groups">
-      <section
-        v-for="category in skillCategories"
-        :key="category.title"
-        class="skills__group"
-        :aria-label="category.title"
-      >
-        <span class="type-eyebrow skills__group-title">{{
-          category.title
-        }}</span>
-        <ul class="skills__list">
-          <li v-for="skill in category.items" :key="skill" class="skills__chip">
-            {{ skill }}
-          </li>
-        </ul>
-      </section>
-    </div>
+    <RevealGroup :step="REVEAL_DEFAULT_STEP">
+      <div class="skills__groups">
+        <section
+          v-for="category in skillCategories"
+          :key="category.title"
+          class="skills__group"
+          :aria-label="category.title"
+        >
+          <Reveal :cascade="!isDesktop">
+            <span class="type-eyebrow skills__group-title">{{
+              category.title
+            }}</span>
+            <ul class="skills__list">
+              <li
+                v-for="skill in category.items"
+                :key="skill"
+                class="skills__chip"
+              >
+                {{ skill }}
+              </li>
+            </ul>
+          </Reveal>
+        </section>
+      </div>
+    </RevealGroup>
   </SectionHeading>
 </template>
 

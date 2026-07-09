@@ -2,6 +2,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 
 export function useMediaQuery(query: string) {
   const matches = ref(false);
+  const ready = ref(false);
   let mql: MediaQueryList | undefined;
   const onChange = (e: MediaQueryListEvent) => {
     matches.value = e.matches;
@@ -10,9 +11,10 @@ export function useMediaQuery(query: string) {
     mql = window.matchMedia(query);
     matches.value = mql.matches;
     mql.addEventListener("change", onChange);
+    ready.value = true;
   });
   onUnmounted(() => {
     mql?.removeEventListener("change", onChange);
   });
-  return matches;
+  return { matches, ready };
 }

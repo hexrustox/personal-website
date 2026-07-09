@@ -3,7 +3,9 @@ import { metaItems } from "../lib/about";
 import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { useMediaQuery } from "../lib/useMediaQuery";
 
-const isDesktop = useMediaQuery("(min-width: 1200px)");
+const { matches: isDesktop, ready: isReady } = useMediaQuery(
+  "(min-width: 1200px)",
+);
 </script>
 
 <template>
@@ -30,13 +32,13 @@ const isDesktop = useMediaQuery("(min-width: 1200px)");
 
     <Reveal>
       <dl class="about__meta">
-        <RevealGroup :step="REVEAL_DEFAULT_STEP">
+        <RevealGroup v-if="isReady" :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
           <div
             v-for="item in metaItems"
             :key="item.label"
             class="about__meta-item"
           >
-            <Reveal cascade :disable="!isDesktop">
+            <Reveal cascade>
               <dt class="type-eyebrow">{{ item.label }}</dt>
               <dd class="about__meta-value">{{ item.value }}</dd>
             </Reveal>

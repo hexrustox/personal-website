@@ -6,7 +6,7 @@ import { Icon } from "@iconify/vue";
 import { useAnimate } from "motion-v";
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
 
-const isMobile = useMediaQuery("(max-width: 640px)");
+const { matches: isMobile } = useMediaQuery("(max-width: 640px)");
 const open = ref(false);
 
 const activeId = useActiveSection(navItems.map((i) => i.id));

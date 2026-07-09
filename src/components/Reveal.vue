@@ -15,7 +15,7 @@ const props = withDefaults(
   }>(),
   {
     duration: 0.6,
-    delay: 0,
+    delay: 0.3,
     cascade: false,
     disable: false,
   },
@@ -27,11 +27,10 @@ const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
 
 <template>
   <Motion
-    v-if="!disable"
     class="reveal"
     :initial="initial ?? { opacity: 0, y: 12 }"
     :while-in-view="animate ?? { opacity: 1, y: 0 }"
-    :in-view-options="{ once: true, amount: 1 }"
+    :in-view-options="{ once: true }"
     :transition="
       useReducedTransition({
         duration: props.duration,
@@ -42,9 +41,6 @@ const cascadeDelay = (props.cascade ? cascadeCtx.next() : 0) + props.delay;
   >
     <slot />
   </Motion>
-  <div v-else>
-    <slot />
-  </div>
 </template>
 
 <style scoped>

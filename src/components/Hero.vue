@@ -103,7 +103,7 @@ const ctaAnimate = computed(() =>
   width: 100%;
   display: flex;
   justify-content: center;
-  bottom: 2rem;
+  bottom: 3rem;
 }
 
 @media (max-width: 360px) {
@@ -126,8 +126,6 @@ const ctaAnimate = computed(() =>
 
 .hero__cta-icon {
   display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 1.75rem;
 }
 </style>

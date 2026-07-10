@@ -8,6 +8,7 @@ import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
 
 const { matches: isMobile } = useMediaQuery("(max-width: 640px)");
 const open = ref(false);
+const originalOverflow = ref<string | null>(null);
 
 const activeId = useActiveSection(navItems.map((i) => i.id));
 
@@ -52,8 +53,14 @@ function onKey(e: KeyboardEvent) {
 
 watch(open, (v) => {
   if (typeof window === "undefined") return;
-  if (v) window.addEventListener("keydown", onKey);
-  else window.removeEventListener("keydown", onKey);
+  if (v) {
+    window.addEventListener("keydown", onKey);
+    originalOverflow.value = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  } else {
+    window.removeEventListener("keydown", onKey);
+    document.body.style.overflow = originalOverflow.value ?? "";
+  }
 });
 
 watch(isMobile, (v) => {
@@ -170,6 +177,12 @@ watch(activeId, () => {
   z-index: 1;
 }
 
+@media (max-width: 640px) {
+  .nav {
+    backdrop-filter: none;
+  }
+}
+
 .nav__list {
   position: relative;
   margin: 0;
@@ -200,8 +213,7 @@ watch(activeId, () => {
   position: fixed;
   top: calc(0.5rem + env(safe-area-inset-top));
   right: calc(0.5rem + env(safe-area-inset-right));
-  z-index: 3;
-  padding: 0.5rem;
+  z-index: 1;
   cursor: pointer;
   color: inherit;
   display: inline-flex;
@@ -209,8 +221,6 @@ watch(activeId, () => {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  background: transparent;
-  border: 0;
 }
 
 .nav__toggle-icon {
@@ -236,8 +246,6 @@ watch(activeId, () => {
   justify-content: flex-start;
   padding: clamp(4.5rem, 14vh, 6.5rem) clamp(1rem, 6vw, 2rem)
     clamp(1rem, 6vw, 2rem);
-  overflow: auto;
-  z-index: 2;
 }
 
 .nav__list--mobile {

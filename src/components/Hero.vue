@@ -94,13 +94,14 @@ const ctaAnimate = computed(() =>
 }
 
 .hero__tagline {
-  max-width: 48ch;
+  max-width: clamp(20rem, 60vw, 48rem);
   opacity: 0.8;
 }
 
 .hero__cta {
   position: absolute;
-  width: 100%;
+  inset-inline: 0;
+  width: auto;
   display: flex;
   justify-content: center;
   bottom: 3rem;

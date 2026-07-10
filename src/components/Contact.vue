@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { contactMethods, contactMeta } from "../data/contact";
+import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -8,7 +9,12 @@ import { contactMethods, contactMeta } from "../data/contact";
       <div v-for="method in contactMethods" :key="method.name">
         <Reveal>
           <div class="contact__item">
-            <dt class="contact__name">{{ method.name }}</dt>
+            <dt class="contact__name">
+              {{ method.name }}
+              <div class="contact__name-icon">
+                <Icon :icon="method.icon" />
+              </div>
+            </dt>
             <dd class="contact__handle-group">
               <Link
                 class="contact__handle"
@@ -53,6 +59,19 @@ import { contactMethods, contactMeta } from "../data/contact";
   justify-content: space-between;
   gap: 1rem;
   padding: 0 0.5rem;
+}
+
+.contact__name {
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+}
+
+.contact__name-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
 }
 
 .contact__handle-group {

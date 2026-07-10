@@ -2,6 +2,7 @@ export interface ContactMethod {
   name: string;
   handle: string;
   url: string;
+  icon: string;
 }
 
 export interface ContactMeta {
@@ -15,11 +16,13 @@ export const contactMethods: ContactMethod[] = [
     name: "Email",
     handle: "career.kw2ddw@ckhgy.com",
     url: "mailto:career.kw2ddw@ckhgy.com",
+    icon: "ic:outline-email",
   },
   {
     name: "GitLab",
     handle: "@codnixus",
     url: "https://gitlab.com/codnixus",
+    icon: "ri:gitlab-line",
   },
 ];
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { tagline, title } from "../data/hero";
 import { useReducedTransition } from "../lib/motion";
+import { Icon } from "@iconify/vue";
 import { useReducedMotion } from "motion-v";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
@@ -58,7 +59,12 @@ const ctaAnimate = computed(() =>
                     })
                   "
                 >
-                  Scroll Down
+                  <div class="hero__cta-label">
+                    <div>Scroll Down</div>
+                    <div class="hero__cta-icon">
+                      <Icon icon="basil:caret-down-solid" />
+                    </div>
+                  </div>
                 </Motion>
               </Motion>
             </AnimatePresence>
@@ -110,5 +116,18 @@ const ctaAnimate = computed(() =>
   .hero__cta {
     bottom: 1rem;
   }
+}
+
+.hero__cta-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__cta-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.75rem;
 }
 </style>

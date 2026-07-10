@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { skillCategories } from "../data/skills";
+import { REVEAL_DEFAULT_STEP } from "../lib/motion";
 import { useMediaQuery } from "../lib/useMediaQuery";
 
 const { matches: isDesktop, ready: isReady } =

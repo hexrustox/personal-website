@@ -8,52 +8,13 @@ import Timeline from "@components/Timeline.vue";
 import Contact from "@components/Contact.vue";
 import "@styles/global.css";
 import "@styles/font.css";
-import { meta } from "../data/meta";
-
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: meta.author,
-  jobTitle: meta.jobTitle,
-  url: meta.url,
-  sameAs: meta.sameAs,
-  knowsAbout: meta.knowsAbout,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Birmingham",
-    addressCountry: "GB",
-  },
-};
-
-const siteJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: meta.siteName,
-  url: meta.url,
-  inLanguage: "en-GB",
-};
-
-const pageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: meta.title,
-  description: meta.description,
-  url: meta.url,
-  inLanguage: "en-GB",
-  isPartOf: { "@id": meta.url },
-};
-
-const contactPageJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ContactPage",
-  name: "Contact C.H. Yu",
-  description:
-    "Get in touch with C.H. Yu — generalist software engineer in Birmingham, UK.",
-  url: `${meta.url}#contact`,
-  inLanguage: "en-GB",
-  isPartOf: { "@id": meta.url },
-  about: { "@type": "Person", name: meta.author },
-};
+import {
+  meta,
+  personJsonLd,
+  siteJsonLd,
+  pageJsonLd,
+  contactPageJsonLd,
+} from "../data/meta";
 ---
 
 <!doctype html>

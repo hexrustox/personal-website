@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { projects, type Project } from "../data/projects";
 import {
   slideFadeVariants,
   useReducedTransition,
   type Direction,
 } from "../lib/motion";
-import { projects, type Project } from "../data/projects";
 import { ref, computed, useTemplateRef, nextTick } from "vue";
 
 const currentIndex = ref(0);

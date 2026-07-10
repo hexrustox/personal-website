@@ -2,7 +2,6 @@
 import { useReducedTransition } from "../lib/motion";
 import { navItems, useActiveSection } from "../lib/nav";
 import { useMediaQuery } from "../lib/useMediaQuery";
-import { Icon } from "@iconify/vue";
 import { useAnimate } from "motion-v";
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
 
@@ -116,7 +115,7 @@ watch(activeId, () => {
           :animate="{ opacity: 1, x: 0 }"
           :transition="useReducedTransition()"
         >
-          <Icon icon="material-symbols:menu-rounded" />
+          <Icon name="menu" />
         </Motion>
         <Motion
           v-if="open"
@@ -126,7 +125,7 @@ watch(activeId, () => {
           :animate="{ opacity: 1, x: 0 }"
           :transition="useReducedTransition()"
         >
-          <Icon icon="material-symbols:close-rounded" />
+          <Icon name="close" />
         </Motion>
       </button>
 

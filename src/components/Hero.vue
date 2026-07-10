@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { tagline, title } from "../data/hero";
 import { useReducedTransition } from "../lib/motion";
-import { Icon } from "@iconify/vue";
 import { useReducedMotion } from "motion-v";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
@@ -62,7 +61,7 @@ const ctaAnimate = computed(() =>
                   <div class="hero__cta-label">
                     <div>Scroll Down</div>
                     <div class="hero__cta-icon">
-                      <Icon icon="basil:caret-down-solid" />
+                      <Icon name="caret-down" />
                     </div>
                   </div>
                 </Motion>

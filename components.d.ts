@@ -16,6 +16,7 @@ declare module 'vue' {
     Contact: typeof import('./src/components/Contact.vue')['default']
     FadeOnKey: typeof import('./src/components/FadeOnKey.vue')['default']
     Hero: typeof import('./src/components/Hero.vue')['default']
+    Icon: typeof import('./src/components/Icon.vue')['default']
     Link: typeof import('./src/components/Link.vue')['default']
     Motion: typeof import('motion-v')['Motion']
     Nav: typeof import('./src/components/Nav.vue')['default']

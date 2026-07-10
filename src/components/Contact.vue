@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { contactMethods, contactMeta } from "../data/contact";
-import { Icon } from "@iconify/vue";
 </script>
 
 <template>
@@ -12,7 +11,7 @@ import { Icon } from "@iconify/vue";
             <dt class="contact__name">
               {{ method.name }}
               <div class="contact__name-icon">
-                <Icon :icon="method.icon" />
+                <Icon :name="method.icon" />
               </div>
             </dt>
             <dd class="contact__handle-group">

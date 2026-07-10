@@ -2,7 +2,6 @@
 import { events, groupEvents, endOf, type Event } from "../data/timeline";
 import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
-import { Icon } from "@iconify/vue";
 import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 
@@ -126,7 +125,7 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
                 <YearLabel :key-label="cursorYear" :display="cursorYear" />
               </div>
               <div class="timeline__year-label-caret">
-                <Icon icon="boxicons:caret-right" />
+                <Icon name="caret-right" />
               </div>
             </div>
           </Motion>

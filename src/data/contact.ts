@@ -16,13 +16,13 @@ export const contactMethods: ContactMethod[] = [
     name: "Email",
     handle: "career.kw2ddw@ckhgy.com",
     url: "mailto:career.kw2ddw@ckhgy.com",
-    icon: "ic:outline-email",
+    icon: "email",
   },
   {
     name: "GitLab",
     handle: "@codnixus",
     url: "https://gitlab.com/codnixus",
-    icon: "ri:gitlab-line",
+    icon: "gitlab",
   },
 ];
 

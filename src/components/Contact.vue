@@ -55,10 +55,19 @@ import { Icon } from "@iconify/vue";
 
 .contact__item {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
   padding: 0 0.5rem;
+}
+
+@media (max-width: 375px) {
+  .contact__item {
+    flex-direction: column;
+    gap: 0;
+  }
+  .contact__name {
+    margin-top: 0.5rem;
+  }
 }
 
 .contact__name {
@@ -69,8 +78,6 @@ import { Icon } from "@iconify/vue";
 
 .contact__name-icon {
   display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 1.2rem;
 }
 

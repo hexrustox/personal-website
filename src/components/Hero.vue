@@ -35,7 +35,7 @@ const ctaAnimate = computed(() =>
         <div class="hero__stage">
           <TextSplit :text="title" tag="h1" class="hero__title" />
           <Reveal cascade>
-            <h3 class="hero__tagline">{{ tagline }}</h3>
+            <p class="hero__tagline">{{ tagline }}</p>
           </Reveal>
         </div>
         <div class="hero__cta">
@@ -94,8 +94,10 @@ const ctaAnimate = computed(() =>
 }
 
 .hero__tagline {
-  max-width: clamp(20rem, 60vw, 48rem);
-  opacity: 0.8;
+  max-width: clamp(20rem, 60vw, 48ch);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--muted);
 }
 
 .hero__cta {

@@ -9,24 +9,102 @@ import Contact from "@components/Contact.vue";
 import "@styles/global.css";
 import "@styles/font.css";
 import { meta } from "../data/meta";
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: meta.author,
+  jobTitle: meta.jobTitle,
+  url: meta.url,
+  sameAs: meta.sameAs,
+  knowsAbout: meta.knowsAbout,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Birmingham",
+    addressCountry: "GB",
+  },
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: meta.siteName,
+  url: meta.url,
+  inLanguage: "en-GB",
+};
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: meta.title,
+  description: meta.description,
+  url: meta.url,
+  inLanguage: "en-GB",
+  isPartOf: { "@id": meta.url },
+};
+
+const contactPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact C.H. Yu",
+  description:
+    "Get in touch with C.H. Yu — generalist software engineer in Birmingham, UK.",
+  url: `${meta.url}#contact`,
+  inLanguage: "en-GB",
+  isPartOf: { "@id": meta.url },
+  about: { "@type": "Person", name: meta.author },
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={meta.description} />
     <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <link rel="canonical" href={meta.url} />
+    <meta name="theme-color" content={meta.themeColor} />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={meta.siteName} />
+    <meta property="og:url" content={meta.url} />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:locale" content={meta.locale} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={meta.title} />
+    <meta name="twitter:description" content={meta.description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap"
     />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(siteJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(pageJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(contactPageJsonLd)}
+    />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Nav client:load />
     <Hero client:load />
     <main id="main" class="page">
@@ -46,6 +124,9 @@ import { meta } from "../data/meta";
         <Contact client:idle />
       </section>
     </main>
+    <footer class="site-footer">
+      <p class="type-meta">© {new Date().getFullYear()} {meta.author}.</p>
+    </footer>
   </body>
 </html>
 
@@ -71,5 +152,26 @@ import { meta } from "../data/meta";
       min-height: auto !important;
       padding: 4rem 1.5rem;
     }
+  }
+
+  .skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transform: translateY(-100%);
+    z-index: 1;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .site-footer {
+    max-width: clamp(960px, 90vw, 1280px);
+    margin: 0 auto;
+    padding: 1.5rem clamp(1rem, 4vw, 1.5rem) 2rem;
+    color: var(--muted);
   }
 </style>

@@ -8,13 +8,6 @@ import Timeline from "@components/Timeline.vue";
 import Contact from "@components/Contact.vue";
 import "@styles/global.css";
 import "@styles/font.css";
-import {
-  meta,
-  personJsonLd,
-  siteJsonLd,
-  pageJsonLd,
-  contactPageJsonLd,
-} from "../data/meta";
 ---
 
 <!doctype html>
@@ -23,20 +16,6 @@ import {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{meta.title}</title>
-    <meta name="description" content={meta.description} />
-    <link rel="canonical" href={meta.url} />
-    <meta name="theme-color" content={meta.themeColor} />
-    <meta name="color-scheme" content="dark" />
-    <meta property="og:type" content="profile" />
-    <meta property="og:site_name" content={meta.siteName} />
-    <meta property="og:url" content={meta.url} />
-    <meta property="og:title" content={meta.title} />
-    <meta property="og:description" content={meta.description} />
-    <meta property="og:locale" content={meta.locale} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={meta.title} />
-    <meta name="twitter:description" content={meta.description} />
     <link
       rel="preload"
       href="/fonts/InterVariable.woff2"
@@ -50,26 +29,6 @@ import {
       as="font"
       type="font/woff2"
       crossorigin
-    />
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(personJsonLd)}
-    />
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(siteJsonLd)}
-    />
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(pageJsonLd)}
-    />
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(contactPageJsonLd)}
     />
   </head>
   <body>
@@ -94,7 +53,7 @@ import {
       </section>
     </main>
     <footer class="site-footer">
-      <p class="type-meta">© {new Date().getFullYear()} {meta.author}.</p>
+      <p class="type-meta">© {new Date().getFullYear()} {}.</p>
     </footer>
   </body>
 </html>

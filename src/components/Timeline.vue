@@ -2,6 +2,7 @@
 import { events, groupEvents, endOf, type Event } from "../data/timeline";
 import { useReducedTransition } from "../lib/motion";
 import { round } from "../lib/round";
+import { Icon } from "@iconify/vue";
 import { useScroll, useTransform, useMotionValueEvent } from "motion-v";
 import { computed, ref, useTemplateRef } from "vue";
 
@@ -121,8 +122,12 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
         <div class="timeline__year">
           <Motion as="div" :style="{ y }">
             <div class="type-label timeline__year-label">
-              <YearLabel :key-label="cursorYear" :display="cursorYear" />
-              <div class="timeline__year-mark"></div>
+              <div class="timeline__year-label-text">
+                <YearLabel :key-label="cursorYear" :display="cursorYear" />
+              </div>
+              <div class="timeline__year-label-caret">
+                <Icon icon="boxicons:caret-right" />
+              </div>
             </div>
           </Motion>
         </div>
@@ -186,6 +191,7 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
 <style scoped>
 .type-label {
   font-variant-numeric: tabular-nums;
+  line-height: 0;
 }
 
 .timeline,
@@ -205,20 +211,16 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
   display: flex;
   width: 100%;
   height: var(--height);
-  gap: 0.5rem;
 }
 
 .timeline__year-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   transform: translateY(-50%);
 }
 
-.timeline__year-mark {
-  width: 12px;
-  height: 2px;
-  background: var(--text);
+.timeline__year-label-caret {
+  font-size: 1.2rem;
 }
 
 .timeline__rail {
@@ -259,10 +261,29 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
   border-block: 1px solid var(--accent);
 }
 
+.timeline__event-years {
+  position: relative;
+  margin-left: 0.5rem;
+}
+
 .timeline__event-year {
-  position: absolute;
   color: var(--accent);
   transform: translateY(-50%);
+}
+
+.timeline__event-year.first {
+  position: absolute;
+}
+
+@media (max-width: 600px) {
+  .timeline {
+    padding-inline: 0;
+  }
+
+  .timeline__year-label-text,
+  .timeline__event-years {
+    display: none;
+  }
 }
 
 .timeline__event-detail {
@@ -270,8 +291,7 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
 }
 
 .timeline__event-body {
-  margin-top: 1rem;
-  margin-left: 3rem;
+  margin-left: 1rem;
 }
 
 .timeline__event-links {

@@ -53,12 +53,6 @@ const { matches: isDesktop, ready: isReady } = useMediaQuery(
   }
 }
 
-@media (min-width: 960px) {
-  .about__meta {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 1200px) {
   .about__meta {
     grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -75,7 +75,7 @@ import {
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav client:load />
-    <Hero client:load />
+    <Hero client:idle />
     <main id="main" class="page">
       <section id="about" class="page__section">
         <AboutMe client:idle />
@@ -125,12 +125,13 @@ import {
 
   .skip-link {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    left: calc(0.5rem + env(safe-area-inset-right));
     padding: 0.5rem 1rem;
+    color: inherit;
     text-decoration: none;
     transform: translateY(-100%);
-    z-index: 1;
+    z-index: 2;
   }
 
   .skip-link:focus {

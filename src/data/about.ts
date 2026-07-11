@@ -1,3 +1,5 @@
+import { role, location, availability } from "./meta";
+
 export type MetaItem = { label: string; value: string };
 
 export type AboutContent = { heading: string; paragraphs: string[] };
@@ -12,8 +14,8 @@ export const about: AboutContent = {
 };
 
 export const metaItems: MetaItem[] = [
-  { label: "Location", value: "Birmingham, UK" },
-  { label: "Role", value: "Software Engineer" },
+  { label: "Location", value: location },
+  { label: "Role", value: role },
   { label: "Focus", value: "Breadth-first engineering" },
-  { label: "Currently", value: "Open to work" },
+  { label: "Currently", value: availability },
 ];

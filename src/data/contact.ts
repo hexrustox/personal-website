@@ -1,3 +1,5 @@
+import { location, availability } from "./meta";
+
 export interface ContactMethod {
   name: string;
   handle: string;
@@ -27,7 +29,7 @@ export const contactMethods: ContactMethod[] = [
 ];
 
 export const contactMeta: ContactMeta = {
-  location: "Based in Birmingham, UK",
-  availability: "Open to work",
+  location: `Based in ${location}`,
+  availability,
   responseTime: "Replies within 48h",
 };

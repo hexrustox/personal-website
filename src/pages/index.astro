@@ -1,4 +1,45 @@
 ---
+import {
+  name,
+  role,
+  city,
+  country,
+  description as DESCRIPTION,
+} from "../data/meta";
+
+const TITLE = `${name} — ${role}`;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name,
+  url: Astro.site,
+  jobTitle: role,
+  homeLocation: {
+    "@type": "Place",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: city,
+      addressCountry: country,
+    },
+  },
+  knowsAbout: [
+    "Software Engineering",
+    "Web Development",
+    "Linux",
+    "Developer Tooling",
+    "Artificial Intelligence",
+  ],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name,
+  url: Astro.site,
+  description: DESCRIPTION,
+};
+
 import AboutMe from "@components/AboutMe.vue";
 import Hero from "@components/Hero.vue";
 import Nav from "@components/Nav.vue";
@@ -15,6 +56,19 @@ import "@styles/font.css";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{TITLE}</title>
+    <meta name="description" content={DESCRIPTION} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={Astro.site} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={TITLE} />
+    <meta property="og:description" content={DESCRIPTION} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.site} />
+    <meta property="og:site_name" content={name} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={TITLE} />
+    <meta name="twitter:description" content={DESCRIPTION} />
     <meta name="generator" content={Astro.generator} />
     <link
       rel="preload"
@@ -30,30 +84,40 @@ import "@styles/font.css";
       type="font/woff2"
       crossorigin
     />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteSchema)}
+    />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav client:load />
-    <Hero client:idle />
+    <Hero client:load />
     <main id="main" class="page">
       <section id="about" class="page__section">
-        <AboutMe client:idle />
+        <AboutMe client:load />
       </section>
       <section id="skills" class="page__section">
-        <Skills client:idle />
+        <Skills client:load />
       </section>
       <section id="projects" class="page__section">
-        <Projects client:idle />
+        <Projects client:load />
       </section>
       <section id="timeline" class="page__section">
-        <Timeline client:idle />
+        <Timeline client:load />
       </section>
       <section id="contact" class="page__section">
-        <Contact client:idle />
+        <Contact client:load />
       </section>
     </main>
     <footer class="site-footer">
-      <p class="type-meta">© {new Date().getFullYear()} {}.</p>
+      <p class="type-meta">© {new Date().getFullYear()} {name}.</p>
     </footer>
   </body>
 </html>

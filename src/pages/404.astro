@@ -1,0 +1,100 @@
+---
+import Link from "@components/Link.vue";
+import "@styles/global.css";
+import "@styles/font.css";
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/InterVariable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/SpaceGrotesk-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <main id="main" class="not-found" tabindex="-1">
+      <div class="not-found__stage">
+        <p class="not-found__code">404</p>
+        <h1 class="not-found__title">Page not found</h1>
+        <p class="not-found__copy">
+          The page you’re looking for doesn’t exist or has moved.
+        </p>
+        <div class="not-found__action">
+          <Link href="/">Back to home</Link>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style scoped>
+  .not-found {
+    max-width: clamp(960px, 90vw, 1280px);
+    margin: 0 auto;
+    min-height: 100dvh;
+    padding: min(12vh, 8rem) clamp(1rem, 4vw, 1.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .not-found__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 2vh, 1.5rem);
+    text-align: center;
+  }
+
+  .not-found__eyebrow {
+    color: var(--muted);
+  }
+
+  .not-found__code {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(5rem, 18vw, 10rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .not-found__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .not-found__copy {
+    max-width: 48ch;
+    color: var(--muted);
+  }
+
+  .not-found__action {
+    margin-top: clamp(0.5rem, 1.5vh, 1rem);
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    .not-found {
+      min-height: auto;
+      padding: 4rem 1.5rem;
+    }
+  }
+</style>

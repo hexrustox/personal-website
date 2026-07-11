@@ -136,23 +136,29 @@ watch(activeId, () => {
   <nav class="nav" aria-label="Main">
     <template v-if="!isMobile">
       <Reveal :initial="{ opacity: 0 }" :animate="{ opacity: 1 }" :delay="2">
-        <ol class="nav__list" ref="listEl">
-          <li
-            v-for="item in navItems"
-            :key="item.id"
-            class="nav__item"
-            ref="itemRefs"
-          >
-            <a
-              :href="item.href"
-              class="nav__link"
-              :aria-current="item.id === activeId ? 'location' : undefined"
+        <div class="nav__inner">
+          <div class="nav__span">
+            <img src="/logo.svg" alt="" aria-hidden="true" class="nav__logo" />
+          </div>
+          <ol class="nav__list" ref="listEl">
+            <li
+              v-for="item in navItems"
+              :key="item.id"
+              class="nav__item"
+              ref="itemRefs"
             >
-              {{ item.label }}
-            </a>
-          </li>
-          <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
-        </ol>
+              <a
+                :href="item.href"
+                class="nav__link"
+                :aria-current="item.id === activeId ? 'location' : undefined"
+              >
+                {{ item.label }}
+              </a>
+            </li>
+            <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
+          </ol>
+          <div class="nav__span" />
+        </div>
       </Reveal>
     </template>
 
@@ -203,6 +209,12 @@ watch(activeId, () => {
           :transition="useReducedTransition()"
           @click.self="close"
         >
+          <img
+            src="/logo.svg"
+            alt=""
+            aria-hidden="true"
+            class="nav__logo--mobile"
+          />
           <ol class="nav__list--mobile">
             <li
               v-for="(item, i) in navItems"
@@ -238,6 +250,8 @@ watch(activeId, () => {
 
 <style scoped>
 .nav {
+  --nav-edge: 0.5rem;
+  --nav-chrome-size: 2.5rem;
   position: fixed;
   inset: 0 0 auto 0;
   padding-block: 0.5rem;
@@ -249,6 +263,23 @@ watch(activeId, () => {
   .nav {
     backdrop-filter: none;
   }
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  padding-inline: clamp(0.5rem, 2vw, 1rem);
+}
+
+.nav__span {
+  width: 100%;
+}
+
+.nav__logo {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
 }
 
 .nav__list {
@@ -279,16 +310,16 @@ watch(activeId, () => {
 
 .nav__toggle {
   position: fixed;
-  top: calc(0.5rem + env(safe-area-inset-top));
-  right: calc(0.5rem + env(safe-area-inset-right));
+  top: calc(var(--nav-edge) + env(safe-area-inset-top));
+  right: calc(var(--nav-edge) + env(safe-area-inset-right));
   z-index: 1;
   cursor: pointer;
   color: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--nav-chrome-size);
+  height: var(--nav-chrome-size);
 }
 
 .nav__toggle-icon {
@@ -310,10 +341,14 @@ watch(activeId, () => {
   background: var(--bg);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  padding: clamp(4.5rem, 14vh, 6.5rem) clamp(1rem, 6vw, 2rem)
-    clamp(1rem, 6vw, 2rem);
+  gap: 4rem;
+  padding-inline: clamp(1rem, 6vw, 2rem);
+}
+
+.nav__logo--mobile {
+  width: var(--nav-chrome-size);
+  height: var(--nav-chrome-size);
+  margin-top: calc(var(--nav-edge) + env(safe-area-inset-top));
 }
 
 .nav__list--mobile {

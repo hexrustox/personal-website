@@ -52,6 +52,7 @@
 - A `playwright-cli` skill ships at `.agents/skills/playwright-cli/SKILL.md` — load it for the full command reference. Bare essentials: `playwright-cli open [url]`, `playwright-cli snapshot`, `playwright-cli click <ref>`, `playwright-cli close`.
 - **Only Firefox is available in this dev environment** (the Nix flake builds the shell on `mcr.microsoft.com/playwright:v1.61.0-noble` with only the firefox browser installed). Always pass `--browser firefox` to `playwright-cli open`, e.g. `playwright-cli open http://localhost:3000 --browser firefox`. Chrome / webkit / msedge will fail.
 - Snapshots and console logs land in `.playwright-cli/` (gitignored). `test-results/` is also playwright-cli scratch — both are safe to delete.
+- **Store all playwright-cli artifacts in `.playwright-cli/` (relative to repo root). Do not use `/tmp` or any other temp directory** — this keeps everything inside the project, gitignored in one place, and easy to clean up. If a sub-tool writes outside the project, redirect its output (e.g. set `PLAYWRIGHT_CLI_OUTPUT_DIR=.playwright-cli` or pass an explicit `--output` flag) rather than scattering artifacts across the filesystem.
 
 ## Dev environment
 

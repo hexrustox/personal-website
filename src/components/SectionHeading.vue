@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useReducedTransition } from "../lib/motion";
 
-let props = defineProps<{
+const props = defineProps<{
   eyebrow: string;
   title: string;
 }>();

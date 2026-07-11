@@ -113,17 +113,17 @@ watch(isMobile, (v) => {
   if (!v) close();
 });
 
+function onResize() {
+  updateIndicator(false);
+}
+
 onMounted(() => {
   updateIndicator();
-  window.addEventListener("resize", () => {
-    updateIndicator(false);
-  });
+  window.addEventListener("resize", onResize);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", () => {
-    updateIndicator(false);
-  });
+  window.removeEventListener("resize", onResize);
   window.removeEventListener("keydown", onTrapKey);
 });
 

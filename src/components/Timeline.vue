@@ -98,7 +98,7 @@ const eventYears = computed(() => [
   },
 ]);
 
-const dateRangeFormatter = new Intl.DateTimeFormat("en-UK", {
+const dateRangeFormatter = new Intl.DateTimeFormat("en-GB", {
   month: "short",
   year: "numeric",
 });

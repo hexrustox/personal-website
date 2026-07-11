@@ -67,6 +67,6 @@ watch(inView, async (visible) => {
 
 .text-split__char-inner {
   display: inline-block;
-  will-change: transform, opacity;
+  opacity: 0;
 }
 </style>

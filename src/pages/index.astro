@@ -99,20 +99,20 @@ import "@styles/font.css";
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav client:load />
     <Hero client:load />
-    <main id="main" class="page">
-      <section id="about" class="page__section">
+    <main id="main" class="page" tabindex="-1">
+      <section id="about" class="page__section" aria-label="About">
         <AboutMe client:load />
       </section>
-      <section id="skills" class="page__section">
+      <section id="skills" class="page__section" aria-label="Skills">
         <Skills client:load />
       </section>
-      <section id="projects" class="page__section">
+      <section id="projects" class="page__section" aria-label="Projects">
         <Projects client:load />
       </section>
-      <section id="timeline" class="page__section">
+      <section id="timeline" class="page__section" aria-label="Timeline">
         <Timeline client:load />
       </section>
-      <section id="contact" class="page__section">
+      <section id="contact" class="page__section" aria-label="Contact">
         <Contact client:load />
       </section>
     </main>

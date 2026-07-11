@@ -66,6 +66,11 @@ const selectedEvent = computed<Event>(() => {
   return groups[group][event];
 });
 
+const selectedKey = computed(() => {
+  const e = selectedEvent.value;
+  return `${e.title}-${e.from.getTime()}`;
+});
+
 const eventPosition = computed(() => {
   const start =
     ((selectedEvent.value.from.getTime() - timelineStartMs) / totalSpanMs) *
@@ -110,12 +115,29 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
 
 <template>
   <SectionHeading eyebrow="04 — TIMELINE" title="Where I've been.">
+    <nav class="visually-hidden" aria-label="Timeline events">
+      <ul>
+        <li v-for="event in sortedEvents">
+          <h3>
+            {{ event.title }}
+          </h3>
+          <p>
+            {{ dateRangeFormatter.format(event.from) }} –
+            {{ event.to ? dateRangeFormatter.format(event.to) : "Now" }}
+          </p>
+          <p>
+            {{ event.description }}
+          </p>
+        </li>
+      </ul>
+    </nav>
     <div
       ref="container"
       :style="{
         height: `${round((totalSpanMs / MS_IN_MONTH) * VH_PER_MONTH, 2)}vh`,
       }"
       class="timeline"
+      aria-hidden="true"
     >
       <div class="timeline__inner">
         <div class="timeline__year">
@@ -145,7 +167,6 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
           <Motion
             as="div"
             v-for="(entry, i) in eventYears"
-            :key="i"
             :animate="{ y: entry.y }"
             :transition="useReducedTransition({ type: 'tween' })"
           >
@@ -164,21 +185,23 @@ const selectedLinks = computed(() => selectedEvent.value.links ?? []);
             :transition="useReducedTransition({ type: 'tween' })"
             class="timeline__event-body"
           >
-            <FadeOnKey :key-label="selectedEvent.title" mode="wait">
-              <h3>{{ selectedEvent.title }}</h3>
-              <p class="type-meta">{{ eventDateRange }}</p>
-              <p>{{ selectedEvent.description }}</p>
-              <ul v-if="selectedLinks.length" class="timeline__event-links">
-                <li v-for="link in selectedLinks" :key="link.url">
-                  <Link
-                    :href="link.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="timeline__event-link"
-                    >{{ link.label }}</Link
-                  >
-                </li>
-              </ul>
+            <FadeOnKey :key-label="selectedKey" mode="wait">
+              <article :id="`timeline-event-${selectedEvent.from.getTime()}`">
+                <h3>{{ selectedEvent.title }}</h3>
+                <p class="type-meta">{{ eventDateRange }}</p>
+                <p>{{ selectedEvent.description }}</p>
+                <ul v-if="selectedLinks.length" class="timeline__event-links">
+                  <li v-for="link in selectedLinks" :key="link.url">
+                    <Link
+                      :href="link.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="timeline__event-link"
+                      >{{ link.label }}</Link
+                    >
+                  </li>
+                </ul>
+              </article>
             </FadeOnKey>
           </Motion>
         </div>

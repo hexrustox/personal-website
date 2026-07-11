@@ -58,12 +58,12 @@ const ctaAnimate = computed(() =>
                     })
                   "
                 >
-                  <div class="hero__cta-label">
-                    <div>Scroll Down</div>
-                    <div class="hero__cta-icon">
+                  <a href="#about" class="hero__cta-label">
+                    <span>Scroll Down</span>
+                    <span class="hero__cta-icon" aria-hidden="true">
                       <Icon name="caret-down" />
-                    </div>
-                  </div>
+                    </span>
+                  </a>
                 </Motion>
               </Motion>
             </AnimatePresence>
@@ -124,6 +124,8 @@ const ctaAnimate = computed(() =>
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: inherit;
+  text-decoration: none;
 }
 
 .hero__cta-icon {

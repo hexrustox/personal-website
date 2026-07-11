@@ -3,7 +3,14 @@ import { useReducedTransition } from "../lib/motion";
 import { navItems, useActiveSection } from "../lib/nav";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { useAnimate } from "motion-v";
-import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue";
+import {
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  useTemplateRef,
+  watch,
+} from "vue";
 
 const { matches: isMobile } = useMediaQuery("(max-width: 640px)");
 const open = ref(false);
@@ -14,6 +21,9 @@ const activeId = useActiveSection(navItems.map((i) => i.id));
 const listEl = useTemplateRef<HTMLOListElement>("listEl");
 const itemRefs = useTemplateRef<HTMLLIElement[]>("itemRefs");
 const [indicatorEl, animate] = useAnimate<HTMLSpanElement>();
+
+const toggleEl = useTemplateRef<HTMLButtonElement>("toggleEl");
+const mobileLinks = useTemplateRef<HTMLAnchorElement[]>("mobileLinks");
 
 function updateIndicator(transition = true) {
   const list = listEl.value;
@@ -46,19 +56,56 @@ function close() {
   open.value = false;
 }
 
-function onKey(e: KeyboardEvent) {
-  if (e.key === "Escape") close();
+function onTrapKey(e: KeyboardEvent) {
+  if (e.key === "Escape") {
+    e.preventDefault();
+    close();
+    return;
+  }
+  if (e.key !== "Tab") return;
+
+  const focusables = [toggleEl.value, ...(mobileLinks.value ?? [])].filter(
+    (el): el is HTMLButtonElement | HTMLAnchorElement =>
+      el !== null && el !== undefined,
+  );
+  if (focusables.length === 0) return;
+
+  const first = focusables[0]!;
+  const last = focusables[focusables.length - 1]!;
+  const active = document.activeElement;
+
+  if (e.shiftKey) {
+    if (
+      active === first ||
+      !(focusables as HTMLElement[]).includes(active as HTMLElement)
+    ) {
+      e.preventDefault();
+      last.focus();
+    }
+  } else {
+    if (
+      active === last ||
+      !(focusables as HTMLElement[]).includes(active as HTMLElement)
+    ) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
 }
 
-watch(open, (v) => {
+watch(open, async (v) => {
   if (typeof window === "undefined") return;
   if (v) {
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("keydown", onTrapKey);
     originalOverflow.value = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    await nextTick();
+    mobileLinks.value?.[0]?.focus();
   } else {
-    window.removeEventListener("keydown", onKey);
+    window.removeEventListener("keydown", onTrapKey);
     document.body.style.overflow = originalOverflow.value ?? "";
+    await nextTick();
+    toggleEl.value?.focus();
   }
 });
 
@@ -77,7 +124,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", () => {
     updateIndicator(false);
   });
-  window.removeEventListener("keydown", onKey);
+  window.removeEventListener("keydown", onTrapKey);
 });
 
 watch(activeId, () => {
@@ -86,7 +133,7 @@ watch(activeId, () => {
 </script>
 
 <template>
-  <nav class="nav">
+  <nav class="nav" aria-label="Main">
     <template v-if="!isMobile">
       <Reveal :initial="{ opacity: 0 }" :animate="{ opacity: 1 }" :delay="2">
         <ol class="nav__list" ref="listEl">
@@ -96,17 +143,29 @@ watch(activeId, () => {
             class="nav__item"
             ref="itemRefs"
           >
-            <a :href="item.href" class="nav__link">
+            <a
+              :href="item.href"
+              class="nav__link"
+              :aria-current="item.id === activeId ? 'location' : undefined"
+            >
               {{ item.label }}
             </a>
           </li>
-          <span ref="indicatorEl" class="nav__indicator" />
+          <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
         </ol>
       </Reveal>
     </template>
 
     <template v-else>
-      <button class="nav__toggle" type="button" @click="open = !open">
+      <button
+        ref="toggleEl"
+        class="nav__toggle"
+        type="button"
+        :aria-label="open ? 'Close navigation menu' : 'Open navigation menu'"
+        :aria-expanded="open"
+        aria-controls="nav-mobile"
+        @click="open = !open"
+      >
         <Motion
           v-if="!open"
           key="menu"
@@ -134,6 +193,10 @@ watch(activeId, () => {
           v-if="open"
           id="nav-mobile"
           class="nav__overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation"
+          tabindex="-1"
           :initial="{ opacity: 0 }"
           :animate="{ opacity: 1 }"
           :exit="{ opacity: 0 }"
@@ -155,7 +218,13 @@ watch(activeId, () => {
                   })
                 "
               >
-                <a :href="item.href" class="nav__link--mobile" @click="close">
+                <a
+                  :href="item.href"
+                  ref="mobileLinks"
+                  class="nav__link--mobile"
+                  :aria-current="item.id === activeId ? 'location' : undefined"
+                  @click="close"
+                >
                   {{ item.label }}
                 </a>
               </Motion>

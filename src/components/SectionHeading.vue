@@ -8,7 +8,7 @@ let props = defineProps<{
 </script>
 
 <template>
-  <section class="section-heading">
+  <div class="section-heading">
     <Motion
       as="span"
       class="type-eyebrow"
@@ -21,7 +21,7 @@ let props = defineProps<{
     </Motion>
     <TextSplit :text="title" tag="h2" class="section-heading__title" />
     <slot />
-  </section>
+  </div>
 </template>
 
 <style scoped>

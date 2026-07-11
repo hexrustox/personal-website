@@ -19,20 +19,19 @@ const { matches: isDesktop, ready: isReady } = useMediaQuery(
     </Reveal>
 
     <Reveal>
-      <dl class="about__meta">
-        <RevealGroup v-if="isReady" :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
-          <div
+      <RevealGroup v-if="isReady" :step="isDesktop ? REVEAL_DEFAULT_STEP : 0">
+        <dl class="about__meta">
+          <Reveal
+            cascade
             v-for="item in metaItems"
             :key="item.label"
             class="about__meta-item"
           >
-            <Reveal cascade>
-              <dt class="type-eyebrow">{{ item.label }}</dt>
-              <dd class="about__meta-value">{{ item.value }}</dd>
-            </Reveal>
-          </div>
-        </RevealGroup>
-      </dl>
+            <dt class="type-eyebrow">{{ item.label }}</dt>
+            <dd class="about__meta-value">{{ item.value }}</dd>
+          </Reveal>
+        </dl>
+      </RevealGroup>
     </Reveal>
   </SectionHeading>
 </template>

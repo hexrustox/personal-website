@@ -60,7 +60,12 @@ const detailVariants = slideFadeVariants();
   <SectionHeading eyebrow="03 — PROJECTS" title="What I've built.">
     <div class="projects__layout">
       <Reveal>
-        <div class="projects__list">
+        <div
+          class="projects__list"
+          role="tablist"
+          aria-label="Projects"
+          aria-orientation="vertical"
+        >
           <button
             v-for="(p, i) in projects"
             :key="p.name"
@@ -68,6 +73,10 @@ const detailVariants = slideFadeVariants();
             :id="`project-tab-${i}`"
             class="projects__item"
             type="button"
+            role="tab"
+            :aria-selected="i === currentIndex"
+            :aria-controls="`project-panel-${i}`"
+            :tabindex="i === currentIndex ? 0 : -1"
             @click="goTo(i)"
             @keydown="(e) => onTabKey(e, i)"
           >
@@ -78,6 +87,7 @@ const detailVariants = slideFadeVariants();
                 :variants="inactiveIndexVariants"
                 :animate="i === currentIndex ? 'current' : 'inactive'"
                 :transition="useReducedTransition()"
+                aria-hidden="true"
                 >{{ String(i + 1).padStart(2, "0") }}</Motion
               >
               <Motion
@@ -86,6 +96,7 @@ const detailVariants = slideFadeVariants();
                 :variants="currentIndexVariants"
                 :animate="i === currentIndex ? 'current' : 'inactive'"
                 :transition="useReducedTransition()"
+                aria-hidden="true"
                 >{{ String(i + 1).padStart(2, "0") }}</Motion
               >
             </div>
@@ -105,6 +116,8 @@ const detailVariants = slideFadeVariants();
             exit="exit"
             :transition="useReducedTransition()"
             :id="`project-panel-${currentIndex}`"
+            :aria-labelledby="`project-tab-${currentIndex}`"
+            role="tabpanel"
             class="projects__detail"
           >
             <h3>{{ currentProject.name }}</h3>

@@ -5,25 +5,23 @@ import { contactMethods, contactMeta } from "../data/contact";
 <template>
   <SectionHeading eyebrow="05 — CONTACT" title="Get in touch.">
     <dl class="contact__list">
-      <div v-for="method in contactMethods" :key="method.name">
-        <Reveal>
-          <div class="contact__item">
-            <dt class="contact__name">
-              {{ method.name }}
-              <div class="contact__name-icon">
-                <Icon :name="method.icon" />
-              </div>
-            </dt>
-            <dd class="contact__handle-group">
-              <Link
-                class="contact__handle"
-                :href="method.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                >{{ method.handle }}</Link
-              >
-            </dd>
-          </div>
+      <template v-for="method in contactMethods" :key="method.name">
+        <Reveal class="contact__item">
+          <dt class="contact__name">
+            {{ method.name }}
+            <div class="contact__name-icon">
+              <Icon :name="method.icon" />
+            </div>
+          </dt>
+          <dd class="contact__handle-group">
+            <Link
+              class="contact__handle"
+              :href="method.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ method.handle }}</Link
+            >
+          </dd>
         </Reveal>
         <Reveal
           :initial="{ scaleX: 0 }"
@@ -31,9 +29,8 @@ import { contactMethods, contactMeta } from "../data/contact";
           :duration="0.3"
           ease="linear"
           class="contact__border"
-        >
-        </Reveal>
-      </div>
+        />
+      </template>
     </dl>
 
     <Reveal>

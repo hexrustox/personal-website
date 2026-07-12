@@ -33,7 +33,7 @@
               extraOptions = [
                 "-e"
                 "PNPM_HOME"
-                "-p=3000:3000"
+                "-p=3000-3001:3000-3001"
                 "--pid=host"
                 "-v=ms-playwright:/ms-playwright"
               ];
@@ -41,6 +41,7 @@
                 "node"
                 "pnpm"
                 "vscode-css-language-server"
+                "caddy"
                 {
                   name = "astro-ls";
                   value = "node_modules/.bin/astro-ls";
@@ -67,10 +68,11 @@
             container =
               pkgs.mkShellNoCC {
                 packages = with pkgs; [
-                  nodejs
+                  nodejs-slim
                   pnpm
                   vscode-css-languageserver
                   git
+                  caddy
                 ];
               };
           };

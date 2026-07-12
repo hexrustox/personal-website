@@ -1,13 +1,16 @@
 ---
-import {
-  name,
-  role,
-  city,
-  country,
-  description as DESCRIPTION,
-} from "../data/meta";
+import { name, role, city, country, description } from "../data/meta";
 
-const TITLE = `${name} — ${role}`;
+import Base from "../layouts/Base.astro";
+import AboutMe from "@components/AboutMe.vue";
+import Hero from "@components/Hero.vue";
+import Nav from "@components/Nav.vue";
+import Skills from "@components/Skills.vue";
+import Projects from "@components/Projects.vue";
+import Timeline from "@components/Timeline.vue";
+import Contact from "@components/Contact.vue";
+
+const title = `${name} — ${role}`;
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -37,54 +40,20 @@ const websiteSchema = {
   "@type": "WebSite",
   name,
   url: Astro.site,
-  description: DESCRIPTION,
+  description,
 };
-
-import AboutMe from "@components/AboutMe.vue";
-import Hero from "@components/Hero.vue";
-import Nav from "@components/Nav.vue";
-import Skills from "@components/Skills.vue";
-import Projects from "@components/Projects.vue";
-import Timeline from "@components/Timeline.vue";
-import Contact from "@components/Contact.vue";
-import "@styles/global.css";
-import "@styles/font.css";
 ---
 
-<!doctype html>
-<html lang="en-GB">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{TITLE}</title>
-    <meta name="description" content={DESCRIPTION} />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={Astro.site} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta property="og:title" content={TITLE} />
-    <meta property="og:description" content={DESCRIPTION} />
+<Base title={title} description={description}>
+  <Fragment slot="head">
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.site} />
     <meta property="og:site_name" content={name} />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={TITLE} />
-    <meta name="twitter:description" content={DESCRIPTION} />
-    <meta name="generator" content={Astro.generator} />
-    <link
-      rel="preload"
-      href="/fonts/InterVariable.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/SpaceGrotesk-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <script
       is:inline
       type="application/ld+json"
@@ -95,33 +64,31 @@ import "@styles/font.css";
       type="application/ld+json"
       set:html={JSON.stringify(websiteSchema)}
     />
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <Nav client:idle />
-    <Hero client:load />
-    <main id="main" class="page" tabindex="-1">
-      <section id="about" class="page__section" aria-label="About">
-        <AboutMe client:idle />
-      </section>
-      <section id="skills" class="page__section" aria-label="Skills">
-        <Skills client:idle />
-      </section>
-      <section id="projects" class="page__section" aria-label="Projects">
-        <Projects client:idle />
-      </section>
-      <section id="timeline" class="page__section" aria-label="Timeline">
-        <Timeline client:idle />
-      </section>
-      <section id="contact" class="page__section" aria-label="Contact">
-        <Contact client:idle />
-      </section>
-    </main>
-    <footer class="site-footer">
-      <p class="type-meta">© {new Date().getFullYear()} {name}.</p>
-    </footer>
-  </body>
-</html>
+  </Fragment>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <Nav client:idle />
+  <Hero client:load />
+  <main id="main" class="page" tabindex="-1">
+    <section id="about" class="page__section" aria-label="About">
+      <AboutMe client:idle />
+    </section>
+    <section id="skills" class="page__section" aria-label="Skills">
+      <Skills client:idle />
+    </section>
+    <section id="projects" class="page__section" aria-label="Projects">
+      <Projects client:idle />
+    </section>
+    <section id="timeline" class="page__section" aria-label="Timeline">
+      <Timeline client:idle />
+    </section>
+    <section id="contact" class="page__section" aria-label="Contact">
+      <Contact client:idle />
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p class="type-meta">© {new Date().getFullYear()} {name}.</p>
+  </footer>
+</Base>
 
 <style scoped>
   .page {
@@ -154,6 +121,7 @@ import "@styles/font.css";
     padding: 0.5rem 1rem;
     color: inherit;
     text-decoration: none;
+    background: var(--bg);
     transform: translateY(-100%);
     z-index: 2;
   }

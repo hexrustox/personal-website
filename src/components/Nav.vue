@@ -4,7 +4,7 @@ import { navItems, useActiveSection } from "../lib/nav";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { useAnimate } from "motion-v";
 import {
-  nextTick,
+  computed,
   onBeforeUnmount,
   onMounted,
   ref,
@@ -13,17 +13,12 @@ import {
 } from "vue";
 
 const { matches: isMobile } = useMediaQuery("(max-width: 640px)");
-const open = ref(false);
-const originalOverflow = ref<string | null>(null);
 
 const activeId = useActiveSection(navItems.map((i) => i.id));
 
 const listEl = useTemplateRef<HTMLOListElement>("listEl");
 const itemRefs = useTemplateRef<HTMLLIElement[]>("itemRefs");
 const [indicatorEl, animate] = useAnimate<HTMLSpanElement>();
-
-const toggleEl = useTemplateRef<HTMLButtonElement>("toggleEl");
-const mobileLinks = useTemplateRef<HTMLAnchorElement[]>("mobileLinks");
 
 function updateIndicator(transition = true) {
   const list = listEl.value;
@@ -48,70 +43,9 @@ function updateIndicator(transition = true) {
   animate(
     indicatorEl.value,
     { x: `${x}px`, width: `${width}px` },
-    transition ? undefined : { duration: 0 },
+    useReducedTransition(transition ? undefined : { duration: 0 }),
   );
 }
-
-function close() {
-  open.value = false;
-}
-
-function onTrapKey(e: KeyboardEvent) {
-  if (e.key === "Escape") {
-    e.preventDefault();
-    close();
-    return;
-  }
-  if (e.key !== "Tab") return;
-
-  const focusables = [toggleEl.value, ...(mobileLinks.value ?? [])].filter(
-    (el): el is HTMLButtonElement | HTMLAnchorElement =>
-      el !== null && el !== undefined,
-  );
-  if (focusables.length === 0) return;
-
-  const first = focusables[0]!;
-  const last = focusables[focusables.length - 1]!;
-  const active = document.activeElement;
-
-  if (e.shiftKey) {
-    if (
-      active === first ||
-      !(focusables as HTMLElement[]).includes(active as HTMLElement)
-    ) {
-      e.preventDefault();
-      last.focus();
-    }
-  } else {
-    if (
-      active === last ||
-      !(focusables as HTMLElement[]).includes(active as HTMLElement)
-    ) {
-      e.preventDefault();
-      first.focus();
-    }
-  }
-}
-
-watch(open, async (v) => {
-  if (typeof window === "undefined") return;
-  if (v) {
-    window.addEventListener("keydown", onTrapKey);
-    originalOverflow.value = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    await nextTick();
-    mobileLinks.value?.[0]?.focus();
-  } else {
-    window.removeEventListener("keydown", onTrapKey);
-    document.body.style.overflow = originalOverflow.value ?? "";
-    await nextTick();
-    toggleEl.value?.focus();
-  }
-});
-
-watch(isMobile, (v) => {
-  if (!v) close();
-});
 
 function onResize() {
   updateIndicator(false);
@@ -124,137 +58,120 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", onResize);
-  window.removeEventListener("keydown", onTrapKey);
 });
 
 watch(activeId, () => {
   updateIndicator();
 });
+
+const dialogEl = useTemplateRef<HTMLDialogElement>("dialogEl");
+const toggleEl = useTemplateRef<HTMLButtonElement>("toggleEl");
+const dialogOpen = ref(false);
+const dialogDelay = ref(0.2);
+const dialogDelayMs = computed(() => `${dialogDelay.value * 1000}ms`);
+
+watch(isMobile, (is) => {
+  if (!is) dialogEl.value?.close();
+});
 </script>
 
 <template>
-  <nav class="nav" aria-label="Main">
-    <template v-if="!isMobile">
-      <Reveal :initial="{ opacity: 0 }" :animate="{ opacity: 1 }" :delay="2">
-        <div class="nav__inner">
-          <div class="nav__span">
-            <img src="/logo.svg" alt="" aria-hidden="true" class="nav__logo" />
-          </div>
-          <ol class="nav__list" ref="listEl">
-            <li
-              v-for="item in navItems"
-              :key="item.id"
-              class="nav__item"
-              ref="itemRefs"
-            >
-              <a
-                :href="item.href"
-                class="nav__link"
-                :aria-current="item.id === activeId ? 'location' : undefined"
-              >
-                {{ item.label }}
-              </a>
-            </li>
-            <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
-          </ol>
-          <div class="nav__span" />
+  <Reveal :initial="{ opacity: 0 }" :animate="{ opacity: 1 }" :delay="2">
+    <nav v-if="!isMobile" class="nav" aria-label="Main">
+      <div class="nav__inner">
+        <div class="nav__span">
+          <img src="/logo.svg" aria-hidden="true" class="nav__logo" />
         </div>
-      </Reveal>
-    </template>
-
+        <ol class="nav__list" ref="listEl">
+          <li v-for="item in navItems" ref="itemRefs">
+            <a
+              :href="item.href"
+              class="nav__link"
+              :aria-current="item.id === activeId ? 'location' : undefined"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+          <span ref="indicatorEl" class="nav__indicator" aria-hidden="true" />
+        </ol>
+        <div class="nav__span" />
+      </div>
+    </nav>
     <template v-else>
       <button
         ref="toggleEl"
-        class="nav__toggle"
-        type="button"
-        :aria-label="open ? 'Close navigation menu' : 'Open navigation menu'"
-        :aria-expanded="open"
-        aria-controls="nav-mobile"
-        @click="open = !open"
+        class="nav-dialog__toggle"
+        aria-label="Open menu"
+        command="show-modal"
+        commandfor="nav-dialog"
+        @click="
+          () => {
+            dialogOpen = true;
+          }
+        "
       >
-        <Motion
-          v-if="!open"
-          key="menu"
-          class="nav__toggle-icon"
-          :initial="{ opacity: 0, x: -16 }"
-          :animate="{ opacity: 1, x: 0 }"
-          :transition="useReducedTransition()"
-        >
-          <Icon name="menu" />
-        </Motion>
-        <Motion
-          v-if="open"
-          key="close"
-          class="nav__toggle-icon nav__toggle-icon--absolute"
-          :initial="{ opacity: 0, x: 16 }"
-          :animate="{ opacity: 1, x: 0 }"
-          :transition="useReducedTransition()"
+        <Icon name="menu" />
+      </button>
+      <dialog
+        ref="dialogEl"
+        id="nav-dialog"
+        class="nav-dialog"
+        aria-label="Main navigation"
+        @close="
+          () => {
+            toggleEl?.focus();
+            dialogOpen = false;
+          }
+        "
+      >
+        <div class="nav-dialog__inner">
+          <div class="a">
+            <img src="/logo.svg" aria-hidden="true" class="nav__logo" />
+          </div>
+          <ol class="nav-dialog__list">
+            <Motion
+              as="li"
+              v-for="(item, i) in navItems"
+              :variants="{
+                open: { x: 0, opacity: 1 },
+                close: { x: 24, opacity: 0 },
+              }"
+              :animate="dialogOpen ? 'open' : 'close'"
+              :transition="
+                useReducedTransition({ delay: i * 0.05 + dialogDelay })
+              "
+            >
+              <a
+                :href="item.href"
+                :class="[
+                  'nav-dialog__link',
+                  { 'nav-dialog__link--active': item.id === activeId },
+                ]"
+                :aria-current="item.id === activeId ? 'location' : undefined"
+                @click="dialogEl?.close()"
+              >
+                {{ item.label }}
+              </a>
+            </Motion>
+          </ol>
+        </div>
+        <button
+          class="nav-dialog__close"
+          aria-label="Close menu"
+          command="close"
+          commandfor="nav-dialog"
         >
           <Icon name="close" />
-        </Motion>
-      </button>
-
-      <AnimatePresence>
-        <Motion
-          v-if="open"
-          id="nav-mobile"
-          class="nav__overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navigation"
-          tabindex="-1"
-          :initial="{ opacity: 0 }"
-          :animate="{ opacity: 1 }"
-          :exit="{ opacity: 0 }"
-          :transition="useReducedTransition()"
-          @click.self="close"
-        >
-          <img
-            src="/logo.svg"
-            alt=""
-            aria-hidden="true"
-            class="nav__logo--mobile"
-          />
-          <ol class="nav__list--mobile">
-            <li
-              v-for="(item, i) in navItems"
-              :key="item.id"
-              :class="['nav__item--mobile', { active: item.id === activeId }]"
-            >
-              <Motion
-                :initial="{ opacity: 0, x: -16 }"
-                :animate="{ opacity: 1, x: 0 }"
-                :transition="
-                  useReducedTransition({
-                    delay: 0.05 + i * 0.04,
-                  })
-                "
-              >
-                <a
-                  :href="item.href"
-                  ref="mobileLinks"
-                  class="nav__link--mobile"
-                  :aria-current="item.id === activeId ? 'location' : undefined"
-                  @click="close"
-                >
-                  {{ item.label }}
-                </a>
-              </Motion>
-            </li>
-          </ol>
-        </Motion>
-      </AnimatePresence>
+        </button>
+      </dialog>
     </template>
-  </nav>
+  </Reveal>
 </template>
 
 <style scoped>
 .nav {
-  --nav-edge: 0.5rem;
-  --nav-chrome-size: 2.5rem;
   position: fixed;
   inset: 0 0 auto 0;
-  padding-block: 0.5rem;
   backdrop-filter: blur(4px);
   z-index: 1;
 }
@@ -266,6 +183,7 @@ watch(activeId, () => {
 }
 
 .nav__inner {
+  padding-block: 0.5rem;
   display: flex;
   align-items: center;
   padding-inline: clamp(0.5rem, 2vw, 1rem);
@@ -293,14 +211,15 @@ watch(activeId, () => {
 }
 
 .nav__link {
+  padding: 0 0.5rem;
+  font-size: 1.1rem;
   color: inherit;
   text-decoration: none;
-  padding-inline: 0.5rem;
 }
 
 .nav__indicator {
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   height: 2px;
   width: 0;
@@ -308,75 +227,91 @@ watch(activeId, () => {
   pointer-events: none;
 }
 
-.nav__toggle {
+.nav-dialog__toggle {
   position: fixed;
-  top: calc(var(--nav-edge) + env(safe-area-inset-top));
-  right: calc(var(--nav-edge) + env(safe-area-inset-right));
   z-index: 1;
-  cursor: pointer;
-  color: inherit;
+}
+
+.nav-dialog__toggle,
+.nav-dialog__close,
+.a {
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--nav-chrome-size);
-  height: var(--nav-chrome-size);
 }
 
-.nav__toggle-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.nav-dialog__toggle,
+.nav-dialog__close {
+  top: max(0.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
   font-size: 1.75rem;
+  line-height: 0;
 }
 
-.nav__toggle-icon--absolute {
-  position: absolute;
-  inset: 0;
-}
-
-.nav__overlay {
+.nav-dialog {
   position: fixed;
   inset: 0;
-  height: 100dvh;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  padding-inline: clamp(1rem, 6vw, 2rem);
-}
-
-.nav__logo--mobile {
-  width: var(--nav-chrome-size);
-  height: var(--nav-chrome-size);
-  margin-top: calc(var(--nav-edge) + env(safe-area-inset-top));
-}
-
-.nav__list--mobile {
-  position: relative;
+  width: 100%;
+  height: 100%;
+  max-inline-size: none;
+  max-block-size: none;
+  min-inline-size: 0;
+  min-block-size: 0;
   margin: 0;
   padding: 0;
-  list-style: none;
+  border: 0;
+  background: var(--bg);
+  z-index: 1;
+
+  transition:
+    display v-bind(dialogDelayMs) allow-discrete,
+    overlay v-bind(dialogDelayMs) allow-discrete,
+    opacity v-bind(dialogDelayMs);
+  opacity: 0;
+
+  &[open] {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
+.nav-dialog::backdrop {
+  display: none;
+}
+
+.nav-dialog__close {
+  position: absolute;
+}
+
+.nav-dialog__inner {
+  position: relative;
+  top: max(0.5rem, env(safe-area-inset-top));
+  padding-inline: max(0.5rem, env(safe-area-inset-left))
+    max(0.5rem, env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 2rem;
 }
 
-.nav__item--mobile {
-  padding-block: 0.1rem;
-  padding-left: 1rem;
+.nav-dialog__list {
+  padding: 0;
+  padding-inline: 1rem;
+  list-style: none;
 }
 
-.nav__item--mobile.active {
-  border-left: 2px solid var(--accent);
-}
-
-.nav__link--mobile {
-  display: inline-block;
+.nav-dialog__link {
+  padding: 0 1rem;
+  font-size: 2rem;
   color: inherit;
   text-decoration: none;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 3.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+}
+
+.nav-dialog__link--active {
+  border-left: 2px solid var(--accent);
 }
 </style>

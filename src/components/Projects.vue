@@ -24,12 +24,10 @@ async function goTo(i: number) {
 function onTabKey(e: KeyboardEvent, i: number) {
   switch (e.key) {
     case "ArrowDown":
-    case "ArrowRight":
       e.preventDefault();
       goTo(i + 1);
       break;
     case "ArrowUp":
-    case "ArrowLeft":
       e.preventDefault();
       goTo(i - 1);
       break;

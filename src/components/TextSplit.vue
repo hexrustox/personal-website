@@ -5,10 +5,11 @@ import { computed, ref, useTemplateRef, watch } from "vue";
 
 const props = defineProps<{
   text: string;
-  tag: string;
+  tag: "h1" | "h2";
 }>();
 
 const lines = computed(() => props.text.split("\n"));
+const ariaLabel = computed(() => props.text.replace(/\n/g, " "));
 const hasAnimated = ref(false);
 
 const [scope, animate] = useAnimate();
@@ -32,12 +33,13 @@ watch(inView, async (visible) => {
 
 <template>
   <div ref="view">
-    <component :is="tag" ref="scope" class="text-split">
+    <component :is="tag" ref="scope" class="text-split" :aria-label="ariaLabel">
       <span v-for="(line, li) in lines" :key="li" class="text-split__line">
         <span
           v-for="(c, ci) in Array.from(line)"
           :key="li + ':' + ci"
           class="text-split__char"
+          aria-hidden="true"
         >
           <span class="text-split__char-inner">{{
             c === " " ? "\u00A0" : c

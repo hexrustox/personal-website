@@ -35,6 +35,11 @@
   box-sizing: border-box;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--text);
+}
+
 html {
   background: var(--bg);
   color-scheme: dark;

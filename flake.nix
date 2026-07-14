@@ -31,8 +31,10 @@
               socketPath = "/tmp/personal-website/ncap-socket";
               containerName = "personal-website";
               extraOptions = [
+                "-e"
+                "PNPM_HOME"
                 "-v"
-                "$PNPM_HOME/store:/pnpm-store"
+                "$PNPM_HOME:$PNPM_HOME"
                 "-p=3000-3001:3000-3001"
                 "--pid=host"
                 "-v=ms-playwright:/ms-playwright"

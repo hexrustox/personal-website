@@ -14,4 +14,3 @@ minimumReleaseAgeExclude:
   - vue@3.5.38
 updateNotifier: false
 enableGlobalVirtualStore: true
-storeDir: /pnpm-store

@@ -26,27 +26,26 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/vue": "^6.0.1",
-    "astro": "^6.4.8",
+    "@astrojs/vue": "^7.0.1",
+    "astro": "^7.0.7",
     "motion-v": "^2.3.0",
-    "vue": "^3.5.38"
+    "typescript": "^6.0.0",
+    "vue": "^3.5.39"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/language-server": "^2.16.10",
-    "@astrojs/ts-plugin": "^1.10.9",
-    "@playwright/cli": "^0.1.15",
+    "@astrojs/language-server": "^2.16.11",
+    "@astrojs/ts-plugin": "^1.10.10",
+    "@playwright/cli": "^0.1.17",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^26.1.0",
-    "@vue/language-server": "^3.3.4",
+    "@vue/language-server": "^3.3.7",
     "@vue/tsconfig": "^0.9.1",
-    "@vue/typescript-plugin": "^3.3.4",
+    "@vue/typescript-plugin": "^3.3.7",
     "playwright": "^1.61.1",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.5",
     "prettier-plugin-astro": "^0.14.1",
-    "typescript": "^6.0.3",
     "typescript-language-server": "^5.3.0",
     "unplugin-vue-components": "^32.1.0",
-    "vue-tsc": "^3.3.6"
+    "vue-tsc": "^3.3.7"
   }
 }

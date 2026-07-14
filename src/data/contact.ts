@@ -16,8 +16,8 @@ export interface ContactMeta {
 export const contactMethods: ContactMethod[] = [
   {
     name: "Email",
-    handle: "career.kw2ddw@ckhgy.com",
-    url: "mailto:career.kw2ddw@ckhgy.com",
+    handle: "career.chy982@outlook.com",
+    url: "mailto:career.chy982@outlook.com",
     icon: "email",
   },
   {

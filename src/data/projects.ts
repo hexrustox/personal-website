@@ -31,7 +31,13 @@ export const projects: Project[] = [
     name: "Nix Capsule",
     description:
       "Isolated development environments inside containers: no setup, no conflicts, just a shell that works the same everywhere, so teams can onboard in seconds.",
-    skills: [Skills.Rust, Skills.Nix, Skills.LinuxShell, Skills.Docker],
+    skills: [
+      Skills.Rust,
+      Skills.Nix,
+      Skills.LinuxShell,
+      Skills.Docker,
+      Skills.CICD,
+    ],
     links: [
       {
         name: "GitLab",

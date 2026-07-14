@@ -31,8 +31,8 @@
               socketPath = "/tmp/personal-website/ncap-socket";
               containerName = "personal-website";
               extraOptions = [
-                "-e"
-                "PNPM_HOME"
+                "-v"
+                "$PNPM_HOME/store:/pnpm-store"
                 "-p=3000-3001:3000-3001"
                 "--pid=host"
                 "-v=ms-playwright:/ms-playwright"
@@ -60,7 +60,7 @@
                 }
               ];
               preShellHook = ''
-                export PNPM_HOME=''${PNPM_HOME:-$HOME/.local/share/pnpm}
+                export PNPM_HOME=''${PNPM_HOME:-''${XDG_DATA_HOME:=$HOME}/.local/share/pnpm}
                 mkdir -p "$PNPM_HOME"
               '';
             };

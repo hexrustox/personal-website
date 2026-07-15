@@ -2,7 +2,7 @@
 
 ## Stack
 
-- Astro 6 (static, no SSR adapter) with Vue 3 + motion-v, TypeScript 6.
+- Astro 7 (static, no SSR adapter) with Vue 3 + motion-v, TypeScript 6.
 
 ## src/ layout
 

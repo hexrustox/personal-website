@@ -11,7 +11,7 @@ export const projects: Project[] = [
   {
     name: "Prisoner's Dilemma",
     description:
-      "A tournament engine that pits AI agents against each other in iterated Prisoner's Dilemma rounds, tracking which strategies dominate over hundreds of generations.",
+      "A from-scratch iterated Prisoner's Dilemma platform: a strategy protocol and round-robin tournament engine paired with ML predictors (logistic regression and GRU) that learn opponent behavior over hundreds of games.",
     skills: [Skills.Python, Skills.AI],
     links: [
       {
@@ -23,14 +23,14 @@ export const projects: Project[] = [
   {
     name: "Dotrift",
     description:
-      "Keeps configuration files organised and in sync across machines, with automatic conflict resolution, cutting setup time on new machines from hours to minutes.",
+      "A declarative dotfile manager that maps files from source to target via a single TOML config, with a custom templating engine, profile system, SQLite-backed state tracking, and an interactive TUI pager for conflict resolution.",
     skills: [Skills.Rust],
     links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/dotrift" }],
   },
   {
     name: "Nix Capsule",
     description:
-      "Isolated development environments inside containers: no setup, no conflicts, just a shell that works the same everywhere, so teams can onboard in seconds.",
+      "Containerized dev shells with transparent I/O: stdin, stdout, exit codes, and CWD pass through unmodified, so LSP servers and CLI tools feel native across the container boundary.",
     skills: [
       Skills.Rust,
       Skills.Nix,
@@ -48,28 +48,28 @@ export const projects: Project[] = [
   {
     name: "LoomWM",
     description:
-      "Watches how you arrange windows and learns to organise them for you automatically, cutting out repetitive manual layout adjustments.",
+      "A Wayland compositor built on Smithay with dynamic tiling, multi-workspace support, and an on-device transformer model that learns window arrangement habits to suggest optimal layouts.",
     skills: [Skills.Rust, Skills.AI],
     links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/loomwm" }],
   },
   {
     name: "Findr",
     description:
-      "A fast terminal search-and-replace tool, like VS Code's find-and-replace, without leaving the command line, for refactoring across large codebases.",
+      "An interactive terminal find-and-replace TUI with live preview, regex capture groups, and Vim-style keybindings — search and refactor across codebases without leaving the command line.",
     skills: [Skills.Rust],
     links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/findr" }],
   },
   {
     name: "Waygamma",
     description:
-      "Automatically warms your screen at night and cools it during the day, like Night Light, but for Linux.",
+      "A Wayland-native gamma, color-temperature, and brightness daemon that warms and dims your screen on a solar schedule with smooth animated transitions, like Redshift for wlroots compositors.",
     skills: [Skills.Rust],
     links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/waygamma" }],
   },
   {
     name: "Dotfiles",
     description:
-      "My entire development environment, codified as code: OS config, editor settings, and tooling, reproducible on any machine in under 30 minutes.",
+      "My NixOS configuration and dotfiles, managed with Nix flakes and dotrift — a fully reproducible development environment codified as code.",
     skills: [Skills.Nix, Skills.LinuxShell],
     links: [{ name: "GitLab", url: "https://gitlab.com/codnixus/dotfiles" }],
   },
@@ -83,7 +83,7 @@ export const projects: Project[] = [
   {
     name: "This Website",
     description:
-      "Lightweight portfolio built from scratch with Astro 6, Vue 3, and TypeScript, designed for fast loads, smooth motion, and a clean reading experience.",
+      "A static portfolio built with Astro 7, Vue 3 (motion-v), and TypeScript, served by Caddy with HSTS and cache-optimized headers."",
     skills: [
       Skills.Astro,
       Skills.Vue,

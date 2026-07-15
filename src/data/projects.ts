@@ -83,7 +83,7 @@ export const projects: Project[] = [
   {
     name: "This Website",
     description:
-      "A static portfolio built with Astro 7, Vue 3 (motion-v), and TypeScript, served by Caddy with HSTS and cache-optimized headers."",
+      "A static portfolio built with Astro 7, Vue 3 (motion-v), and TypeScript, served by Caddy with HSTS and cache-optimized headers.",
     skills: [
       Skills.Astro,
       Skills.Vue,

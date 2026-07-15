@@ -37,7 +37,7 @@ jobs:
           mkdir releases
           mkdir stage
           cp -r dist/ Caddyfile stage/
-          tar czf "releases/site.tar.gz" -C stage .
+          tar czf "releases/${{ github.ref_name }}.tar.gz" -C stage .
 
       - name: Release
         uses: softprops/action-gh-release@v3
